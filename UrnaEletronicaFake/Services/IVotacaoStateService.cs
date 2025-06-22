@@ -6,6 +6,7 @@ public interface IVotacaoStateService
 {
     event Action? OnTerminalStateChanged;
     bool IsTerminalLocked { get; }
-    void UnlockTerminal();
+    string? EleitorAutenticadoId { get; }
+    void UnlockTerminal(string eleitorId);
     void LockTerminal();
 } 

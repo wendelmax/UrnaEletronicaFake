@@ -10,14 +10,18 @@ public partial class MesaViewModel : ViewModelBase
     private readonly IVotacaoStateService _votacaoStateService;
 
     [ObservableProperty]
-    private string _statusMessage = "Urna pronta para ser liberada.";
+    private string _statusMessage = "Aguardando identificação do eleitor.";
+    
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(LiberarUrnaCommand))]
+    private string _identificacaoEleitor = "";
 
-    public IRelayCommand UnlockTerminalCommand { get; }
+    public IRelayCommand LiberarUrnaCommand { get; }
 
     public MesaViewModel(IVotacaoStateService votacaoStateService)
     {
         _votacaoStateService = votacaoStateService;
-        UnlockTerminalCommand = new RelayCommand(UnlockTerminal, () => _votacaoStateService.IsTerminalLocked);
+        LiberarUrnaCommand = new RelayCommand(LiberarUrna, CanLiberarUrna);
 
         _votacaoStateService.OnTerminalStateChanged += OnTerminalStateChanged;
         UpdateStatusMessage();
@@ -25,19 +29,35 @@ public partial class MesaViewModel : ViewModelBase
     
     private void OnTerminalStateChanged()
     {
-        UnlockTerminalCommand.NotifyCanExecuteChanged();
+        LiberarUrnaCommand.NotifyCanExecuteChanged();
         UpdateStatusMessage();
+        
+        // Limpa o campo de identificação quando a urna for bloqueada novamente
+        if (_votacaoStateService.IsTerminalLocked)
+        {
+            IdentificacaoEleitor = "";
+        }
     }
     
     private void UpdateStatusMessage()
     {
-        StatusMessage = _votacaoStateService.IsTerminalLocked 
-            ? "Urna pronta para ser liberada para o próximo eleitor."
-            : "Urna em uso. Aguardando finalização do voto.";
+        if (_votacaoStateService.IsTerminalLocked)
+        {
+            StatusMessage = "Aguardando identificação do eleitor.";
+        }
+        else
+        {
+            StatusMessage = $"Urna liberada para o eleitor: {_votacaoStateService.EleitorAutenticadoId}.\nAguardando finalização do voto.";
+        }
     }
 
-    private void UnlockTerminal()
+    private bool CanLiberarUrna()
     {
-        _votacaoStateService.UnlockTerminal();
+        return _votacaoStateService.IsTerminalLocked && !string.IsNullOrWhiteSpace(IdentificacaoEleitor);
+    }
+
+    private void LiberarUrna()
+    {
+        _votacaoStateService.UnlockTerminal(IdentificacaoEleitor);
     }
 } 

@@ -8,7 +8,7 @@
              x:DataType="vm:MesaViewModel">
 
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <StackPanel Spacing="20" HorizontalAlignment="Center">
+        <StackPanel Spacing="20" HorizontalAlignment="Center" MaxWidth="500">
             <TextBlock Text="🧑‍⚖️ Mesa Receptora de Votos" 
                        FontSize="28" 
                        FontWeight="Bold" 
@@ -19,12 +19,23 @@
                        Foreground="#475569"
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap"
-                       TextAlignment="Center"
-                       MaxWidth="400"/>
+                       TextAlignment="Center"/>
+            
+            <StackPanel Spacing="8">
+                <TextBlock Text="Identificação do Eleitor:"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Foreground="#374151"/>
+                <TextBox Text="{Binding IdentificacaoEleitor}"
+                         FontSize="16"
+                         Padding="15,12"
+                         Watermark="Digite o CPF ou Título de Eleitor"
+                         HorizontalAlignment="Stretch"/>
+            </StackPanel>
 
             <Button Content="Liberar Urna para Votação"
-                    Command="{Binding UnlockTerminalCommand}"
-                    HorizontalAlignment="Center"
+                    Command="{Binding LiberarUrnaCommand}"
+                    HorizontalAlignment="Stretch"
                     Padding="40,20"
                     FontSize="20"
                     FontWeight="Bold"
@@ -35,6 +46,9 @@
                     <Style Selector="Button:disabled">
                         <Setter Property="Background" Value="#9ca3af"/>
                         <Setter Property="Opacity" Value="0.7"/>
+                    </Style>
+                    <Style Selector="Button:pointerover">
+                        <Setter Property="Background" Value="#15803d"/>
                     </Style>
                 </Button.Styles>
             </Button>

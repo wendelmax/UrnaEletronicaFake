@@ -24,7 +24,8 @@ public class EleicaoService : IEleicaoService
     public async Task<IEnumerable<Eleicao>> ObterTodasEleicoesAsync()
     {
         return await _context.Eleicoes
-            .Include(e => e.Candidatos)
+            .Include(e => e.CargosEleitorais.Where(c => c.Ativo))
+            .Include(e => e.Candidatos.Where(c => c.Ativo))
             .OrderByDescending(e => e.DataCriacao)
             .ToListAsync();
     }
@@ -32,27 +33,27 @@ public class EleicaoService : IEleicaoService
     public async Task<Eleicao?> ObterEleicaoPorIdAsync(int id)
     {
         return await _context.Eleicoes
-            .Include(e => e.Candidatos)
+            .Include(e => e.CargosEleitorais.Where(c => c.Ativo).OrderBy(c => c.Ordem))
+            .Include(e => e.Candidatos.Where(c => c.Ativo))
             .FirstOrDefaultAsync(e => e.Id == id);
     }
 
     public async Task<Eleicao?> ObterEleicaoAtivaAsync()
     {
         return await _context.Eleicoes
+            .Include(e => e.CargosEleitorais.Where(c => c.Ativo).OrderBy(c => c.Ordem))
             .Include(e => e.Candidatos.Where(c => c.Ativo))
-            .FirstOrDefaultAsync(e => e.Ativa && e.DataInicio <= DateTime.Now && e.DataFim >= DateTime.Now);
+            .FirstOrDefaultAsync(e => e.Ativa);
     }
 
     public async Task<Eleicao> CriarEleicaoAsync(Eleicao eleicao)
     {
         eleicao.DataCriacao = DateTime.Now;
-        eleicao.Ativa = false;
-        
         _context.Eleicoes.Add(eleicao);
         await _context.SaveChangesAsync();
 
         await _auditoriaService.RegistrarAcaoAsync("CRIAR", "Eleicao", eleicao.Id, 
-            $"Eleição '{eleicao.Titulo}' criada", null, SerializarEleicao(eleicao));
+            $"Eleição '{eleicao.Titulo}' criada");
 
         return eleicao;
     }
@@ -63,8 +64,6 @@ public class EleicaoService : IEleicaoService
         if (eleicaoExistente == null)
             throw new ArgumentException("Eleição não encontrada");
 
-        var dadosAnteriores = SerializarEleicao(eleicaoExistente);
-        
         eleicaoExistente.Titulo = eleicao.Titulo;
         eleicaoExistente.Descricao = eleicao.Descricao;
         eleicaoExistente.DataInicio = eleicao.DataInicio;
@@ -72,8 +71,8 @@ public class EleicaoService : IEleicaoService
 
         await _context.SaveChangesAsync();
 
-        await _auditoriaService.RegistrarAcaoAsync("ATUALIZAR", "Eleicao", eleicao.Id,
-            $"Eleição '{eleicao.Titulo}' atualizada", dadosAnteriores, SerializarEleicao(eleicaoExistente));
+        await _auditoriaService.RegistrarAcaoAsync("ATUALIZAR", "Eleicao", eleicao.Id, 
+            $"Eleição '{eleicao.Titulo}' atualizada");
 
         return eleicaoExistente;
     }
@@ -81,19 +80,13 @@ public class EleicaoService : IEleicaoService
     public async Task<bool> DeletarEleicaoAsync(int id)
     {
         var eleicao = await _context.Eleicoes.FindAsync(id);
-        if (eleicao == null)
-            return false;
+        if (eleicao == null) return false;
 
-        if (eleicao.Ativa)
-            throw new InvalidOperationException("Não é possível deletar uma eleição ativa");
-
-        var dadosAnteriores = SerializarEleicao(eleicao);
-        
         _context.Eleicoes.Remove(eleicao);
         await _context.SaveChangesAsync();
 
-        await _auditoriaService.RegistrarAcaoAsync("DELETAR", "Eleicao", id,
-            $"Eleição '{eleicao.Titulo}' deletada", dadosAnteriores, null);
+        await _auditoriaService.RegistrarAcaoAsync("DELETAR", "Eleicao", id, 
+            $"Eleição '{eleicao.Titulo}' deletada");
 
         return true;
     }
@@ -101,21 +94,13 @@ public class EleicaoService : IEleicaoService
     public async Task<bool> AtivarEleicaoAsync(int id)
     {
         var eleicao = await _context.Eleicoes.FindAsync(id);
-        if (eleicao == null)
-            return false;
-
-        // Desativar todas as outras eleições
-        var eleicoesAtivas = await _context.Eleicoes.Where(e => e.Ativa).ToListAsync();
-        foreach (var eleicaoAtiva in eleicoesAtivas)
-        {
-            eleicaoAtiva.Ativa = false;
-        }
+        if (eleicao == null) return false;
 
         eleicao.Ativa = true;
         await _context.SaveChangesAsync();
 
-        await _auditoriaService.RegistrarAcaoAsync("ATIVAR", "Eleicao", id,
-            $"Eleição '{eleicao.Titulo}' ativada", null, SerializarEleicao(eleicao));
+        await _auditoriaService.RegistrarAcaoAsync("ATIVAR", "Eleicao", id, 
+            $"Eleição '{eleicao.Titulo}' ativada");
 
         return true;
     }
@@ -123,14 +108,13 @@ public class EleicaoService : IEleicaoService
     public async Task<bool> DesativarEleicaoAsync(int id)
     {
         var eleicao = await _context.Eleicoes.FindAsync(id);
-        if (eleicao == null)
-            return false;
+        if (eleicao == null) return false;
 
         eleicao.Ativa = false;
         await _context.SaveChangesAsync();
 
-        await _auditoriaService.RegistrarAcaoAsync("DESATIVAR", "Eleicao", id,
-            $"Eleição '{eleicao.Titulo}' desativada", SerializarEleicao(eleicao), null);
+        await _auditoriaService.RegistrarAcaoAsync("DESATIVAR", "Eleicao", id, 
+            $"Eleição '{eleicao.Titulo}' desativada");
 
         return true;
     }
@@ -138,39 +122,28 @@ public class EleicaoService : IEleicaoService
     public async Task<bool> EleicaoEstaAtivaAsync(int id)
     {
         var eleicao = await _context.Eleicoes.FindAsync(id);
-        return eleicao?.Ativa == true && 
-               eleicao.DataInicio <= DateTime.Now && 
-               eleicao.DataFim >= DateTime.Now;
+        return eleicao?.Ativa == true;
     }
 
     // Métodos para gerenciar candidatos
     public async Task<IEnumerable<Candidato>> ObterCandidatosAsync(int eleicaoId)
     {
-        var eleicao = await _context.Eleicoes
-            .Include(e => e.Candidatos)
-            .FirstOrDefaultAsync(e => e.Id == eleicaoId);
-        
-        return eleicao?.Candidatos ?? new List<Candidato>();
+        return await _context.Candidatos
+            .Include(c => c.CargoEleitoral)
+            .Where(c => c.EleicaoId == eleicaoId && c.Ativo)
+            .OrderBy(c => c.CargoEleitoral.Ordem)
+            .ThenBy(c => c.Numero)
+            .ToListAsync();
     }
 
     public async Task<Candidato> AdicionarCandidatoAsync(int eleicaoId, Candidato candidato)
     {
-        var eleicao = await _context.Eleicoes.FindAsync(eleicaoId);
-        if (eleicao == null)
-            throw new ArgumentException("Eleição não encontrada");
-
-        if (eleicao.Ativa)
-            throw new InvalidOperationException("Não é possível adicionar candidatos a uma eleição ativa");
-
         candidato.EleicaoId = eleicaoId;
-        candidato.DataCriacao = DateTime.Now;
-        candidato.Ativo = true;
-
         _context.Candidatos.Add(candidato);
         await _context.SaveChangesAsync();
 
-        await _auditoriaService.RegistrarAcaoAsync("CRIAR", "Candidato", candidato.Id,
-            $"Candidato '{candidato.Nome}' adicionado à eleição '{eleicao.Titulo}'", null, SerializarCandidato(candidato));
+        await _auditoriaService.RegistrarAcaoAsync("ADICIONAR", "Candidato", candidato.Id, 
+            $"Candidato '{candidato.Nome}' adicionado à eleição {eleicaoId}");
 
         return candidato;
     }
@@ -183,20 +156,16 @@ public class EleicaoService : IEleicaoService
         if (candidatoExistente == null)
             throw new ArgumentException("Candidato não encontrado");
 
-        var eleicao = await _context.Eleicoes.FindAsync(eleicaoId);
-        if (eleicao?.Ativa == true)
-            throw new InvalidOperationException("Não é possível editar candidatos de uma eleição ativa");
-
-        var dadosAnteriores = SerializarCandidato(candidatoExistente);
-
         candidatoExistente.Nome = candidato.Nome;
         candidatoExistente.Partido = candidato.Partido;
         candidatoExistente.Numero = candidato.Numero;
+        candidatoExistente.Foto = candidato.Foto;
+        candidatoExistente.CargoEleitoralId = candidato.CargoEleitoralId;
 
         await _context.SaveChangesAsync();
 
-        await _auditoriaService.RegistrarAcaoAsync("ATUALIZAR", "Candidato", candidato.Id,
-            $"Candidato '{candidato.Nome}' atualizado na eleição '{eleicao?.Titulo}'", dadosAnteriores, SerializarCandidato(candidatoExistente));
+        await _auditoriaService.RegistrarAcaoAsync("ATUALIZAR", "Candidato", candidato.Id, 
+            $"Candidato '{candidato.Nome}' atualizado");
 
         return candidatoExistente;
     }
@@ -206,49 +175,81 @@ public class EleicaoService : IEleicaoService
         var candidato = await _context.Candidatos
             .FirstOrDefaultAsync(c => c.Id == candidatoId && c.EleicaoId == eleicaoId);
         
-        if (candidato == null)
-            return false;
+        if (candidato == null) return false;
 
-        var eleicao = await _context.Eleicoes.FindAsync(eleicaoId);
-        if (eleicao?.Ativa == true)
-            throw new InvalidOperationException("Não é possível remover candidatos de uma eleição ativa");
-
-        var dadosAnteriores = SerializarCandidato(candidato);
-
-        _context.Candidatos.Remove(candidato);
+        candidato.Ativo = false;
         await _context.SaveChangesAsync();
 
-        await _auditoriaService.RegistrarAcaoAsync("DELETAR", "Candidato", candidatoId,
-            $"Candidato '{candidato.Nome}' removido da eleição '{eleicao?.Titulo}'", dadosAnteriores, null);
+        await _auditoriaService.RegistrarAcaoAsync("REMOVER", "Candidato", candidatoId, 
+            $"Candidato '{candidato.Nome}' removido");
 
         return true;
     }
 
-    private string SerializarEleicao(Eleicao eleicao)
+    // Métodos para gerenciar cargos eleitorais
+    public async Task<IEnumerable<CargoEleitoral>> ObterCargosAsync(int eleicaoId)
     {
-        return System.Text.Json.JsonSerializer.Serialize(new
-        {
-            eleicao.Id,
-            eleicao.Titulo,
-            eleicao.Descricao,
-            eleicao.DataInicio,
-            eleicao.DataFim,
-            eleicao.Ativa,
-            eleicao.DataCriacao
-        });
+        return await _context.CargosEleitorais
+            .Where(c => c.EleicaoId == eleicaoId && c.Ativo)
+            .OrderBy(c => c.Ordem)
+            .ToListAsync();
     }
 
-    private string SerializarCandidato(Candidato candidato)
+    public async Task<CargoEleitoral> AdicionarCargoAsync(int eleicaoId, CargoEleitoral cargo)
     {
-        return System.Text.Json.JsonSerializer.Serialize(new
+        cargo.EleicaoId = eleicaoId;
+        
+        // Definir ordem automaticamente se não fornecida
+        if (cargo.Ordem == 0)
         {
-            candidato.Id,
-            candidato.Nome,
-            candidato.Partido,
-            candidato.Numero,
-            candidato.EleicaoId,
-            candidato.Ativo,
-            candidato.DataCriacao
-        });
+            var ultimaOrdem = await _context.CargosEleitorais
+                .Where(c => c.EleicaoId == eleicaoId)
+                .MaxAsync(c => (int?)c.Ordem) ?? 0;
+            cargo.Ordem = ultimaOrdem + 1;
+        }
+
+        _context.CargosEleitorais.Add(cargo);
+        await _context.SaveChangesAsync();
+
+        await _auditoriaService.RegistrarAcaoAsync("ADICIONAR", "CargoEleitoral", cargo.Id, 
+            $"Cargo '{cargo.Nome}' adicionado à eleição {eleicaoId}");
+
+        return cargo;
+    }
+
+    public async Task<CargoEleitoral> AtualizarCargoAsync(int eleicaoId, CargoEleitoral cargo)
+    {
+        var cargoExistente = await _context.CargosEleitorais
+            .FirstOrDefaultAsync(c => c.Id == cargo.Id && c.EleicaoId == eleicaoId);
+        
+        if (cargoExistente == null)
+            throw new ArgumentException("Cargo não encontrado");
+
+        cargoExistente.Nome = cargo.Nome;
+        cargoExistente.QuantidadeDigitos = cargo.QuantidadeDigitos;
+        cargoExistente.Ordem = cargo.Ordem;
+
+        await _context.SaveChangesAsync();
+
+        await _auditoriaService.RegistrarAcaoAsync("ATUALIZAR", "CargoEleitoral", cargo.Id, 
+            $"Cargo '{cargo.Nome}' atualizado");
+
+        return cargoExistente;
+    }
+
+    public async Task<bool> RemoverCargoAsync(int eleicaoId, int cargoId)
+    {
+        var cargo = await _context.CargosEleitorais
+            .FirstOrDefaultAsync(c => c.Id == cargoId && c.EleicaoId == eleicaoId);
+        
+        if (cargo == null) return false;
+
+        cargo.Ativo = false;
+        await _context.SaveChangesAsync();
+
+        await _auditoriaService.RegistrarAcaoAsync("REMOVER", "CargoEleitoral", cargoId, 
+            $"Cargo '{cargo.Nome}' removido");
+
+        return true;
     }
 } 

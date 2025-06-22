@@ -9,11 +9,15 @@ public class VotacaoStateService : IVotacaoStateService
     private bool _isLocked = true;
     public bool IsTerminalLocked => _isLocked;
 
-    public void UnlockTerminal()
+    private string? _eleitorId;
+    public string? EleitorAutenticadoId => _eleitorId;
+
+    public void UnlockTerminal(string eleitorId)
     {
-        if (_isLocked)
+        if (_isLocked && !string.IsNullOrWhiteSpace(eleitorId))
         {
             _isLocked = false;
+            _eleitorId = eleitorId;
             OnTerminalStateChanged?.Invoke();
         }
     }
@@ -23,6 +27,7 @@ public class VotacaoStateService : IVotacaoStateService
         if (!_isLocked)
         {
             _isLocked = true;
+            _eleitorId = null;
             OnTerminalStateChanged?.Invoke();
         }
     }

@@ -70,6 +70,28 @@ public partial class AdminViewModel : ViewModelBase
     [ObservableProperty]
     private bool _modoEdicaoCandidato;
     
+    // Propriedades para gerenciamento de cargos
+    [ObservableProperty]
+    private bool _mostrarPainelCargos;
+
+    [ObservableProperty]
+    private ObservableCollection<CargoEleitoral> _cargos = new();
+
+    [ObservableProperty]
+    private CargoEleitoral? _cargoSelecionado;
+
+    [ObservableProperty]
+    private string _nomeCargo = "";
+
+    [ObservableProperty]
+    private string _quantidadeDigitosCargo = "";
+
+    [ObservableProperty]
+    private string _ordemCargo = "";
+
+    [ObservableProperty]
+    private bool _modoEdicaoCargo;
+    
     public string FormularioTitulo => ModoEdicao ? "Editar Eleição" : "Criar Nova Eleição";
     public string BotaoSalvarTexto => ModoEdicao ? "Atualizar" : "Salvar";
     public bool IsEleicaoSelecionada => EleicaoSelecionada != null;
@@ -89,6 +111,7 @@ public partial class AdminViewModel : ViewModelBase
         AtivarEleicaoCommand = new RelayCommand(async () => await AtivarEleicao());
         DesativarEleicaoCommand = new RelayCommand(async () => await DesativarEleicao());
         GerenciarCandidatosCommand = new RelayCommand(async () => await GerenciarCandidatos());
+        GerenciarCargosCommand = new RelayCommand(async () => await GerenciarCargos());
         
         // Comandos para candidatos
         AdicionarCandidatoCommand = new RelayCommand(AbrirFormularioCandidato);
@@ -96,6 +119,14 @@ public partial class AdminViewModel : ViewModelBase
         CancelarCandidatoCommand = new RelayCommand(CancelarFormularioCandidato);
         EditarCandidatoCommand = new RelayCommand(async () => await EditarCandidato());
         RemoverCandidatoCommand = new RelayCommand(async () => await RemoverCandidato());
+        VoltarParaEleicoesCommand = new RelayCommand(VoltarParaEleicoes);
+        
+        // Comandos para gerenciamento de cargos
+        AdicionarCargoCommand = new RelayCommand(AbrirFormularioCargo);
+        SalvarCargoCommand = new RelayCommand(async () => await SalvarCargo());
+        CancelarCargoCommand = new RelayCommand(CancelarFormularioCargo);
+        EditarCargoCommand = new RelayCommand(async () => await EditarCargo());
+        RemoverCargoCommand = new RelayCommand(async () => await RemoverCargo());
         VoltarParaEleicoesCommand = new RelayCommand(VoltarParaEleicoes);
         
         // Carregar dados iniciais
@@ -113,6 +144,7 @@ public partial class AdminViewModel : ViewModelBase
     public ICommand AtivarEleicaoCommand { get; }
     public ICommand DesativarEleicaoCommand { get; }
     public ICommand GerenciarCandidatosCommand { get; }
+    public ICommand GerenciarCargosCommand { get; }
     
     // Comandos para candidatos
     public ICommand AdicionarCandidatoCommand { get; }
@@ -121,6 +153,13 @@ public partial class AdminViewModel : ViewModelBase
     public ICommand EditarCandidatoCommand { get; }
     public ICommand RemoverCandidatoCommand { get; }
     public ICommand VoltarParaEleicoesCommand { get; }
+
+    // Comandos para gerenciamento de cargos
+    public ICommand AdicionarCargoCommand { get; }
+    public ICommand SalvarCargoCommand { get; }
+    public ICommand CancelarCargoCommand { get; }
+    public ICommand EditarCargoCommand { get; }
+    public ICommand RemoverCargoCommand { get; }
 
     private async Task CarregarEleicoes()
     {
@@ -355,27 +394,13 @@ public partial class AdminViewModel : ViewModelBase
 
         try
         {
-            IsLoading = true;
-            StatusMessage = $"Carregando candidatos da eleição: {EleicaoSelecionada.Titulo}";
-            
-            var candidatos = await _eleicaoService.ObterCandidatosAsync(EleicaoSelecionada.Id);
-            
-            Candidatos.Clear();
-            foreach (var candidato in candidatos)
-            {
-                Candidatos.Add(candidato);
-            }
-            
             MostrarPainelCandidatos = true;
-            StatusMessage = $"Gerenciando candidatos da eleição: {EleicaoSelecionada.Titulo} ({Candidatos.Count} candidatos)";
+            await CarregarCandidatos();
+            StatusMessage = $"Gerenciando candidatos da eleição: {EleicaoSelecionada.Titulo}";
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Erro ao carregar candidatos: {ex.Message}";
-        }
-        finally
-        {
-            IsLoading = false;
+            StatusMessage = $"Erro ao abrir gerenciamento de candidatos: {ex.Message}";
         }
     }
 
@@ -530,8 +555,177 @@ public partial class AdminViewModel : ViewModelBase
     private void VoltarParaEleicoes()
     {
         MostrarPainelCandidatos = false;
-        Candidatos.Clear();
+        MostrarPainelCargos = false;
         CandidatoSelecionado = null;
+        CargoSelecionado = null;
         StatusMessage = "Voltando para eleições...";
+    }
+
+    private void AbrirFormularioCargo()
+    {
+        ModoEdicaoCargo = false;
+        NomeCargo = "";
+        QuantidadeDigitosCargo = "";
+        OrdemCargo = "";
+        StatusMessage = "Preencha os dados do cargo...";
+    }
+
+    private async Task SalvarCargo()
+    {
+        if (string.IsNullOrWhiteSpace(NomeCargo))
+        {
+            StatusMessage = "Digite o nome do cargo";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(QuantidadeDigitosCargo))
+        {
+            StatusMessage = "Digite a quantidade de dígitos do cargo";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(OrdemCargo))
+        {
+            StatusMessage = "Digite a ordem do cargo";
+            return;
+        }
+
+        try
+        {
+            IsLoading = true;
+            StatusMessage = "Salvando cargo...";
+
+            if (ModoEdicaoCargo && CargoSelecionado != null)
+            {
+                CargoSelecionado.Nome = NomeCargo;
+                CargoSelecionado.QuantidadeDigitos = int.Parse(QuantidadeDigitosCargo);
+                CargoSelecionado.Ordem = int.Parse(OrdemCargo);
+
+                await _eleicaoService.AtualizarCargoAsync(EleicaoSelecionada.Id, CargoSelecionado);
+                StatusMessage = "Cargo atualizado com sucesso!";
+            }
+            else
+            {
+                var novoCargo = new CargoEleitoral
+                {
+                    Nome = NomeCargo,
+                    QuantidadeDigitos = int.Parse(QuantidadeDigitosCargo),
+                    Ordem = int.Parse(OrdemCargo)
+                };
+
+                await _eleicaoService.AdicionarCargoAsync(EleicaoSelecionada.Id, novoCargo);
+                StatusMessage = "Cargo criado com sucesso!";
+            }
+
+            await CarregarCargos();
+            CancelarFormularioCargo();
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Erro ao salvar cargo: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void CancelarFormularioCargo()
+    {
+        ModoEdicaoCargo = false;
+        NomeCargo = "";
+        QuantidadeDigitosCargo = "";
+        OrdemCargo = "";
+        StatusMessage = "Formulário cancelado";
+    }
+
+    private async Task EditarCargo()
+    {
+        if (CargoSelecionado == null)
+        {
+            StatusMessage = "Selecione um cargo para editar";
+            return;
+        }
+
+        ModoEdicaoCargo = true;
+        NomeCargo = CargoSelecionado.Nome;
+        QuantidadeDigitosCargo = CargoSelecionado.QuantidadeDigitos.ToString();
+        OrdemCargo = CargoSelecionado.Ordem.ToString();
+        StatusMessage = $"Editando cargo: {CargoSelecionado.Nome}";
+    }
+
+    private async Task RemoverCargo()
+    {
+        if (CargoSelecionado == null)
+        {
+            StatusMessage = "Selecione um cargo para remover";
+            return;
+        }
+
+        try
+        {
+            IsLoading = true;
+            StatusMessage = "Removendo cargo...";
+            
+            var sucesso = await _eleicaoService.RemoverCargoEleitoralAsync(EleicaoSelecionada.Id, CargoSelecionado.Id);
+            if (sucesso)
+            {
+                await CarregarCargos();
+                CargoSelecionado = null;
+                StatusMessage = "Cargo removido com sucesso!";
+            }
+            else
+            {
+                StatusMessage = "Erro ao remover cargo";
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Erro ao remover cargo: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task CarregarCargos()
+    {
+        if (EleicaoSelecionada == null) return;
+
+        try
+        {
+            var cargos = await _eleicaoService.ObterCargosEleitoraisAsync(EleicaoSelecionada.Id);
+            
+            Cargos.Clear();
+            foreach (var cargo in cargos)
+            {
+                Cargos.Add(cargo);
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Erro ao carregar cargos: {ex.Message}";
+        }
+    }
+
+    private async Task GerenciarCargos()
+    {
+        if (EleicaoSelecionada == null)
+        {
+            StatusMessage = "Selecione uma eleição para gerenciar cargos";
+            return;
+        }
+
+        try
+        {
+            MostrarPainelCargos = true;
+            await CarregarCargos();
+            StatusMessage = $"Gerenciando cargos da eleição: {EleicaoSelecionada.Titulo}";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Erro ao abrir gerenciamento de cargos: {ex.Message}";
+        }
     }
 } 

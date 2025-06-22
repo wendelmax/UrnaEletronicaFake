@@ -21,4 +21,10 @@ public interface IEleicaoService
     Task<Candidato> AdicionarCandidatoAsync(int eleicaoId, Candidato candidato);
     Task<Candidato> AtualizarCandidatoAsync(int eleicaoId, Candidato candidato);
     Task<bool> RemoverCandidatoAsync(int eleicaoId, int candidatoId);
+    
+    // Métodos para gerenciar cargos eleitorais
+    Task<IEnumerable<CargoEleitoral>> ObterCargosAsync(int eleicaoId);
+    Task<CargoEleitoral> AdicionarCargoAsync(int eleicaoId, CargoEleitoral cargo);
+    Task<CargoEleitoral> AtualizarCargoAsync(int eleicaoId, CargoEleitoral cargo);
+    Task<bool> RemoverCargoAsync(int eleicaoId, int cargoId);
 } 

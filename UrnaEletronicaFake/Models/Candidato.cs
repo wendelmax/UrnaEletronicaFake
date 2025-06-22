@@ -9,16 +9,18 @@ public class Candidato
     public int Id { get; set; }
     
     [Required]
-    [StringLength(100)]
+    [MaxLength(200)]
     public string Nome { get; set; } = string.Empty;
     
     [Required]
-    [StringLength(50)]
+    [MaxLength(50)]
     public string Partido { get; set; } = string.Empty;
     
     [Required]
-    [StringLength(10)]
     public string Numero { get; set; } = string.Empty;
+    
+    [MaxLength(500)]
+    public string? Foto { get; set; }
     
     [StringLength(500)]
     public string? Biografia { get; set; }
@@ -27,10 +29,14 @@ public class Candidato
     public string? FotoUrl { get; set; }
     
     public DateTime DataCriacao { get; set; } = DateTime.Now;
+    
+    public int EleicaoId { get; set; }
+    public Eleicao Eleicao { get; set; } = null!;
+    
+    public int CargoEleitoralId { get; set; }
+    public CargoEleitoral CargoEleitoral { get; set; } = null!;
+    
     public bool Ativo { get; set; } = true;
     
-    // Relacionamentos
-    public int EleicaoId { get; set; }
-    public virtual Eleicao Eleicao { get; set; } = null!;
-    public virtual ICollection<Voto> Votos { get; set; } = new List<Voto>();
+    public ICollection<Voto> Votos { get; set; } = new List<Voto>();
 } 
