@@ -430,108 +430,83 @@
                             </Grid>
                         </Border>
 
-                        <!-- Formulário de Candidato -->
-                        <Border Grid.Column="1" 
-                                Background="#f8fafc" 
-                                BorderBrush="#e5e7eb" 
-                                BorderThickness="1" 
-                                CornerRadius="8" 
-                                Padding="20"
-                                Width="300">
-                            <StackPanel Spacing="15">
-                                <TextBlock Text="Adicionar Candidato" 
-                                           FontSize="16" 
-                                           FontWeight="Bold"
-                                           Foreground="#1f2937"/>
-                                
-                                <StackPanel Spacing="10">
-                                    <StackPanel Spacing="5">
-                                        <TextBlock Text="Nome *" 
-                                                   FontSize="14" 
-                                                   FontWeight="Bold"
-                                                   Foreground="#374151"/>
-                                        <TextBox Text="{Binding NomeCandidato}" 
-                                                 FontSize="14"
-                                                 Padding="10,8"
-                                                 Background="White"
-                                                 BorderBrush="#d1d5db"
-                                                 BorderThickness="1"
-                                                 CornerRadius="6"/>
+                        <!-- Coluna Direita: Formulário e Ações -->
+                        <StackPanel Grid.Column="1" Spacing="15" Width="320">
+                            
+                            <!-- Botão para Adicionar Novo Candidato -->
+                            <Button Content="➕ Adicionar Novo Candidato"
+                                    Command="{Binding AdicionarCandidatoCommand}"
+                                    IsVisible="{Binding !MostrarFormularioCandidato}"
+                                    Theme="{DynamicResource SuccessButtonTheme}"
+                                    HorizontalAlignment="Stretch"
+                                    Padding="15,10"/>
+
+                            <!-- Formulário de Candidato -->
+                            <Border Background="#f8fafc" 
+                                    BorderBrush="#e5e7eb" 
+                                    BorderThickness="1" 
+                                    CornerRadius="8" 
+                                    Padding="20"
+                                    IsVisible="{Binding MostrarFormularioCandidato}">
+                                <StackPanel Spacing="15">
+                                    <TextBlock Text="{Binding FormularioCandidatoTitulo}" 
+                                               FontSize="16" 
+                                               FontWeight="Bold"
+                                               Foreground="#1f2937"/>
+                                    
+                                    <StackPanel Spacing="10">
+                                        <!-- Campo Nome -->
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="Nome *" FontWeight="Bold" Foreground="#374151"/>
+                                            <TextBox Text="{Binding NomeCandidato}" Theme="{DynamicResource FormTextBoxTheme}"/>
+                                        </StackPanel>
+                                        
+                                        <!-- Campo Partido -->
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="Partido *" FontWeight="Bold" Foreground="#374151"/>
+                                            <TextBox Text="{Binding PartidoCandidato}" Theme="{DynamicResource FormTextBoxTheme}"/>
+                                        </StackPanel>
+                                        
+                                        <!-- Campo Número -->
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="Número *" FontWeight="Bold" Foreground="#374151"/>
+                                            <TextBox Text="{Binding NumeroCandidato}" Theme="{DynamicResource FormTextBoxTheme}"/>
+                                        </StackPanel>
+
+                                        <!-- Campo Cargo -->
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="Cargo *" FontWeight="Bold" Foreground="#374151"/>
+                                            <ComboBox ItemsSource="{Binding Cargos}"
+                                                      SelectedItem="{Binding CargoCandidatoSelecionado}"
+                                                      DisplayMemberBinding="{Binding Nome}"
+                                                      PlaceholderText="Selecione um cargo"
+                                                      HorizontalAlignment="Stretch"/>
+                                        </StackPanel>
                                     </StackPanel>
                                     
-                                    <StackPanel Spacing="5">
-                                        <TextBlock Text="Partido *" 
-                                                   FontSize="14" 
-                                                   FontWeight="Bold"
-                                                   Foreground="#374151"/>
-                                        <TextBox Text="{Binding PartidoCandidato}" 
-                                                 FontSize="14"
-                                                 Padding="10,8"
-                                                 Background="White"
-                                                 BorderBrush="#d1d5db"
-                                                 BorderThickness="1"
-                                                 CornerRadius="6"/>
-                                    </StackPanel>
-                                    
-                                    <StackPanel Spacing="5">
-                                        <TextBlock Text="Número *" 
-                                                   FontSize="14" 
-                                                   FontWeight="Bold"
-                                                   Foreground="#374151"/>
-                                        <TextBox Text="{Binding NumeroCandidato}" 
-                                                 FontSize="14"
-                                                 Padding="10,8"
-                                                 Background="White"
-                                                 BorderBrush="#d1d5db"
-                                                 BorderThickness="1"
-                                                 CornerRadius="6"/>
+                                    <!-- Botões de Ação do Formulário -->
+                                    <StackPanel Spacing="8">
+                                        <Button Content="{Binding BotaoSalvarCandidatoTexto}" 
+                                                Command="{Binding SalvarCandidatoCommand}"
+                                                Theme="{DynamicResource SuccessButtonTheme}"
+                                                HorizontalAlignment="Stretch"/>
+                                        <Button Content="Cancelar" 
+                                                Command="{Binding CancelarCandidatoCommand}"
+                                                Theme="{DynamicResource SecondaryButtonTheme}"
+                                                HorizontalAlignment="Stretch"/>
                                     </StackPanel>
                                 </StackPanel>
-                                
-                                <StackPanel Spacing="8">
-                                    <Button Content="➕ Adicionar" 
-                                            Command="{Binding AdicionarCandidatoCommand}"
-                                            Background="#10b981"
-                                            Foreground="White"
-                                            FontWeight="Bold"
-                                            HorizontalAlignment="Stretch"
-                                            Padding="15,10"
-                                            CornerRadius="6"/>
-                                    <Button Content="✏️ Editar" 
-                                            Command="{Binding EditarCandidatoCommand}"
-                                            Background="#3b82f6"
-                                            Foreground="White"
-                                            FontWeight="Bold"
-                                            HorizontalAlignment="Stretch"
-                                            Padding="15,10"
-                                            CornerRadius="6"/>
-                                    <Button Content="🗑️ Remover" 
-                                            Command="{Binding RemoverCandidatoCommand}"
-                                            Background="#ef4444"
-                                            Foreground="White"
-                                            FontWeight="Bold"
-                                            HorizontalAlignment="Stretch"
-                                            Padding="15,10"
-                                            CornerRadius="6"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
+                            </Border>
+                        </StackPanel>
                     </Grid>
 
-                    <!-- Botões de Ação -->
-                    <StackPanel Grid.Row="2" 
-                                Orientation="Horizontal" 
-                                HorizontalAlignment="Right" 
-                                Spacing="10"
-                                Margin="0,20,0,0">
-                        <Button Content="⬅️ Voltar" 
-                                Command="{Binding VoltarParaEleicoesCommand}"
-                                Background="#6b7280"
-                                Foreground="White"
-                                FontWeight="Bold"
-                                Padding="20,10"
-                                CornerRadius="6"/>
-                    </StackPanel>
+                    <!-- Botão para Voltar -->
+                    <Button Grid.Row="2" 
+                            Content="Voltar para Eleições" 
+                            Command="{Binding VoltarParaEleicoesCommand}"
+                            HorizontalAlignment="Right"
+                            Margin="0,20,0,0"
+                            Theme="{DynamicResource PrimaryButtonTheme}"/>
                 </Grid>
             </Border>
         </Border>
@@ -595,22 +570,8 @@
                                                     CornerRadius="6"
                                                     BorderBrush="#e5e7eb" 
                                                     BorderThickness="1">
-                                                <Grid ColumnDefinitions="Auto,*,Auto">
-                                                    <Border Grid.Column="0" 
-                                                            Background="#059669" 
-                                                            CornerRadius="20" 
-                                                            Width="40" 
-                                                            Height="40"
-                                                            Margin="0,0,15,0">
-                                                        <TextBlock Text="{Binding Ordem}" 
-                                                                   FontSize="16" 
-                                                                   FontWeight="Bold"
-                                                                   Foreground="White"
-                                                                   HorizontalAlignment="Center"
-                                                                   VerticalAlignment="Center"/>
-                                                    </Border>
-                                                    
-                                                    <StackPanel Grid.Column="1" Spacing="5">
+                                                <Grid ColumnDefinitions="*,Auto,Auto">
+                                                    <StackPanel Grid.Column="0" Spacing="5">
                                                         <TextBlock Text="{Binding Nome}" 
                                                                    FontSize="16" 
                                                                    FontWeight="Bold"
@@ -620,9 +581,16 @@
                                                                    Foreground="#6b7280"/>
                                                     </StackPanel>
                                                     
+                                                    <TextBlock Grid.Column="1" 
+                                                               Text="{Binding Ordem, StringFormat='Ordem: {0}'}" 
+                                                               FontSize="14" 
+                                                               VerticalAlignment="Center"
+                                                               Foreground="#6b7280"/>
+
                                                     <StackPanel Grid.Column="2" 
                                                               Orientation="Horizontal" 
-                                                              Spacing="5">
+                                                              Spacing="5"
+                                                              Margin="20,0,0,0">
                                                         <Button Content="✏️" 
                                                                 Command="{Binding $parent[UserControl].DataContext.EditarCargoCommand}"
                                                                 Background="#3b82f6"
@@ -646,108 +614,73 @@
                             </Grid>
                         </Border>
 
-                        <!-- Formulário de Cargo -->
-                        <Border Grid.Column="1" 
-                                Background="#f8fafc" 
-                                BorderBrush="#e5e7eb" 
-                                BorderThickness="1" 
-                                CornerRadius="8" 
-                                Padding="20"
-                                Width="300">
-                            <StackPanel Spacing="15">
-                                <TextBlock Text="Adicionar Cargo" 
-                                           FontSize="16" 
-                                           FontWeight="Bold"
-                                           Foreground="#1f2937"/>
-                                
-                                <StackPanel Spacing="10">
-                                    <StackPanel Spacing="5">
-                                        <TextBlock Text="Nome do Cargo *" 
-                                                   FontSize="14" 
-                                                   FontWeight="Bold"
-                                                   Foreground="#374151"/>
-                                        <TextBox Text="{Binding NomeCargo}" 
-                                                 FontSize="14"
-                                                 Padding="10,8"
-                                                 Background="White"
-                                                 BorderBrush="#d1d5db"
-                                                 BorderThickness="1"
-                                                 CornerRadius="6"/>
+                        <!-- Coluna Direita: Formulário e Ações -->
+                        <StackPanel Grid.Column="1" Spacing="15" Width="320">
+                            
+                            <!-- Botão para Adicionar Novo Cargo -->
+                            <Button Content="➕ Adicionar Novo Cargo"
+                                    Command="{Binding AdicionarCargoCommand}"
+                                    IsVisible="{Binding !MostrarFormularioCargo}"
+                                    Theme="{DynamicResource SuccessButtonTheme}"
+                                    HorizontalAlignment="Stretch"
+                                    Padding="15,10"/>
+
+                            <!-- Formulário de Cargo -->
+                            <Border Background="#f8fafc" 
+                                    BorderBrush="#e5e7eb" 
+                                    BorderThickness="1" 
+                                    CornerRadius="8" 
+                                    Padding="20"
+                                    IsVisible="{Binding MostrarFormularioCargo}">
+                                <StackPanel Spacing="15">
+                                    <TextBlock Text="{Binding FormularioCargoTitulo}" 
+                                               FontSize="16" 
+                                               FontWeight="Bold"
+                                               Foreground="#1f2937"/>
+                                    
+                                    <StackPanel Spacing="10">
+                                        <!-- Campo Nome do Cargo -->
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="Nome do Cargo *" FontWeight="Bold" Foreground="#374151"/>
+                                            <TextBox Text="{Binding NomeCargo}" Theme="{DynamicResource FormTextBoxTheme}"/>
+                                        </StackPanel>
+                                        
+                                        <!-- Campo Quantidade de Dígitos -->
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="Quantidade de Dígitos *" FontWeight="Bold" Foreground="#374151"/>
+                                            <TextBox Text="{Binding QuantidadeDigitosCargo}" Theme="{DynamicResource FormTextBoxTheme}"/>
+                                        </StackPanel>
+
+                                        <!-- Campo Ordem de Aparição -->
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="Ordem de Aparição *" FontWeight="Bold" Foreground="#374151"/>
+                                            <TextBox Text="{Binding OrdemCargo}" Theme="{DynamicResource FormTextBoxTheme}"/>
+                                        </StackPanel>
                                     </StackPanel>
                                     
-                                    <StackPanel Spacing="5">
-                                        <TextBlock Text="Quantidade de Dígitos *" 
-                                                   FontSize="14" 
-                                                   FontWeight="Bold"
-                                                   Foreground="#374151"/>
-                                        <TextBox Text="{Binding QuantidadeDigitosCargo}" 
-                                                 FontSize="14"
-                                                 Padding="10,8"
-                                                 Background="White"
-                                                 BorderBrush="#d1d5db"
-                                                 BorderThickness="1"
-                                                 CornerRadius="6"/>
-                                    </StackPanel>
-                                    
-                                    <StackPanel Spacing="5">
-                                        <TextBlock Text="Ordem *" 
-                                                   FontSize="14" 
-                                                   FontWeight="Bold"
-                                                   Foreground="#374151"/>
-                                        <TextBox Text="{Binding OrdemCargo}" 
-                                                 FontSize="14"
-                                                 Padding="10,8"
-                                                 Background="White"
-                                                 BorderBrush="#d1d5db"
-                                                 BorderThickness="1"
-                                                 CornerRadius="6"/>
+                                    <!-- Botões de Ação do Formulário -->
+                                    <StackPanel Spacing="8">
+                                        <Button Content="{Binding BotaoSalvarCargoTexto}" 
+                                                Command="{Binding SalvarCargoCommand}"
+                                                Theme="{DynamicResource SuccessButtonTheme}"
+                                                HorizontalAlignment="Stretch"/>
+                                        <Button Content="Cancelar" 
+                                                Command="{Binding CancelarCargoCommand}"
+                                                Theme="{DynamicResource SecondaryButtonTheme}"
+                                                HorizontalAlignment="Stretch"/>
                                     </StackPanel>
                                 </StackPanel>
-                                
-                                <StackPanel Spacing="8">
-                                    <Button Content="➕ Adicionar" 
-                                            Command="{Binding AdicionarCargoCommand}"
-                                            Background="#10b981"
-                                            Foreground="White"
-                                            FontWeight="Bold"
-                                            HorizontalAlignment="Stretch"
-                                            Padding="15,10"
-                                            CornerRadius="6"/>
-                                    <Button Content="✏️ Editar" 
-                                            Command="{Binding EditarCargoCommand}"
-                                            Background="#3b82f6"
-                                            Foreground="White"
-                                            FontWeight="Bold"
-                                            HorizontalAlignment="Stretch"
-                                            Padding="15,10"
-                                            CornerRadius="6"/>
-                                    <Button Content="🗑️ Remover" 
-                                            Command="{Binding RemoverCargoCommand}"
-                                            Background="#ef4444"
-                                            Foreground="White"
-                                            FontWeight="Bold"
-                                            HorizontalAlignment="Stretch"
-                                            Padding="15,10"
-                                            CornerRadius="6"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
+                            </Border>
+                        </StackPanel>
                     </Grid>
 
-                    <!-- Botões de Ação -->
-                    <StackPanel Grid.Row="2" 
-                                Orientation="Horizontal" 
-                                HorizontalAlignment="Right" 
-                                Spacing="10"
-                                Margin="0,20,0,0">
-                        <Button Content="⬅️ Voltar" 
-                                Command="{Binding VoltarParaEleicoesCommand}"
-                                Background="#6b7280"
-                                Foreground="White"
-                                FontWeight="Bold"
-                                Padding="20,10"
-                                CornerRadius="6"/>
-                    </StackPanel>
+                    <!-- Botão para Voltar -->
+                    <Button Grid.Row="2" 
+                            Content="Voltar para Eleições" 
+                            Command="{Binding VoltarParaEleicoesCommand}"
+                            HorizontalAlignment="Right"
+                            Margin="0,20,0,0"
+                            Theme="{DynamicResource PrimaryButtonTheme}"/>
                 </Grid>
             </Border>
         </Border>
