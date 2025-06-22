@@ -39,40 +39,28 @@
 
         <!-- Header -->
         <Border Grid.Row="0" 
-                Background="Transparent" 
-                Padding="0 0 20 0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <TextBlock Grid.Column="0" 
-                           Text="Painel Administrativo" 
-                           FontSize="22" 
-                           FontWeight="Bold" 
-                           Foreground="#1e293b"/>
-                
-                <StackPanel Grid.Column="1" 
+                Background="{DynamicResource PrimaryBrushDynamic}"
+                Padding="20,15">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" 
                             Orientation="Horizontal" 
-                            Spacing="10">
-                    <Button Content="🔄 Atualizar" 
-                            Command="{Binding CarregarEleicoesCommand}"
-                            Background="#e2e8f0" 
-                            Foreground="#1e293b"
-                            Padding="15,8"
-                            BorderThickness="0"
-                            CornerRadius="6"
-                            FontWeight="Medium"/>
-                    <Button Content="➕ Nova Eleição" 
-                            Command="{Binding MostrarFormularioCommand}"
-                            Background="#1e3a8a" 
-                            Foreground="White"
-                            Padding="15,8"
-                            BorderThickness="0"
-                            CornerRadius="6"
-                            FontWeight="Bold"/>
+                            Spacing="15" 
+                            VerticalAlignment="Center">
+                    <TextBlock Text="🏛️" 
+                               FontSize="24" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Administração da Urna Eletrônica" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               Foreground="White"
+                               VerticalAlignment="Center"/>
                 </StackPanel>
+                
+                <Button Grid.Column="1" 
+                        Content="➕ Nova Eleição" 
+                        Command="{Binding MostrarFormularioCommand}"
+                        Background="White"
+                        Foreground="{DynamicResource PrimaryBrushDynamic}"/>
             </Grid>
         </Border>
 

@@ -1,0 +1,136 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Paleta Base - Light Theme -->
+    <Color x:Key="PrimaryColor">#6750A4</Color>
+    <Color x:Key="PrimaryVariantColor">#7965B0</Color>
+    <Color x:Key="SecondaryColor">#2196F3</Color>
+    <Color x:Key="BackgroundColor">#F5F5F5</Color>
+    <Color x:Key="SurfaceColor">#FFFFFF</Color>
+    <Color x:Key="ErrorColor">#CF6679</Color>
+    
+    <!-- Paleta Base - Dark Theme -->
+    <Color x:Key="PrimaryColorDark">#D0BCFF</Color>
+    <Color x:Key="PrimaryVariantColorDark">#C2A6FF</Color>
+    <Color x:Key="SecondaryColorDark">#90CAF9</Color>
+    <Color x:Key="BackgroundColorDark">#121212</Color>
+    <Color x:Key="SurfaceColorDark">#1E1E1E</Color>
+    <Color x:Key="ErrorColorDark">#CF6679</Color>
+    
+    <!-- Cores Dinâmicas (mudam com o tema) -->
+    <Color x:Key="PrimaryColorDynamic">#6750A4</Color>
+    <Color x:Key="PrimaryVariantColorDynamic">#7965B0</Color>
+    <Color x:Key="SecondaryColorDynamic">#2196F3</Color>
+    <Color x:Key="BackgroundColorDynamic">#F5F5F5</Color>
+    <Color x:Key="SurfaceColorDynamic">#FFFFFF</Color>
+    <Color x:Key="ErrorColorDynamic">#CF6679</Color>
+    
+    <!-- Elementos Específicos - Light Theme -->
+    <Color x:Key="CardColor">#FFFFFF</Color>
+    <Color x:Key="CardBorderColor">#E0E0E0</Color>
+    <Color x:Key="HeaderColor">#F5F5F5</Color>
+    <Color x:Key="DividerColor">#E0E0E0</Color>
+    <Color x:Key="TextPrimaryColor">#000000</Color>
+    <Color x:Key="TextSecondaryColor">#666666</Color>
+    <Color x:Key="TextHintColor">#9E9E9E</Color>
+    <Color x:Key="IconActiveColor">#6750A4</Color>
+    <Color x:Key="IconInactiveColor">#9E9E9E</Color>
+    <Color x:Key="SuccessColor">#4CAF50</Color>
+    <Color x:Key="WarningColor">#FF9800</Color>
+    <Color x:Key="InputBorderColor">#9E9E9E</Color>
+    <Color x:Key="InputBackgroundColor">#FFFFFF</Color>
+    
+    <!-- Elementos Específicos - Dark Theme -->
+    <Color x:Key="CardColorDark">#252525</Color>
+    <Color x:Key="CardBorderColorDark">#373737</Color>
+    <Color x:Key="HeaderColorDark">#2D2D2D</Color>
+    <Color x:Key="DividerColorDark">#373737</Color>
+    <Color x:Key="TextPrimaryColorDark">#FFFFFF</Color>
+    <Color x:Key="TextSecondaryColorDark">#CCCCCC</Color>
+    <Color x:Key="TextHintColorDark">#AAAAAA</Color>
+    <Color x:Key="IconActiveColorDark">#D0BCFF</Color>
+    <Color x:Key="IconInactiveColorDark">#757575</Color>
+    <Color x:Key="SuccessColorDark">#81C784</Color>
+    <Color x:Key="WarningColorDark">#FFB74D</Color>
+    <Color x:Key="InputBorderColorDark">#757575</Color>
+    <Color x:Key="InputBackgroundColorDark">#2D2D2D</Color>
+    
+    <!-- Cores Dinâmicas para Elementos -->
+    <Color x:Key="CardColorDynamic">#FFFFFF</Color>
+    <Color x:Key="CardBorderColorDynamic">#E0E0E0</Color>
+    <Color x:Key="HeaderColorDynamic">#F5F5F5</Color>
+    <Color x:Key="DividerColorDynamic">#E0E0E0</Color>
+    <Color x:Key="TextPrimaryColorDynamic">#000000</Color>
+    <Color x:Key="TextSecondaryColorDynamic">#666666</Color>
+    <Color x:Key="TextHintColorDynamic">#9E9E9E</Color>
+    <Color x:Key="IconActiveColorDynamic">#6750A4</Color>
+    <Color x:Key="IconInactiveColorDynamic">#9E9E9E</Color>
+    <Color x:Key="SuccessColorDynamic">#4CAF50</Color>
+    <Color x:Key="WarningColorDynamic">#FF9800</Color>
+    <Color x:Key="InputBorderColorDynamic">#9E9E9E</Color>
+    <Color x:Key="InputBackgroundColorDynamic">#FFFFFF</Color>
+    
+    <!-- Brushes - Light Theme -->
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{DynamicResource PrimaryColor}"/>
+    <SolidColorBrush x:Key="PrimaryVariantBrush" Color="{DynamicResource PrimaryVariantColor}"/>
+    <SolidColorBrush x:Key="SecondaryBrush" Color="{DynamicResource SecondaryColor}"/>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}"/>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{DynamicResource SurfaceColor}"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="{DynamicResource ErrorColor}"/>
+    <SolidColorBrush x:Key="CardBrush" Color="{DynamicResource CardColor}"/>
+    <SolidColorBrush x:Key="CardBorderBrush" Color="{DynamicResource CardBorderColor}"/>
+    <SolidColorBrush x:Key="HeaderBrush" Color="{DynamicResource HeaderColor}"/>
+    <SolidColorBrush x:Key="DividerBrush" Color="{DynamicResource DividerColor}"/>
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{DynamicResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{DynamicResource TextSecondaryColor}"/>
+    <SolidColorBrush x:Key="TextHintBrush" Color="{DynamicResource TextHintColor}"/>
+    <SolidColorBrush x:Key="IconActiveBrush" Color="{DynamicResource IconActiveColor}"/>
+    <SolidColorBrush x:Key="IconInactiveBrush" Color="{DynamicResource IconInactiveColor}"/>
+    <SolidColorBrush x:Key="SuccessBrush" Color="{DynamicResource SuccessColor}"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="{DynamicResource WarningColor}"/>
+    <SolidColorBrush x:Key="InputBorderBrush" Color="{DynamicResource InputBorderColor}"/>
+    <SolidColorBrush x:Key="InputBackgroundBrush" Color="{DynamicResource InputBackgroundColor}"/>
+    
+    <!-- Brushes - Dark Theme -->
+    <SolidColorBrush x:Key="PrimaryBrushDark" Color="{DynamicResource PrimaryColorDark}"/>
+    <SolidColorBrush x:Key="PrimaryVariantBrushDark" Color="{DynamicResource PrimaryVariantColorDark}"/>
+    <SolidColorBrush x:Key="SecondaryBrushDark" Color="{DynamicResource SecondaryColorDark}"/>
+    <SolidColorBrush x:Key="BackgroundBrushDark" Color="{DynamicResource BackgroundColorDark}"/>
+    <SolidColorBrush x:Key="SurfaceBrushDark" Color="{DynamicResource SurfaceColorDark}"/>
+    <SolidColorBrush x:Key="ErrorBrushDark" Color="{DynamicResource ErrorColorDark}"/>
+    <SolidColorBrush x:Key="CardBrushDark" Color="{DynamicResource CardColorDark}"/>
+    <SolidColorBrush x:Key="CardBorderBrushDark" Color="{DynamicResource CardBorderColorDark}"/>
+    <SolidColorBrush x:Key="HeaderBrushDark" Color="{DynamicResource HeaderColorDark}"/>
+    <SolidColorBrush x:Key="DividerBrushDark" Color="{DynamicResource DividerColorDark}"/>
+    <SolidColorBrush x:Key="TextPrimaryBrushDark" Color="{DynamicResource TextPrimaryColorDark}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrushDark" Color="{DynamicResource TextSecondaryColorDark}"/>
+    <SolidColorBrush x:Key="TextHintBrushDark" Color="{DynamicResource TextHintColorDark}"/>
+    <SolidColorBrush x:Key="IconActiveBrushDark" Color="{DynamicResource IconActiveColorDark}"/>
+    <SolidColorBrush x:Key="IconInactiveBrushDark" Color="{DynamicResource IconInactiveColorDark}"/>
+    <SolidColorBrush x:Key="SuccessBrushDark" Color="{DynamicResource SuccessColorDark}"/>
+    <SolidColorBrush x:Key="WarningBrushDark" Color="{DynamicResource WarningColorDark}"/>
+    <SolidColorBrush x:Key="InputBorderBrushDark" Color="{DynamicResource InputBorderColorDark}"/>
+    <SolidColorBrush x:Key="InputBackgroundBrushDark" Color="{DynamicResource InputBackgroundColorDark}"/>
+    
+    <!-- Brushes Dinâmicos -->
+    <SolidColorBrush x:Key="PrimaryBrushDynamic" Color="{DynamicResource PrimaryColorDynamic}"/>
+    <SolidColorBrush x:Key="PrimaryVariantBrushDynamic" Color="{DynamicResource PrimaryVariantColorDynamic}"/>
+    <SolidColorBrush x:Key="SecondaryBrushDynamic" Color="{DynamicResource SecondaryColorDynamic}"/>
+    <SolidColorBrush x:Key="BackgroundBrushDynamic" Color="{DynamicResource BackgroundColorDynamic}"/>
+    <SolidColorBrush x:Key="SurfaceBrushDynamic" Color="{DynamicResource SurfaceColorDynamic}"/>
+    <SolidColorBrush x:Key="ErrorBrushDynamic" Color="{DynamicResource ErrorColorDynamic}"/>
+    <SolidColorBrush x:Key="CardBrushDynamic" Color="{DynamicResource CardColorDynamic}"/>
+    <SolidColorBrush x:Key="CardBorderBrushDynamic" Color="{DynamicResource CardBorderColorDynamic}"/>
+    <SolidColorBrush x:Key="HeaderBrushDynamic" Color="{DynamicResource HeaderColorDynamic}"/>
+    <SolidColorBrush x:Key="DividerBrushDynamic" Color="{DynamicResource DividerColorDynamic}"/>
+    <SolidColorBrush x:Key="TextPrimaryBrushDynamic" Color="{DynamicResource TextPrimaryColorDynamic}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrushDynamic" Color="{DynamicResource TextSecondaryColorDynamic}"/>
+    <SolidColorBrush x:Key="TextHintBrushDynamic" Color="{DynamicResource TextHintColorDynamic}"/>
+    <SolidColorBrush x:Key="IconActiveBrushDynamic" Color="{DynamicResource IconActiveColorDynamic}"/>
+    <SolidColorBrush x:Key="IconInactiveBrushDynamic" Color="{DynamicResource IconInactiveColorDynamic}"/>
+    <SolidColorBrush x:Key="SuccessBrushDynamic" Color="{DynamicResource SuccessColorDynamic}"/>
+    <SolidColorBrush x:Key="WarningBrushDynamic" Color="{DynamicResource WarningColorDynamic}"/>
+    <SolidColorBrush x:Key="InputBorderBrushDynamic" Color="{DynamicResource InputBorderColorDynamic}"/>
+    <SolidColorBrush x:Key="InputBackgroundBrushDynamic" Color="{DynamicResource InputBackgroundColorDynamic}"/>
+
+</ResourceDictionary> 
