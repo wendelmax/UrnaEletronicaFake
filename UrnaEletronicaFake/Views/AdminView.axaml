@@ -132,39 +132,20 @@
                                                    Margin="0,8,0,0"
                                                    TextWrapping="Wrap"/>
                                         
-                                        <StackPanel Grid.Row="2" 
-                                                    Orientation="Horizontal" 
-                                                    Margin="0,12,0,0"
-                                                    Spacing="15">
-                                            <Border Background="{Binding Ativa, Converter={StaticResource BoolToBackgroundConverter}}"
-                                                    CornerRadius="12" 
-                                                    Padding="8,4">
-                                                <TextBlock Text="{Binding Ativa, Converter={StaticResource BoolToStatusConverter}}" 
-                                                           Foreground="{Binding Ativa, Converter={StaticResource BoolToColorConverter}}"
-                                                           FontSize="11"
-                                                           FontWeight="Bold"/>
+                                        <!-- Informações da Eleição -->
+                                        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,12,0,0" Spacing="15">
+                                            <Border Background="{Binding Ativa, Converter={StaticResource BoolToBackgroundConverter}}" CornerRadius="12" Padding="8,4">
+                                                <TextBlock Text="{Binding Ativa, Converter={StaticResource BoolToStatusConverter}}" Foreground="{Binding Ativa, Converter={StaticResource BoolToColorConverter}}" FontSize="11" FontWeight="Bold"/>
                                             </Border>
-                                            <TextBlock Text="{Binding DataInicio, StringFormat='Início: {0:dd/MM/yyyy HH:mm}'}" 
-                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
-                                                       FontSize="12"/>
-                                            <TextBlock Text="{Binding DataFim, StringFormat='Fim: {0:dd/MM/yyyy HH:mm}'}" 
-                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
-                                                       FontSize="12"/>
+                                            <TextBlock Text="{Binding DataInicio, StringFormat='Início: {0:dd/MM/yyyy HH:mm}'}" Foreground="{DynamicResource TextSecondaryBrushDynamic}" FontSize="12"/>
+                                            <TextBlock Text="{Binding DataFim, StringFormat='Fim: {0:dd/MM/yyyy HH:mm}'}" Foreground="{DynamicResource TextSecondaryBrushDynamic}" FontSize="12"/>
                                         </StackPanel>
 
-                                        <StackPanel Grid.Row="3" 
-                                                    Orientation="Horizontal" 
-                                                    Margin="0,12,0,0"
-                                                    Spacing="8">
-                                            <TextBlock Text="{Binding Candidatos.Count, StringFormat='{}{0} candidatos'}" 
-                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
-                                                       FontSize="12"/>
-                                            <TextBlock Text="•" 
-                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
-                                                       FontSize="12"/>
-                                            <TextBlock Text="{Binding DataCriacao, StringFormat='Criada em {0:dd/MM/yyyy}'}" 
-                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
-                                                       FontSize="12"/>
+                                        <!-- Contadores e Data -->
+                                        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,12,0,0" Spacing="8">
+                                            <TextBlock Text="{Binding Candidatos.Count, StringFormat='{}{0} candidatos'}" Foreground="{DynamicResource TextSecondaryBrushDynamic}" FontSize="12"/>
+                                            <TextBlock Text="•" Foreground="{DynamicResource TextSecondaryBrushDynamic}" FontSize="12" IsVisible="{Binding CargosEleitorais.Count}"/>
+                                            <TextBlock Text="{Binding CargosEleitorais.Count, StringFormat='{}{0} cargos'}" Foreground="{DynamicResource TextSecondaryBrushDynamic}" FontSize="12"/>
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -198,25 +179,12 @@
                                    HorizontalAlignment="Center"
                                    Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
                         
-                        <Border Background="{DynamicResource HeaderBrushDynamic}" 
-                                CornerRadius="6" 
-                                Padding="12,8">
-                            <TextBlock Text="Selecione uma eleição para ver as ações disponíveis" 
-                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
-                                       FontSize="12" 
-                                       HorizontalAlignment="Center"/>
-                        </Border>
+                        <TextBlock Text="Selecione uma eleição para ver as ações" IsVisible="{Binding !IsEleicaoSelecionada}" Foreground="{DynamicResource TextSecondaryBrushDynamic}" FontSize="12" HorizontalAlignment="Center"/>
                         
-                        <StackPanel Spacing="8">
-                            <Button Content="✏️ Editar Eleição" 
-                                    Command="{Binding EditarEleicaoCommand}"
-                                    Theme="{DynamicResource PrimaryButtonTheme}"
-                                    HorizontalAlignment="Stretch"/>
-                            
-                            <Button Content="👥 Gerenciar Candidatos" 
-                                    Command="{Binding GerenciarCandidatosCommand}"
-                                    Theme="{DynamicResource SecondaryButtonTheme}"
-                                    HorizontalAlignment="Stretch"/>
+                        <StackPanel Spacing="8" IsVisible="{Binding IsEleicaoSelecionada}">
+                            <Button Content="✏️ Editar Detalhes" Command="{Binding EditarEleicaoCommand}" Theme="{DynamicResource PrimaryButtonTheme}" HorizontalAlignment="Stretch"/>
+                            <Button Content="👥 Gerenciar Candidatos" Command="{Binding GerenciarCandidatosCommand}" Theme="{DynamicResource SecondaryButtonTheme}" HorizontalAlignment="Stretch"/>
+                            <Button Content="🏛️ Gerenciar Cargos" Command="{Binding GerenciarCargosCommand}" Theme="{DynamicResource SecondaryButtonTheme}" HorizontalAlignment="Stretch"/>
                             
                             <Button Content="▶️ Ativar Eleição" 
                                     Command="{Binding AtivarEleicaoCommand}"
