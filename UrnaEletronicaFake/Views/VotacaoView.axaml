@@ -6,11 +6,11 @@
              mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="600"
              x:Class="UrnaEletronicaFake.Views.VotacaoView"
              x:DataType="vm:VotacaoViewModel"
-             Background="#e5e7eb">
+             Background="{DynamicResource BackgroundBrushDynamic}">
 
     <UserControl.Styles>
         <Style Selector="Border.digit-box">
-            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TextPrimaryBrushDynamic}"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Width" Value="50"/>
             <Setter Property="Height" Value="60"/>
@@ -22,9 +22,10 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrushDynamic}"/>
         </Style>
         <Style Selector="Button.keypad-button">
-            <Setter Property="Background" Value="#262626"/>
+            <Setter Property="Background" Value="{DynamicResource TextPrimaryBrushDynamic}"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="24"/>
             <Setter Property="FontWeight" Value="Bold"/>
@@ -35,7 +36,7 @@
             <Setter Property="Margin" Value="5"/>
         </Style>
         <Style Selector="Button.keypad-button:pointerover">
-            <Setter Property="Background" Value="#404040"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryBrushDynamic}"/>
         </Style>
     </UserControl.Styles>
 
@@ -43,27 +44,28 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,20,0" VerticalAlignment="Top" ZIndex="10">
             <Button Content="{Binding TextoBotaoUrna}"
                     Command="{Binding AlternarUrnaCommand}"
-                    Background="#16a34a"
+                    Background="{DynamicResource SuccessBrushDynamic}"
                     Foreground="White"
                     FontWeight="Bold"
                     Padding="16,6"
                     CornerRadius="6"
-                    Margin="0,0,0,10"/>
+                    Margin="0,0,0,10"
+                    Theme="{DynamicResource PrimaryButtonTheme}"/>
         </StackPanel>
         <Grid ColumnDefinitions="*, Auto" Margin="20">
             <Border Grid.Column="0" 
-                    Background="White" 
+                    Background="{DynamicResource CardBrushDynamic}" 
                     CornerRadius="8" 
-                    BorderBrush="#9ca3af" 
+                    BorderBrush="{DynamicResource CardBorderBrushDynamic}" 
                     BorderThickness="2"
                     Padding="20">
                 <Grid RowDefinitions="Auto, *, Auto">
                     <Grid Grid.Row="1" ColumnDefinitions="Auto, *" VerticalAlignment="Center">
                         <StackPanel Grid.Column="0" Spacing="20" VerticalAlignment="Center" Margin="0,0,40,0">
-                            <TextBlock Text="SEU VOTO PARA" FontSize="18"/>
-                            <TextBlock Text="{Binding Cargo}" FontSize="32" FontWeight="Bold"/>
+                            <TextBlock Text="SEU VOTO PARA" FontSize="18" Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
+                            <TextBlock Text="{Binding Cargo}" FontSize="32" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                <TextBlock Text="Número:" FontSize="18" VerticalAlignment="Center"/>
+                                <TextBlock Text="Número:" FontSize="18" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
                                 <Border Classes="digit-box"><TextBlock Classes="digit-text" Text="{Binding Digito1}"/></Border>
                                 <Border Classes="digit-box"><TextBlock Classes="digit-text" Text="{Binding Digito2}"/></Border>
                                 <Border Classes="digit-box"><TextBlock Classes="digit-text" Text="{Binding Digito3}"/></Border>
@@ -71,14 +73,14 @@
                                 <Border Classes="digit-box"><TextBlock Classes="digit-text" Text="{Binding Digito5}"/></Border>
                             </StackPanel>
                             <StackPanel IsVisible="{Binding IsTelaCandidatoVisible}">
-                                <TextBlock Text="Nome:" FontSize="18"/>
-                                <TextBlock Text="{Binding NomeCandidato}" FontSize="24" FontWeight="Bold"/>
-                                <TextBlock Text="Partido:" FontSize="18" Margin="0,10,0,0"/>
-                                <TextBlock Text="{Binding PartidoCandidato}" FontSize="24" FontWeight="Bold"/>
+                                <TextBlock Text="Nome:" FontSize="18" Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
+                                <TextBlock Text="{Binding NomeCandidato}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
+                                <TextBlock Text="Partido:" FontSize="18" Margin="0,10,0,0" Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
+                                <TextBlock Text="{Binding PartidoCandidato}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
                             </StackPanel>
                         </StackPanel>
                         <Border Grid.Column="1"
-                                BorderBrush="Black"
+                                BorderBrush="{DynamicResource CardBorderBrushDynamic}"
                                 BorderThickness="2"
                                 Width="200"
                                 Height="280"
@@ -86,25 +88,27 @@
                             <Image Source="{Binding FotoCandidato, TargetNullValue={x:Null}}" Stretch="UniformToFill"/>
                         </Border>
                     </Grid>
-                    <Border Grid.Row="2" BorderBrush="Black" BorderThickness="2,0,0,0" Padding="10">
+                    <Border Grid.Row="2" BorderBrush="{DynamicResource DividerBrushDynamic}" BorderThickness="2,0,0,0" Padding="10">
                         <TextBlock Text="{Binding Instrucoes}" 
                                    TextWrapping="Wrap" 
-                                   FontSize="16"/>
+                                   FontSize="16"
+                                   Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
                     </Border>
                 </Grid>
             </Border>
 
             <Border Grid.Column="1" 
-                    Background="#404040" 
+                    Background="{DynamicResource TextPrimaryBrushDynamic}" 
                     CornerRadius="8" 
                     Padding="20"
                     Margin="20,0,0,0">
                 <StackPanel Spacing="15">
-                    <Border Background="White" Padding="10,5">
+                    <Border Background="{DynamicResource SurfaceBrushDynamic}" Padding="10,5">
                         <TextBlock Text="JUSTIÇA ELEITORAL" 
                                    FontSize="18" 
                                    FontWeight="Bold"
-                                   HorizontalAlignment="Center"/>
+                                   HorizontalAlignment="Center"
+                                   Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
                     </Border>
 
                     <Grid ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
@@ -121,9 +125,9 @@
                     </Grid>
 
                     <Grid ColumnDefinitions="Auto,Auto,Auto">
-                        <Button Grid.Column="0" Content="BRANCO" Background="White" Foreground="Black" FontWeight="Bold" Height="50" Width="85" CornerRadius="4" Command="{Binding VotarBrancoCommand}" Margin="5,0,5,0"/>
-                        <Button Grid.Column="1" Content="CORRIGE" Background="#f97316" Foreground="White" FontWeight="Bold" Height="50" Width="85" CornerRadius="4" Command="{Binding CorrigirCommand}" Margin="5,0,5,0"/>
-                        <Button Grid.Column="2" Content="CONFIRMA" Background="#16a34a" Foreground="White" FontWeight="Bold" Height="60" Width="95" CornerRadius="4" Command="{Binding ConfirmarCommand}" Margin="5,0,5,0"/>
+                        <Button Grid.Column="0" Content="BRANCO" Background="{DynamicResource SurfaceBrushDynamic}" Foreground="{DynamicResource TextPrimaryBrushDynamic}" FontWeight="Bold" Height="50" Width="85" CornerRadius="4" Command="{Binding VotarBrancoCommand}" Margin="5,0,5,0"/>
+                        <Button Grid.Column="1" Content="CORRIGE" Background="{DynamicResource WarningBrushDynamic}" Foreground="White" FontWeight="Bold" Height="50" Width="85" CornerRadius="4" Command="{Binding CorrigirCommand}" Margin="5,0,5,0"/>
+                        <Button Grid.Column="2" Content="CONFIRMA" Background="{DynamicResource SuccessBrushDynamic}" Foreground="White" FontWeight="Bold" Height="60" Width="95" CornerRadius="4" Command="{Binding ConfirmarCommand}" Margin="5,0,5,0"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -136,11 +140,11 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
         </Border>
-        <Border Background="White" IsVisible="{Binding IsTelaFimVisible}">
+        <Border Background="{DynamicResource SurfaceBrushDynamic}" IsVisible="{Binding IsTelaFimVisible}">
             <TextBlock Text="FIM"
                        FontSize="120"
                        FontWeight="ExtraBold"
-                       Foreground="Black"
+                       Foreground="{DynamicResource TextPrimaryBrushDynamic}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
         </Border>

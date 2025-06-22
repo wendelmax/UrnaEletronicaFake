@@ -12,11 +12,11 @@
             <TextBlock Text="🧑‍⚖️ Mesa Receptora de Votos" 
                        FontSize="28" 
                        FontWeight="Bold" 
-                       Foreground="#1e293b"/>
+                       Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
 
             <TextBlock Text="{Binding StatusMessage}"
                        FontSize="18"
-                       Foreground="#475569"
+                       Foreground="{DynamicResource TextSecondaryBrushDynamic}"
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap"
                        TextAlignment="Center"/>
@@ -25,12 +25,13 @@
                 <TextBlock Text="Identificação do Eleitor:"
                            FontSize="14"
                            FontWeight="Bold"
-                           Foreground="#374151"/>
+                           Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
                 <TextBox Text="{Binding IdentificacaoEleitor}"
                          FontSize="16"
                          Padding="15,12"
                          Watermark="Digite o CPF ou Título de Eleitor"
-                         HorizontalAlignment="Stretch"/>
+                         HorizontalAlignment="Stretch"
+                         Theme="{DynamicResource ModernTextBoxTheme}"/>
             </StackPanel>
 
             <Button Content="Liberar Urna para Votação"
@@ -39,16 +40,17 @@
                     Padding="40,20"
                     FontSize="20"
                     FontWeight="Bold"
-                    Background="#16a34a"
+                    Background="{DynamicResource SuccessBrushDynamic}"
                     Foreground="White"
-                    CornerRadius="8">
+                    CornerRadius="8"
+                    Theme="{DynamicResource PrimaryButtonTheme}">
                 <Button.Styles>
                     <Style Selector="Button:disabled">
-                        <Setter Property="Background" Value="#9ca3af"/>
+                        <Setter Property="Background" Value="{DynamicResource TextHintBrushDynamic}"/>
                         <Setter Property="Opacity" Value="0.7"/>
                     </Style>
                     <Style Selector="Button:pointerover">
-                        <Setter Property="Background" Value="#15803d"/>
+                        <Setter Property="Background" Value="{DynamicResource SuccessBrushDynamic}"/>
                     </Style>
                 </Button.Styles>
             </Button>

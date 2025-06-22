@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="#6B5B95" Padding="20,15">
+        <Border Grid.Row="0" Background="{DynamicResource PrimaryBrushDynamic}" Padding="20,15">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -33,17 +33,18 @@
                             Spacing="10">
                     <Button Content="🔄 Atualizar" 
                             Command="{Binding CarregarAuditoriasCommand}"
-                            Background="#A23B72" 
+                            Background="{DynamicResource SecondaryBrushDynamic}" 
                             Foreground="White"
-                            Padding="10,5"/>
+                            Padding="10,5"
+                            Theme="{DynamicResource PrimaryButtonTheme}"/>
                 </StackPanel>
             </Grid>
         </Border>
 
         <!-- Content -->
         <Border Grid.Row="1" 
-                Background="White" 
-                BorderBrush="#CCCCCC" 
+                Background="{DynamicResource CardBrushDynamic}" 
+                BorderBrush="{DynamicResource CardBorderBrushDynamic}" 
                 BorderThickness="1" 
                 CornerRadius="5" 
                 Margin="20">
@@ -54,13 +55,14 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" 
-                        Background="#F8F9FA" 
-                        BorderBrush="#CCCCCC" 
+                        Background="{DynamicResource HeaderBrushDynamic}" 
+                        BorderBrush="{DynamicResource DividerBrushDynamic}" 
                         BorderThickness="0,0,0,1" 
                         Padding="20,15">
                     <TextBlock Text="Histórico de Ações" 
                                FontSize="18" 
-                               FontWeight="Bold"/>
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
                 </Border>
 
                 <ScrollViewer Grid.Row="1">
@@ -70,9 +72,9 @@
                             <DataTemplate>
                                 <Border Margin="0,10" 
                                         Padding="20" 
-                                        Background="#F8F9FA" 
+                                        Background="{DynamicResource HeaderBrushDynamic}" 
                                         CornerRadius="5"
-                                        BorderBrush="#CCCCCC" 
+                                        BorderBrush="{DynamicResource CardBorderBrushDynamic}" 
                                         BorderThickness="1">
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -87,7 +89,7 @@
 
                                         <!-- Tipo de Ação -->
                                         <Border Grid.Row="0" Grid.Column="0" 
-                                                Background="#17A2B8" 
+                                                Background="{DynamicResource SecondaryBrushDynamic}" 
                                                 CornerRadius="10" 
                                                 Padding="8,4" 
                                                 HorizontalAlignment="Left">
@@ -101,14 +103,15 @@
                                         <TextBlock Grid.Row="0" Grid.Column="1" 
                                                    Text="{Binding DataAcao}" 
                                                    FontSize="12" 
-                                                   Foreground="#666666"/>
+                                                   Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
 
                                         <!-- Descrição -->
                                         <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
                                                    Text="{Binding Descricao}" 
                                                    FontSize="14" 
                                                    FontWeight="Bold" 
-                                                   Margin="0,10,0,5"/>
+                                                   Margin="0,10,0,5"
+                                                   Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
 
                                         <!-- Detalhes -->
                                         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
@@ -116,13 +119,13 @@
                                                     Spacing="20">
                                             <TextBlock Text="{Binding Entidade, StringFormat='Entidade: {0}'}" 
                                                        FontSize="12" 
-                                                       Foreground="#666666"/>
+                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
                                             <TextBlock Text="{Binding Usuario, StringFormat='Usuário: {0}'}" 
                                                        FontSize="12" 
-                                                       Foreground="#666666"/>
+                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
                                             <TextBlock Text="{Binding IpAddress, StringFormat='IP: {0}'}" 
                                                        FontSize="12" 
-                                                       Foreground="#666666"/>
+                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -135,13 +138,13 @@
 
         <!-- Status -->
         <Border Grid.Row="2" 
-                Background="#F8F9FA" 
-                BorderBrush="#CCCCCC" 
+                Background="{DynamicResource HeaderBrushDynamic}" 
+                BorderBrush="{DynamicResource DividerBrushDynamic}" 
                 BorderThickness="0,1,0,0" 
                 Padding="20,10">
             <TextBlock Text="{Binding StatusMessage}" 
                        FontSize="14" 
-                       Foreground="#666666"/>
+                       Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
         </Border>
     </Grid>
 </UserControl> 

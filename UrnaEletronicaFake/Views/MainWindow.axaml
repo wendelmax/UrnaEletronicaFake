@@ -10,12 +10,12 @@
         Title="Sistema de Urna Eletrônica"
         Width="1200" Height="800"
         WindowStartupLocation="CenterScreen"
-        Background="#f8fafc">
+        Background="{DynamicResource BackgroundBrushDynamic}">
 
     <Window.Styles>
         <Style Selector="Button.nav">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#475569"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrushDynamic}"/>
             <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="15,10"/>
@@ -23,12 +23,12 @@
             <Setter Property="CornerRadius" Value="6"/>
         </Style>
         <Style Selector="Button.nav:pointerover">
-            <Setter Property="Background" Value="#e2e8f0"/>
-            <Setter Property="Foreground" Value="#1e293b"/>
+            <Setter Property="Background" Value="{DynamicResource HeaderBrushDynamic}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrushDynamic}"/>
         </Style>
         <Style Selector="Button.nav.active">
-            <Setter Property="Background" Value="#1e3a8a"/>
-            <Setter Property="Foreground" Value="#ffffff"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryBrushDynamic}"/>
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
     </Window.Styles>
@@ -42,9 +42,9 @@
     <Grid RowDefinitions="Auto,*,Auto">
         <!-- Header -->
         <Border Grid.Row="0" 
-                Background="White" 
+                Background="{DynamicResource SurfaceBrushDynamic}" 
                 Padding="20,10"
-                BorderBrush="#e2e8f0"
+                BorderBrush="{DynamicResource DividerBrushDynamic}"
                 BorderThickness="0,0,0,1">
             <Grid ColumnDefinitions="*,Auto">
                 
@@ -53,7 +53,7 @@
                     <TextBlock Text="Sistema de Urna Eletrônica" 
                                FontSize="22" 
                                FontWeight="Bold" 
-                               Foreground="#1e293b"
+                               Foreground="{DynamicResource TextPrimaryBrushDynamic}"
                                VerticalAlignment="Center"/>
                 </StackPanel>
                 
@@ -96,22 +96,22 @@
             <StackPanel HorizontalAlignment="Center" 
                         VerticalAlignment="Center"
                         Spacing="10">
-                <ProgressBar IsIndeterminate="True" Width="200" Height="8" Foreground="#1e3a8a"/>
+                <ProgressBar IsIndeterminate="True" Width="200" Height="8" Foreground="{DynamicResource PrimaryBrushDynamic}"/>
                 <TextBlock Text="Carregando..." 
-                           Foreground="#FFFFFF" 
+                           Foreground="White" 
                            FontSize="16"/>
             </StackPanel>
         </Border>
 
         <!-- Status Bar -->
         <Border Grid.Row="2" 
-                Background="White" 
-                BorderBrush="#e2e8f0" 
+                Background="{DynamicResource SurfaceBrushDynamic}" 
+                BorderBrush="{DynamicResource DividerBrushDynamic}" 
                 BorderThickness="0,1,0,0" 
                 Padding="20,10">
             <TextBlock Text="{Binding StatusMessage}" 
                        FontSize="14" 
-                       Foreground="#475569"/>
+                       Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
         </Border>
     </Grid>
 </Window>

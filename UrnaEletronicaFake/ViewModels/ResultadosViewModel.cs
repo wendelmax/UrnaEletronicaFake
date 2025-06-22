@@ -194,6 +194,10 @@ public class ResultadoEleicaoDto
     public double PercentualValidos => Estatisticas.PercentualValidos;
     public double PercentualNulos => Estatisticas.PercentualNulos;
     public double PercentualBrancos => Estatisticas.PercentualBrancos;
+
+    public string PercentualValidosFormatado => $"{PercentualValidos:F1}%";
+    public string PercentualNulosFormatado => $"{PercentualNulos:F1}%";
+    public string PercentualBrancosFormatado => $"{PercentualBrancos:F1}%";
 }
 
 public class EleicaoDto
@@ -225,4 +229,5 @@ public class CandidatoResultadoDto
     public string Numero { get; set; } = string.Empty;
     public int Votos { get; set; }
     public double Percentual { get; set; }
+    public string PercentualFormatado => $"{Percentual:F1}%";
 } 

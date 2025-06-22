@@ -59,8 +59,9 @@
                 <Button Grid.Column="1" 
                         Content="➕ Nova Eleição" 
                         Command="{Binding MostrarFormularioCommand}"
-                        Background="White"
-                        Foreground="{DynamicResource PrimaryBrushDynamic}"/>
+                        Background="{DynamicResource SurfaceBrushDynamic}"
+                        Foreground="{DynamicResource PrimaryBrushDynamic}"
+                        Theme="{DynamicResource PrimaryButtonTheme}"/>
             </Grid>
         </Border>
 
@@ -74,8 +75,8 @@
 
             <!-- Lista de Eleições -->
             <Border Grid.Column="0" 
-                    Background="White" 
-                    BorderBrush="#e5e7eb" 
+                    Background="{DynamicResource CardBrushDynamic}" 
+                    BorderBrush="{DynamicResource CardBorderBrushDynamic}" 
                     BorderThickness="1" 
                     CornerRadius="8" 
                     Margin="0,0,10,0"
@@ -87,14 +88,14 @@
                     </Grid.RowDefinitions>
 
                     <Border Grid.Row="0" 
-                            Background="#f8fafc" 
-                            BorderBrush="#e5e7eb" 
+                            Background="{DynamicResource HeaderBrushDynamic}" 
+                            BorderBrush="{DynamicResource DividerBrushDynamic}" 
                             BorderThickness="0,0,0,1" 
                             Padding="20,15">
                         <TextBlock Text="Eleições Cadastradas" 
                                    FontSize="18" 
                                    FontWeight="Bold"
-                                   Foreground="#1f2937"/>
+                                   Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
                     </Border>
 
                     <ListBox Grid.Row="1" 
@@ -123,11 +124,11 @@
                                                    Text="{Binding Titulo}" 
                                                    FontWeight="Bold" 
                                                    FontSize="16"
-                                                   Foreground="#1f2937"/>
+                                                   Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
                                         
                                         <TextBlock Grid.Row="1" 
                                                    Text="{Binding Descricao}" 
-                                                   Foreground="#6b7280" 
+                                                   Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
                                                    Margin="0,8,0,0"
                                                    TextWrapping="Wrap"/>
                                         
@@ -144,10 +145,10 @@
                                                            FontWeight="Bold"/>
                                             </Border>
                                             <TextBlock Text="{Binding DataInicio, StringFormat='Início: {0:dd/MM/yyyy HH:mm}'}" 
-                                                       Foreground="#6b7280" 
+                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
                                                        FontSize="12"/>
                                             <TextBlock Text="{Binding DataFim, StringFormat='Fim: {0:dd/MM/yyyy HH:mm}'}" 
-                                                       Foreground="#6b7280" 
+                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
                                                        FontSize="12"/>
                                         </StackPanel>
 
@@ -156,13 +157,13 @@
                                                     Margin="0,12,0,0"
                                                     Spacing="8">
                                             <TextBlock Text="{Binding Candidatos.Count, StringFormat='{}{0} candidatos'}" 
-                                                       Foreground="#6b7280" 
+                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
                                                        FontSize="12"/>
                                             <TextBlock Text="•" 
-                                                       Foreground="#6b7280" 
+                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
                                                        FontSize="12"/>
                                             <TextBlock Text="{Binding DataCriacao, StringFormat='Criada em {0:dd/MM/yyyy}'}" 
-                                                       Foreground="#6b7280" 
+                                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
                                                        FontSize="12"/>
                                         </StackPanel>
                                     </Grid>
@@ -176,7 +177,7 @@
             <!-- Separador -->
             <Border Grid.Column="1" 
                     Width="1" 
-                    Background="#e5e7eb" 
+                    Background="{DynamicResource DividerBrushDynamic}" 
                     Margin="10,0"/>
 
             <!-- Painel de Ações -->
@@ -184,8 +185,8 @@
                         Spacing="15">
                 
                 <!-- Ações da Eleição Selecionada -->
-                <Border Background="White" 
-                        BorderBrush="#e5e7eb" 
+                <Border Background="{DynamicResource CardBrushDynamic}" 
+                        BorderBrush="{DynamicResource CardBorderBrushDynamic}" 
                         BorderThickness="1" 
                         CornerRadius="8" 
                         Padding="20"
@@ -195,108 +196,46 @@
                                    FontSize="16" 
                                    FontWeight="Bold" 
                                    HorizontalAlignment="Center"
-                                   Foreground="#1f2937"/>
+                                   Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
                         
-                        <Border Background="#f8fafc" 
-                                BorderBrush="#e5e7eb" 
-                                BorderThickness="1" 
+                        <Border Background="{DynamicResource HeaderBrushDynamic}" 
                                 CornerRadius="6" 
-                                Padding="15"
-                                IsVisible="{Binding EleicaoSelecionada, Converter={x:Static ObjectConverters.IsNull}}">
+                                Padding="12,8">
                             <TextBlock Text="Selecione uma eleição para ver as ações disponíveis" 
-                                       FontSize="14" 
-                                       Foreground="#6b7280"
-                                       HorizontalAlignment="Center"
-                                       TextWrapping="Wrap"/>
+                                       Foreground="{DynamicResource TextSecondaryBrushDynamic}" 
+                                       FontSize="12" 
+                                       HorizontalAlignment="Center"/>
                         </Border>
                         
-                        <StackPanel IsVisible="{Binding IsEleicaoSelecionada}">
+                        <StackPanel Spacing="8">
                             <Button Content="✏️ Editar Eleição" 
                                     Command="{Binding EditarEleicaoCommand}"
-                                    IsEnabled="{Binding IsEleicaoSelecionada}"
-                                    HorizontalAlignment="Stretch" Margin="0 0 0 5" Padding="15,10" CornerRadius="6" FontWeight="Bold"
-                                    Background="#f1f5f9" Foreground="#334155"/>
+                                    Theme="{DynamicResource PrimaryButtonTheme}"
+                                    HorizontalAlignment="Stretch"/>
                             
                             <Button Content="👥 Gerenciar Candidatos" 
                                     Command="{Binding GerenciarCandidatosCommand}"
-                                    IsEnabled="{Binding IsEleicaoSelecionada}"
-                                    HorizontalAlignment="Stretch" Margin="0 0 0 5" Padding="15,10" CornerRadius="6" FontWeight="Bold"
-                                    Background="#f1f5f9" Foreground="#334155"/>
+                                    Theme="{DynamicResource SecondaryButtonTheme}"
+                                    HorizontalAlignment="Stretch"/>
                             
-                            <Button Content="🏛️ Gerenciar Cargos" 
-                                    Command="{Binding GerenciarCargosCommand}"
-                                    IsEnabled="{Binding IsEleicaoSelecionada}"
-                                    HorizontalAlignment="Stretch" Margin="0 0 0 5" Padding="15,10" CornerRadius="6" FontWeight="Bold"
-                                    Background="#f1f5f9" Foreground="#334155"/>
-                            
-                            <Button Content="✅ Ativar Eleição" 
+                            <Button Content="▶️ Ativar Eleição" 
                                     Command="{Binding AtivarEleicaoCommand}"
-                                    IsEnabled="{Binding IsEleicaoSelecionada}"
-                                    HorizontalAlignment="Stretch" Margin="0 0 0 5" Padding="15,10" CornerRadius="6" FontWeight="Bold"
-                                    Background="#f1f5f9" Foreground="#334155"/>
+                                    Background="{DynamicResource SuccessBrushDynamic}"
+                                    Foreground="White"
+                                    HorizontalAlignment="Stretch"/>
                             
-                            <Button Content="⏸️ Desativar Eleição" 
+                            <Button Content="⏸️ Pausar Eleição" 
                                     Command="{Binding DesativarEleicaoCommand}"
-                                    IsEnabled="{Binding IsEleicaoSelecionada}"
-                                    HorizontalAlignment="Stretch" Margin="0 0 0 5" Padding="15,10" CornerRadius="6" FontWeight="Bold"
-                                    Background="#f1f5f9" Foreground="#334155"/>
+                                    Background="{DynamicResource WarningBrushDynamic}"
+                                    Foreground="White"
+                                    HorizontalAlignment="Stretch"/>
                             
-                            <Button Content="🗑️ Deletar Eleição" 
+                            <Button Content="🗑️ Excluir Eleição" 
                                     Command="{Binding DeletarEleicaoCommand}"
-                                    IsEnabled="{Binding IsEleicaoSelecionada}"
-                                    HorizontalAlignment="Stretch" Margin="0 0 0 5" Padding="15,10" CornerRadius="6" FontWeight="Bold"
-                                    Background="#f1f5f9" Foreground="#334155"/>
+                                    Background="{DynamicResource ErrorBrushDynamic}"
+                                    Foreground="White"
+                                    HorizontalAlignment="Stretch"/>
                         </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <!-- Estatísticas Rápidas -->
-                <Border Background="White" 
-                        BorderBrush="#e5e7eb" 
-                        BorderThickness="1" 
-                        CornerRadius="8" 
-                        Padding="20"
-                        Effect="{DynamicResource MaterialDesignElevationShadow1}">
-                    <StackPanel Spacing="12">
-                        <TextBlock Text="Estatísticas" 
-                                   FontSize="16" 
-                                   FontWeight="Bold" 
-                                   HorizontalAlignment="Center"
-                                   Foreground="#1f2937"/>
-                        
-                        <Grid ColumnDefinitions="*,*" RowDefinitions="*,*" Margin="0,10,0,0">
-                            <Border Grid.Column="0" Grid.Row="0" 
-                                    Background="#f0f9ff" 
-                                    CornerRadius="6" 
-                                    Padding="12" 
-                                    Margin="2">
-                                <StackPanel HorizontalAlignment="Center">
-                                    <TextBlock Text="Total" 
-                                               FontSize="11" 
-                                               Foreground="#0369a1"/>
-                                    <TextBlock Text="{Binding Eleicoes.Count}" 
-                                               FontSize="20" 
-                                               FontWeight="Bold" 
-                                               Foreground="#0ea5e9"/>
-                                </StackPanel>
-                            </Border>
-                            
-                            <Border Grid.Column="1" Grid.Row="0" 
-                                    Background="#f0fdf4" 
-                                    CornerRadius="6" 
-                                    Padding="12" 
-                                    Margin="2">
-                                <StackPanel HorizontalAlignment="Center">
-                                    <TextBlock Text="Ativas" 
-                                               FontSize="11" 
-                                               Foreground="#166534"/>
-                                    <TextBlock Text="{Binding EleicoesAtivas}" 
-                                               FontSize="20" 
-                                               FontWeight="Bold" 
-                                               Foreground="#22c55e"/>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
                     </StackPanel>
                 </Border>
             </StackPanel>
