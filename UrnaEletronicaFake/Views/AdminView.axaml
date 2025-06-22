@@ -1,0 +1,193 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:UrnaEletronicaFake.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="UrnaEletronicaFake.Views.AdminView"
+             x:DataType="vm:AdminViewModel">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#A23B72" Padding="20,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" 
+                           Text="📊 Painel Administrativo" 
+                           FontSize="20" 
+                           FontWeight="Bold" 
+                           Foreground="White"/>
+                
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            Spacing="10">
+                    <Button Content="🔄 Atualizar" 
+                            Command="{Binding CarregarEleicoesCommand}"
+                            Background="#6B5B95" 
+                            Foreground="White"
+                            Padding="10,5"/>
+                    <Button Content="➕ Nova Eleição" 
+                            Command="{Binding CriarEleicaoCommand}"
+                            Background="#F18F01" 
+                            Foreground="White"
+                            Padding="10,5"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Lista de Eleições -->
+            <Border Grid.Column="0" 
+                    Background="White" 
+                    BorderBrush="#CCCCCC" 
+                    BorderThickness="1" 
+                    CornerRadius="5" 
+                    Margin="0,0,10,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" 
+                            Background="#F8F9FA" 
+                            BorderBrush="#CCCCCC" 
+                            BorderThickness="0,0,0,1" 
+                            Padding="15,10">
+                        <TextBlock Text="Eleições Cadastradas" 
+                                   FontSize="16" 
+                                   FontWeight="Bold"/>
+                    </Border>
+
+                    <ListBox Grid.Row="1" 
+                             ItemsSource="{Binding Eleicoes}" 
+                             SelectedItem="{Binding EleicaoSelecionada}"
+                             Background="Transparent"
+                             BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="10,5" 
+                                        Padding="15" 
+                                        Background="#F8F9FA" 
+                                        CornerRadius="5"
+                                        BorderBrush="#CCCCCC" 
+                                        BorderThickness="1">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <TextBlock Grid.Row="0" 
+                                                   Text="{Binding Titulo}" 
+                                                   FontWeight="Bold" 
+                                                   FontSize="14"/>
+                                        
+                                        <TextBlock Grid.Row="1" 
+                                                   Text="{Binding Descricao}" 
+                                                   Foreground="#666666" 
+                                                   Margin="0,5,0,0"/>
+                                        
+                                        <StackPanel Grid.Row="2" 
+                                                    Orientation="Horizontal" 
+                                                    Margin="0,10,0,0">
+                                            <Border Background="{Binding Ativa, Converter={x:Static BoolConverters.True}, ConverterParameter='#28A745', FallbackValue='#DC3545'}" 
+                                                    CornerRadius="10" 
+                                                    Padding="8,4">
+                                                <TextBlock Text="{Binding Ativa, Converter={x:Static BoolConverters.True}, ConverterParameter='ATIVA', FallbackValue='INATIVA'}" 
+                                                           Foreground="White" 
+                                                           FontSize="10" 
+                                                           FontWeight="Bold"/>
+                                            </Border>
+                                            
+                                            <TextBlock Text="{Binding DataInicio, StringFormat='Início: {0:dd/MM/yyyy HH:mm}'}" 
+                                                       Foreground="#666666" 
+                                                       FontSize="11" 
+                                                       Margin="10,0,0,0"/>
+                                            
+                                            <TextBlock Text="{Binding DataFim, StringFormat='Fim: {0:dd/MM/yyyy HH:mm}'}" 
+                                                       Foreground="#666666" 
+                                                       FontSize="11" 
+                                                       Margin="10,0,0,0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <!-- Painel de Ações -->
+            <StackPanel Grid.Column="1" 
+                        Width="200" 
+                        Spacing="10">
+                
+                <Border Background="White" 
+                        BorderBrush="#CCCCCC" 
+                        BorderThickness="1" 
+                        CornerRadius="5" 
+                        Padding="15">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Ações" 
+                                   FontSize="16" 
+                                   FontWeight="Bold" 
+                                   HorizontalAlignment="Center"/>
+                        
+                        <Button Content="✏️ Editar" 
+                                Command="{Binding EditarEleicaoCommand}"
+                                Background="#17A2B8" 
+                                Foreground="White"
+                                HorizontalAlignment="Stretch"/>
+                        
+                        <Button Content="✅ Ativar" 
+                                Command="{Binding AtivarEleicaoCommand}"
+                                Background="#28A745" 
+                                Foreground="White"
+                                HorizontalAlignment="Stretch"/>
+                        
+                        <Button Content="⏸️ Desativar" 
+                                Command="{Binding DesativarEleicaoCommand}"
+                                Background="#FFC107" 
+                                Foreground="Black"
+                                HorizontalAlignment="Stretch"/>
+                        
+                        <Button Content="🗑️ Deletar" 
+                                Command="{Binding DeletarEleicaoCommand}"
+                                Background="#DC3545" 
+                                Foreground="White"
+                                HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Status -->
+        <Border Grid.Row="2" 
+                Background="#F8F9FA" 
+                BorderBrush="#CCCCCC" 
+                BorderThickness="0,1,0,0" 
+                Padding="20,10">
+            <TextBlock Text="{Binding StatusMessage}" 
+                       FontSize="14" 
+                       Foreground="#666666"/>
+        </Border>
+    </Grid>
+</UserControl> 

@@ -1,0 +1,255 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:UrnaEletronicaFake.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="UrnaEletronicaFake.Views.ResultadosView"
+             x:DataType="vm:ResultadosViewModel">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#C73E1D" Padding="20,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" 
+                           Text="📈 Resultados da Eleição" 
+                           FontSize="20" 
+                           FontWeight="Bold" 
+                           Foreground="White"/>
+                
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            Spacing="10">
+                    <ComboBox ItemsSource="{Binding Eleicoes}" 
+                              SelectedItem="{Binding EleicaoSelecionada}"
+                              Width="300"
+                              Background="White"
+                              Foreground="Black">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Titulo}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Content="🔄 Atualizar" 
+                            Command="{Binding CarregarResultadosCommand}"
+                            Background="#6B5B95" 
+                            Foreground="White"
+                            Padding="10,5"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" Margin="20">
+            <StackPanel>
+                <!-- Estatísticas Gerais -->
+                <Border Background="White" 
+                        BorderBrush="#CCCCCC" 
+                        BorderThickness="1" 
+                        CornerRadius="5" 
+                        Margin="0,0,0,20"
+                        IsVisible="{Binding ResultadoEleicao, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" 
+                                Background="#F8F9FA" 
+                                BorderBrush="#CCCCCC" 
+                                BorderThickness="0,0,0,1" 
+                                Padding="20,15">
+                            <TextBlock Text="Estatísticas Gerais" 
+                                       FontSize="18" 
+                                       FontWeight="Bold"/>
+                        </Border>
+
+                        <Grid Grid.Row="1" 
+                              Margin="20" 
+                              ColumnDefinitions="*,*,*,*">
+                            
+                            <Border Grid.Column="0" 
+                                    Background="#E8F5E8" 
+                                    CornerRadius="5" 
+                                    Padding="15" 
+                                    Margin="5">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="Total de Votos" 
+                                               FontSize="12" 
+                                               Foreground="#666666"/>
+                                    <TextBlock Text="{Binding ResultadoEleicao.Estatisticas.TotalVotos}" 
+                                               FontSize="24" 
+                                               FontWeight="Bold" 
+                                               Foreground="#28A745"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" 
+                                    Background="#E8F4FD" 
+                                    CornerRadius="5" 
+                                    Padding="15" 
+                                    Margin="5">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="Votos Válidos" 
+                                               FontSize="12" 
+                                               Foreground="#666666"/>
+                                    <TextBlock Text="{Binding ResultadoEleicao.Estatisticas.VotosValidos}" 
+                                               FontSize="24" 
+                                               FontWeight="Bold" 
+                                               Foreground="#17A2B8"/>
+                                    <TextBlock Text="{Binding ResultadoEleicao.Estatisticas.PercentualValidos, StringFormat='({0:F1}%)'}" 
+                                               FontSize="12" 
+                                               Foreground="#666666"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" 
+                                    Background="#FFF3CD" 
+                                    CornerRadius="5" 
+                                    Padding="15" 
+                                    Margin="5">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="Votos Brancos" 
+                                               FontSize="12" 
+                                               Foreground="#666666"/>
+                                    <TextBlock Text="{Binding ResultadoEleicao.Estatisticas.VotosBrancos}" 
+                                               FontSize="24" 
+                                               FontWeight="Bold" 
+                                               Foreground="#FFC107"/>
+                                    <TextBlock Text="{Binding ResultadoEleicao.Estatisticas.PercentualBrancos, StringFormat='({0:F1}%)'}" 
+                                               FontSize="12" 
+                                               Foreground="#666666"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="3" 
+                                    Background="#F8D7DA" 
+                                    CornerRadius="5" 
+                                    Padding="15" 
+                                    Margin="5">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="Votos Nulos" 
+                                               FontSize="12" 
+                                               Foreground="#666666"/>
+                                    <TextBlock Text="{Binding ResultadoEleicao.Estatisticas.VotosNulos}" 
+                                               FontSize="24" 
+                                               FontWeight="Bold" 
+                                               Foreground="#DC3545"/>
+                                    <TextBlock Text="{Binding ResultadoEleicao.Estatisticas.PercentualNulos, StringFormat='({0:F1}%)'}" 
+                                               FontSize="12" 
+                                               Foreground="#666666"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- Resultado por Candidato -->
+                <Border Background="White" 
+                        BorderBrush="#CCCCCC" 
+                        BorderThickness="1" 
+                        CornerRadius="5"
+                        IsVisible="{Binding ResultadoEleicao, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" 
+                                Background="#F8F9FA" 
+                                BorderBrush="#CCCCCC" 
+                                BorderThickness="0,0,0,1" 
+                                Padding="20,15">
+                            <TextBlock Text="Resultado por Candidato" 
+                                       FontSize="18" 
+                                       FontWeight="Bold"/>
+                        </Border>
+
+                        <ItemsControl Grid.Row="1" 
+                                      ItemsSource="{Binding ResultadoEleicao.Candidatos}"
+                                      Margin="20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,10" 
+                                            Padding="20" 
+                                            Background="#F8F9FA" 
+                                            CornerRadius="5"
+                                            BorderBrush="#CCCCCC" 
+                                            BorderThickness="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" 
+                                                    Width="60" 
+                                                    Height="60" 
+                                                    Background="#28A745" 
+                                                    CornerRadius="30" 
+                                                    Margin="0,0,15,0">
+                                                <TextBlock Text="{Binding Numero}" 
+                                                           FontSize="20" 
+                                                           FontWeight="Bold" 
+                                                           Foreground="White" 
+                                                           HorizontalAlignment="Center" 
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{Binding Nome}" 
+                                                           FontSize="16" 
+                                                           FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Partido}" 
+                                                           FontSize="14" 
+                                                           Foreground="#666666" 
+                                                           Margin="0,5,0,0"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2" 
+                                                        HorizontalAlignment="Right">
+                                                <TextBlock Text="{Binding Votos}" 
+                                                           FontSize="24" 
+                                                           FontWeight="Bold" 
+                                                           Foreground="#28A745"/>
+                                                <TextBlock Text="{Binding Percentual, StringFormat='{0:F1}%'}" 
+                                                           FontSize="14" 
+                                                           Foreground="#666666"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Status -->
+        <Border Grid.Row="2" 
+                Background="#F8F9FA" 
+                BorderBrush="#CCCCCC" 
+                BorderThickness="0,1,0,0" 
+                Padding="20,10">
+            <TextBlock Text="{Binding StatusMessage}" 
+                       FontSize="14" 
+                       Foreground="#666666"/>
+        </Border>
+    </Grid>
+</UserControl> 
