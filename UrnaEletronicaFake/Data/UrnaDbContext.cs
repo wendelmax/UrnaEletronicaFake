@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using UrnaEletronicaFake.Models;
+using System;
 
 namespace UrnaEletronicaFake.Data;
 
@@ -26,6 +27,18 @@ public class UrnaDbContext : DbContext
             entity.Property(e => e.Titulo).IsRequired().HasMaxLength(200);
             entity.Property(e => e.Descricao).HasMaxLength(500);
             entity.Property(e => e.DataCriacao).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            
+            // Dados de seed para eleição
+            entity.HasData(new Eleicao
+            {
+                Id = 1,
+                Titulo = "Eleição para Presidente da República",
+                Descricao = "Eleição presidencial de 2024",
+                DataInicio = DateTime.Now.AddDays(-1),
+                DataFim = DateTime.Now.AddDays(30),
+                Ativa = true,
+                DataCriacao = DateTime.Now
+            });
         });
 
         // Configuração do Cargo Eleitoral
@@ -41,6 +54,17 @@ public class UrnaDbContext : DbContext
                   .WithMany(e => e.CargosEleitorais)
                   .HasForeignKey(c => c.EleicaoId)
                   .OnDelete(DeleteBehavior.Cascade);
+                  
+            // Dados de seed para cargo
+            entity.HasData(new CargoEleitoral
+            {
+                Id = 1,
+                Nome = "Presidente",
+                QuantidadeDigitos = 2,
+                Ordem = 1,
+                Ativo = true,
+                EleicaoId = 1
+            });
         });
 
         // Configuração do Candidato
@@ -62,6 +86,46 @@ public class UrnaDbContext : DbContext
                   .WithMany(c => c.Candidatos)
                   .HasForeignKey(c => c.CargoEleitoralId)
                   .OnDelete(DeleteBehavior.Cascade);
+                  
+            // Dados de seed para candidatos
+            entity.HasData(
+                new Candidato
+                {
+                    Id = 1,
+                    Nome = "João Silva",
+                    Partido = "Partido A",
+                    Numero = "10",
+                    Biografia = "Candidato do Partido A",
+                    EleicaoId = 1,
+                    CargoEleitoralId = 1,
+                    Ativo = true,
+                    DataCriacao = DateTime.Now
+                },
+                new Candidato
+                {
+                    Id = 2,
+                    Nome = "Maria Santos",
+                    Partido = "Partido B",
+                    Numero = "20",
+                    Biografia = "Candidata do Partido B",
+                    EleicaoId = 1,
+                    CargoEleitoralId = 1,
+                    Ativo = true,
+                    DataCriacao = DateTime.Now
+                },
+                new Candidato
+                {
+                    Id = 3,
+                    Nome = "Pedro Costa",
+                    Partido = "Partido C",
+                    Numero = "30",
+                    Biografia = "Candidato do Partido C",
+                    EleicaoId = 1,
+                    CargoEleitoralId = 1,
+                    Ativo = true,
+                    DataCriacao = DateTime.Now
+                }
+            );
         });
 
         // Configuração do Voto

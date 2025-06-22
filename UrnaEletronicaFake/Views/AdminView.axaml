@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:UrnaEletronicaFake.ViewModels"
+             xmlns:converters="using:UrnaEletronicaFake.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
@@ -21,6 +22,12 @@
             <Setter Property="Background" Value="Transparent"/>
         </Style>
     </UserControl.Styles>
+
+    <UserControl.Resources>
+        <converters:BoolToStatusConverter x:Key="BoolToStatusConverter"/>
+        <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
+        <converters:BoolToBackgroundConverter x:Key="BoolToBackgroundConverter"/>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -140,11 +147,11 @@
                                                     Orientation="Horizontal" 
                                                     Margin="0,12,0,0"
                                                     Spacing="15">
-                                            <Border Background="{Binding Ativa, Converter={x:Null}, ConverterParameter='#dcfce7;#fef2f2'}"
+                                            <Border Background="{Binding Ativa, Converter={StaticResource BoolToBackgroundConverter}}"
                                                     CornerRadius="12" 
                                                     Padding="8,4">
-                                                <TextBlock Text="{Binding Ativa, Converter={x:Null}, ConverterParameter='ATIVA;INATIVA'}" 
-                                                           Foreground="{Binding Ativa, Converter={x:Null}, ConverterParameter='#166534;#dc2626'}"
+                                                <TextBlock Text="{Binding Ativa, Converter={StaticResource BoolToStatusConverter}}" 
+                                                           Foreground="{Binding Ativa, Converter={StaticResource BoolToColorConverter}}"
                                                            FontSize="11"
                                                            FontWeight="Bold"/>
                                             </Border>

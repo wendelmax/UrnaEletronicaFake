@@ -97,105 +97,24 @@ public partial class App : Application
             using var scope = _serviceProvider!.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<UrnaDbContext>();
             
-            Console.WriteLine("[INFO] Criando banco de dados se não existir...");
-            // Criar banco de dados se não existir
-            context.Database.EnsureCreated();
-            Console.WriteLine("[INFO] Banco de dados criado/verificado com sucesso.");
+            Console.WriteLine("[INFO] Deletando banco existente (se houver)...");
+            context.Database.EnsureDeleted();
             
-            // Inserir dados de exemplo se o banco estiver vazio
-            if (!context.Eleicoes.Any())
-            {
-                Console.WriteLine("[INFO] Banco vazio, inserindo dados de exemplo...");
-                SeedDatabase(context);
-                Console.WriteLine("[INFO] Dados de exemplo inseridos com sucesso.");
-            }
-            else
-            {
-                Console.WriteLine($"[INFO] Banco já contém {context.Eleicoes.Count()} eleições.");
-            }
+            Console.WriteLine("[INFO] Criando novo banco de dados...");
+            context.Database.EnsureCreated();
+            
+            Console.WriteLine("[INFO] Banco de dados criado com sucesso!");
+            
+            // Verificar se os dados foram criados
+            var eleicoes = context.Eleicoes.ToList();
+            var cargos = context.CargosEleitorais.ToList();
+            var candidatos = context.Candidatos.ToList();
+            
+            Console.WriteLine($"[INFO] Dados criados: {eleicoes.Count} eleições, {cargos.Count} cargos, {candidatos.Count} candidatos");
         }
         catch (Exception ex)
         {
             Console.WriteLine($"[ERRO] Erro na inicialização do banco de dados: {ex.Message}");
-            Console.WriteLine($"[ERRO] Stack trace: {ex.StackTrace}");
-        }
-    }
-
-    private void SeedDatabase(UrnaDbContext context)
-    {
-        try
-        {
-            Console.WriteLine("[INFO] Criando eleição de exemplo...");
-            // Criar eleição de exemplo
-            var eleicao = new Models.Eleicao
-            {
-                Titulo = "Eleição para Presidente da República",
-                Descricao = "Eleição presidencial de 2024",
-                DataInicio = DateTime.Now.AddDays(-1),
-                DataFim = DateTime.Now.AddDays(30),
-                Ativa = true,
-                DataCriacao = DateTime.Now
-            };
-
-            context.Eleicoes.Add(eleicao);
-            context.SaveChanges();
-            Console.WriteLine($"[INFO] Eleição criada com ID: {eleicao.Id}");
-
-            Console.WriteLine("[INFO] Criando cargos eleitorais...");
-            // Criar cargos eleitorais
-            var cargoPresidente = new Models.CargoEleitoral
-            {
-                Nome = "Presidente",
-                QuantidadeDigitos = 2,
-                Ordem = 1,
-                Ativo = true,
-                EleicaoId = eleicao.Id
-            };
-
-            context.CargosEleitorais.Add(cargoPresidente);
-            context.SaveChanges();
-            Console.WriteLine($"[INFO] Cargo criado com ID: {cargoPresidente.Id}");
-
-            Console.WriteLine("[INFO] Criando candidatos de exemplo...");
-            // Criar candidatos de exemplo
-            var candidatos = new[]
-            {
-                new Models.Candidato
-                {
-                    Nome = "João Silva",
-                    Partido = "Partido A",
-                    Numero = "10",
-                    Biografia = "Candidato do Partido A",
-                    EleicaoId = eleicao.Id,
-                    CargoEleitoralId = cargoPresidente.Id
-                },
-                new Models.Candidato
-                {
-                    Nome = "Maria Santos",
-                    Partido = "Partido B",
-                    Numero = "20",
-                    Biografia = "Candidata do Partido B",
-                    EleicaoId = eleicao.Id,
-                    CargoEleitoralId = cargoPresidente.Id
-                },
-                new Models.Candidato
-                {
-                    Nome = "Pedro Costa",
-                    Partido = "Partido C",
-                    Numero = "30",
-                    Biografia = "Candidato do Partido C",
-                    EleicaoId = eleicao.Id,
-                    CargoEleitoralId = cargoPresidente.Id
-                }
-            };
-
-            context.Candidatos.AddRange(candidatos);
-            context.SaveChanges();
-            Console.WriteLine($"[INFO] {candidatos.Length} candidatos criados com sucesso.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[ERRO] Erro ao inserir dados de exemplo: {ex.Message}");
             Console.WriteLine($"[ERRO] Stack trace: {ex.StackTrace}");
         }
     }
