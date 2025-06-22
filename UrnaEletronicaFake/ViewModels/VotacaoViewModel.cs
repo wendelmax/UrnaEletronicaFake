@@ -1,271 +1,221 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using UrnaEletronicaFake.Models;
 using UrnaEletronicaFake.Services;
 
 namespace UrnaEletronicaFake.ViewModels;
 
-public class VotacaoViewModel : ViewModelBase
+public partial class VotacaoViewModel : ViewModelBase
 {
     private readonly IEleicaoService _eleicaoService;
     private readonly IVotoService _votoService;
-    
-    private Eleicao? _eleicaoAtiva;
-    private ObservableCollection<Candidato> _candidatos;
-    private Candidato? _candidatoSelecionado;
-    private string _cpfEleitor = "";
-    private string _numeroDigitado = "";
-    private string _statusMessage = "";
-    private bool _isLoading;
-    private bool _votoConfirmado;
+    private readonly IVotacaoStateService _votacaoStateService;
 
-    public VotacaoViewModel(IEleicaoService eleicaoService, IVotoService votoService)
+    private Eleicao? _eleicaoAtiva;
+    private string _numeroDigitado = "";
+    private const int NumeroDeDigitos = 5; // Pode ser ajustado conforme o cargo
+
+    // --- Propriedades de Estado ---
+    [ObservableProperty] private bool _isTerminalLocked = true;
+    [ObservableProperty] private bool _isTelaFimVisible;
+    [ObservableProperty] private bool _isTelaCandidatoVisible;
+    [ObservableProperty] private bool _isVotoBranco;
+    [ObservableProperty] private bool _isVotoNulo;
+
+    // --- Propriedades de Tela ---
+    [ObservableProperty] private string _cargo = "CARGO";
+    [ObservableProperty] private string? _digito1;
+    [ObservableProperty] private string? _digito2;
+    [ObservableProperty] private string? _digito3;
+    [ObservableProperty] private string? _digito4;
+    [ObservableProperty] private string? _digito5;
+    [ObservableProperty] private string _nomeCandidato = "";
+    [ObservableProperty] private string _partidoCandidato = "";
+    [ObservableProperty] private string? _fotoCandidato;
+    [ObservableProperty] private string _instrucoes = "Aguardando liberação do terminal...";
+
+    public VotacaoViewModel(IEleicaoService eleicaoService, IVotoService votoService, IVotacaoStateService votacaoStateService)
     {
         _eleicaoService = eleicaoService;
         _votoService = votoService;
-        
-        _candidatos = new ObservableCollection<Candidato>();
-        
-        // Comandos
-        CarregarEleicaoAtivaCommand = new RelayCommand(async () => await CarregarEleicaoAtiva());
+        _votacaoStateService = votacaoStateService;
+
+        _votacaoStateService.OnTerminalStateChanged += OnTerminalStateChanged;
+        IsTerminalLocked = _votacaoStateService.IsTerminalLocked;
+
         DigitarNumeroCommand = new RelayCommand<string>(DigitarNumero);
-        ConfirmarVotoCommand = new RelayCommand(async () => await ConfirmarVoto());
-        VotarNuloCommand = new RelayCommand(async () => await VotarNulo());
-        VotarBrancoCommand = new RelayCommand(async () => await VotarBranco());
         CorrigirCommand = new RelayCommand(Corrigir);
-        
-        // Carregar eleição ativa
-        _ = CarregarEleicaoAtiva();
+        VotarBrancoCommand = new RelayCommand(VotarBranco);
+        ConfirmarCommand = new RelayCommand(ConfirmarVoto, () => !IsTerminalLocked && (IsTelaCandidatoVisible || IsVotoBranco));
     }
 
-    public Eleicao? EleicaoAtiva
-    {
-        get => _eleicaoAtiva;
-        set => SetProperty(ref _eleicaoAtiva, value);
-    }
-
-    public ObservableCollection<Candidato> Candidatos
-    {
-        get => _candidatos;
-        set => SetProperty(ref _candidatos, value);
-    }
-
-    public Candidato? CandidatoSelecionado
-    {
-        get => _candidatoSelecionado;
-        set => SetProperty(ref _candidatoSelecionado, value);
-    }
-
-    public string CpfEleitor
-    {
-        get => _cpfEleitor;
-        set => SetProperty(ref _cpfEleitor, value);
-    }
-
-    public string NumeroDigitado
-    {
-        get => _numeroDigitado;
-        set => SetProperty(ref _numeroDigitado, value);
-    }
-
-    public string StatusMessage
-    {
-        get => _statusMessage;
-        set => SetProperty(ref _statusMessage, value);
-    }
-
-    public bool IsLoading
-    {
-        get => _isLoading;
-        set => SetProperty(ref _isLoading, value);
-    }
-
-    public bool VotoConfirmado
-    {
-        get => _votoConfirmado;
-        set => SetProperty(ref _votoConfirmado, value);
-    }
-
-    public ICommand CarregarEleicaoAtivaCommand { get; }
     public ICommand DigitarNumeroCommand { get; }
-    public ICommand ConfirmarVotoCommand { get; }
-    public ICommand VotarNuloCommand { get; }
-    public ICommand VotarBrancoCommand { get; }
     public ICommand CorrigirCommand { get; }
+    public ICommand VotarBrancoCommand { get; }
+    public IRelayCommand ConfirmarCommand { get; }
 
-    private async Task CarregarEleicaoAtiva()
+    private async void OnTerminalStateChanged()
     {
-        try
+        IsTerminalLocked = _votacaoStateService.IsTerminalLocked;
+        if (!IsTerminalLocked)
         {
-            IsLoading = true;
-            StatusMessage = "Carregando eleição ativa...";
-            
-            EleicaoAtiva = await _eleicaoService.ObterEleicaoAtivaAsync();
-            
-            if (EleicaoAtiva != null)
-            {
-                Candidatos.Clear();
-                foreach (var candidato in EleicaoAtiva.Candidatos)
-                {
-                    Candidatos.Add(candidato);
-                }
-                
-                StatusMessage = $"Eleição ativa: {EleicaoAtiva.Titulo}";
-            }
-            else
-            {
-                StatusMessage = "Nenhuma eleição ativa no momento";
-            }
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Erro ao carregar eleição: {ex.Message}";
-        }
-        finally
-        {
-            IsLoading = false;
+            await IniciarVotacao();
         }
     }
 
-    private void DigitarNumero(string numero)
+    private async Task IniciarVotacao()
     {
-        if (NumeroDigitado.Length < 5)
+        _eleicaoAtiva = await _eleicaoService.ObterEleicaoAtivaAsync();
+        if (_eleicaoAtiva != null)
         {
-            NumeroDigitado += numero;
+            Cargo = _eleicaoAtiva.Titulo.ToUpper();
+            ResetarTela(true);
+        }
+        else
+        {
+            Cargo = "NENHUMA ELEIÇÃO ATIVA";
+            Instrucoes = "Contate o mesário.";
+        }
+    }
+
+    private void DigitarNumero(string? numero)
+    {
+        if (string.IsNullOrEmpty(numero) || _numeroDigitado.Length >= NumeroDeDigitos || IsVotoBranco || IsTelaFimVisible) return;
+
+        _numeroDigitado += numero;
+        AtualizarDigitos();
+
+        if (_numeroDigitado.Length == NumeroDeDigitos)
+        {
             BuscarCandidato();
         }
     }
 
+    private void AtualizarDigitos()
+    {
+        var digitos = _numeroDigitado.PadRight(NumeroDeDigitos, ' ').ToCharArray();
+        Digito1 = digitos[0] == ' ' ? null : digitos[0].ToString();
+        Digito2 = digitos[1] == ' ' ? null : digitos[1].ToString();
+        Digito3 = digitos[2] == ' ' ? null : digitos[2].ToString();
+        Digito4 = digitos[3] == ' ' ? null : digitos[3].ToString();
+        Digito5 = digitos[4] == ' ' ? null : digitos[4].ToString();
+    }
+
     private void BuscarCandidato()
     {
-        CandidatoSelecionado = Candidatos.FirstOrDefault(c => c.Numero == NumeroDigitado);
-        
-        if (CandidatoSelecionado != null)
+        IsTelaCandidatoVisible = true;
+        var candidato = _eleicaoAtiva?.Candidatos.FirstOrDefault(c => c.Numero == _numeroDigitado);
+
+        if (candidato != null)
         {
-            StatusMessage = $"Candidato: {CandidatoSelecionado.Nome} - {CandidatoSelecionado.Partido}";
+            NomeCandidato = candidato.Nome;
+            PartidoCandidato = candidato.Partido;
+            FotoCandidato = "/Assets/candidate_placeholder.png";
+            Instrucoes = "Aperte a tecla:\nVERDE para CONFIRMAR\nLARANJA para CORRIGIR";
+            IsVotoNulo = false;
         }
-        else if (!string.IsNullOrEmpty(NumeroDigitado))
+        else
         {
-            StatusMessage = "Candidato não encontrado";
+            NomeCandidato = "NÚMERO ERRADO";
+            PartidoCandidato = "";
+            FotoCandidato = null;
+            Instrucoes = "Seu voto será NULO.\nAperte a tecla:\nVERDE para CONFIRMAR\nLARANJA para CORRIGIR";
+            IsVotoNulo = true;
         }
+        ConfirmarCommand.NotifyCanExecuteChanged();
     }
 
-    private async Task ConfirmarVoto()
+    private void VotarBranco()
     {
-        if (string.IsNullOrEmpty(CpfEleitor))
-        {
-            StatusMessage = "Digite o CPF do eleitor";
-            return;
-        }
+        if (_numeroDigitado.Length > 0 || IsTelaFimVisible) return;
 
-        if (CandidatoSelecionado == null)
-        {
-            StatusMessage = "Selecione um candidato válido";
-            return;
-        }
-
-        try
-        {
-            IsLoading = true;
-            StatusMessage = "Registrando voto...";
-            
-            await _votoService.RegistrarVotoAsync(CpfEleitor, EleicaoAtiva!.Id, CandidatoSelecionado.Id);
-            
-            VotoConfirmado = true;
-            StatusMessage = "Voto registrado com sucesso!";
-            
-            // Limpar dados após confirmação
-            await Task.Delay(3000);
-            LimparDados();
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Erro ao registrar voto: {ex.Message}";
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
-
-    private async Task VotarNulo()
-    {
-        if (string.IsNullOrEmpty(CpfEleitor))
-        {
-            StatusMessage = "Digite o CPF do eleitor";
-            return;
-        }
-
-        try
-        {
-            IsLoading = true;
-            StatusMessage = "Registrando voto nulo...";
-            
-            await _votoService.RegistrarVotoAsync(CpfEleitor, EleicaoAtiva!.Id, null, votoNulo: true);
-            
-            VotoConfirmado = true;
-            StatusMessage = "Voto nulo registrado com sucesso!";
-            
-            await Task.Delay(3000);
-            LimparDados();
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Erro ao registrar voto nulo: {ex.Message}";
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
-
-    private async Task VotarBranco()
-    {
-        if (string.IsNullOrEmpty(CpfEleitor))
-        {
-            StatusMessage = "Digite o CPF do eleitor";
-            return;
-        }
-
-        try
-        {
-            IsLoading = true;
-            StatusMessage = "Registrando voto branco...";
-            
-            await _votoService.RegistrarVotoAsync(CpfEleitor, EleicaoAtiva!.Id, null, votoBranco: true);
-            
-            VotoConfirmado = true;
-            StatusMessage = "Voto branco registrado com sucesso!";
-            
-            await Task.Delay(3000);
-            LimparDados();
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Erro ao registrar voto branco: {ex.Message}";
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+        ResetarTela(false);
+        IsVotoBranco = true;
+        IsTelaCandidatoVisible = true;
+        NomeCandidato = "VOTO EM BRANCO";
+        Instrucoes = "Aperte a tecla:\nVERDE para CONFIRMAR\nLARANJA para CORRIGIR";
+        ConfirmarCommand.NotifyCanExecuteChanged();
     }
 
     private void Corrigir()
     {
-        NumeroDigitado = "";
-        CandidatoSelecionado = null;
-        StatusMessage = "Digite o número do candidato";
+        ResetarTela(true);
     }
 
-    private void LimparDados()
+    private async void ConfirmarVoto()
     {
-        CpfEleitor = "";
-        NumeroDigitado = "";
-        CandidatoSelecionado = null;
-        VotoConfirmado = false;
-        StatusMessage = "Digite o CPF do eleitor";
+        if (_eleicaoAtiva == null) return;
+        
+        var candidatoId = _eleicaoAtiva.Candidatos.FirstOrDefault(c => c.Numero == _numeroDigitado)?.Id;
+
+        try
+        {
+            // O CPF é um placeholder, pois a identificação é feita pelo mesário
+            var cpfPlaceholder = $"urn_{DateTime.Now:yyyyMMddHHmmssfff}";
+
+            if (IsVotoBranco)
+            {
+                await _votoService.RegistrarVotoAsync(cpfPlaceholder, _eleicaoAtiva.Id, null, votoBranco: true);
+            }
+            else if (IsVotoNulo)
+            {
+                 await _votoService.RegistrarVotoAsync(cpfPlaceholder, _eleicaoAtiva.Id, null, votoNulo: true);
+            }
+            else if (candidatoId.HasValue)
+            {
+                await _votoService.RegistrarVotoAsync(cpfPlaceholder, _eleicaoAtiva.Id, candidatoId.Value);
+            }
+            else
+            {
+                return; // Não confirma se não há estado de voto válido
+            }
+
+            IsTelaCandidatoVisible = false;
+            IsTelaFimVisible = true;
+            await Task.Delay(2000);
+        }
+        catch (Exception)
+        {
+            Instrucoes = "Erro ao registrar voto. Contate o mesário.";
+            await Task.Delay(3000);
+        }
+        finally
+        {
+            ResetarTela(false);
+            IsTelaFimVisible = false;
+            _votacaoStateService.LockTerminal();
+            Instrucoes = "Aguardando liberação do terminal...";
+            ConfirmarCommand.NotifyCanExecuteChanged();
+        }
+    }
+
+    private void ResetarTela(bool manterCargo)
+    {
+        _numeroDigitado = "";
+        IsVotoBranco = false;
+        IsVotoNulo = false;
+        IsTelaCandidatoVisible = false;
+        NomeCandidato = "";
+        PartidoCandidato = "";
+        FotoCandidato = null;
+        if (manterCargo)
+        {
+             Instrucoes = "Digite o número do seu candidato.";
+        }
+        ResetarDigitos();
+        ConfirmarCommand.NotifyCanExecuteChanged();
+    }
+
+    private void ResetarDigitos()
+    {
+        Digito1 = null;
+        Digito2 = null;
+        Digito3 = null;
+        Digito4 = null;
+        Digito5 = null;
     }
 } 

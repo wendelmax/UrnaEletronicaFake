@@ -143,6 +143,87 @@ public class EleicaoService : IEleicaoService
                eleicao.DataFim >= DateTime.Now;
     }
 
+    // Métodos para gerenciar candidatos
+    public async Task<IEnumerable<Candidato>> ObterCandidatosAsync(int eleicaoId)
+    {
+        var eleicao = await _context.Eleicoes
+            .Include(e => e.Candidatos)
+            .FirstOrDefaultAsync(e => e.Id == eleicaoId);
+        
+        return eleicao?.Candidatos ?? new List<Candidato>();
+    }
+
+    public async Task<Candidato> AdicionarCandidatoAsync(int eleicaoId, Candidato candidato)
+    {
+        var eleicao = await _context.Eleicoes.FindAsync(eleicaoId);
+        if (eleicao == null)
+            throw new ArgumentException("Eleição não encontrada");
+
+        if (eleicao.Ativa)
+            throw new InvalidOperationException("Não é possível adicionar candidatos a uma eleição ativa");
+
+        candidato.EleicaoId = eleicaoId;
+        candidato.DataCriacao = DateTime.Now;
+        candidato.Ativo = true;
+
+        _context.Candidatos.Add(candidato);
+        await _context.SaveChangesAsync();
+
+        await _auditoriaService.RegistrarAcaoAsync("CRIAR", "Candidato", candidato.Id,
+            $"Candidato '{candidato.Nome}' adicionado à eleição '{eleicao.Titulo}'", null, SerializarCandidato(candidato));
+
+        return candidato;
+    }
+
+    public async Task<Candidato> AtualizarCandidatoAsync(int eleicaoId, Candidato candidato)
+    {
+        var candidatoExistente = await _context.Candidatos
+            .FirstOrDefaultAsync(c => c.Id == candidato.Id && c.EleicaoId == eleicaoId);
+        
+        if (candidatoExistente == null)
+            throw new ArgumentException("Candidato não encontrado");
+
+        var eleicao = await _context.Eleicoes.FindAsync(eleicaoId);
+        if (eleicao?.Ativa == true)
+            throw new InvalidOperationException("Não é possível editar candidatos de uma eleição ativa");
+
+        var dadosAnteriores = SerializarCandidato(candidatoExistente);
+
+        candidatoExistente.Nome = candidato.Nome;
+        candidatoExistente.Partido = candidato.Partido;
+        candidatoExistente.Numero = candidato.Numero;
+
+        await _context.SaveChangesAsync();
+
+        await _auditoriaService.RegistrarAcaoAsync("ATUALIZAR", "Candidato", candidato.Id,
+            $"Candidato '{candidato.Nome}' atualizado na eleição '{eleicao?.Titulo}'", dadosAnteriores, SerializarCandidato(candidatoExistente));
+
+        return candidatoExistente;
+    }
+
+    public async Task<bool> RemoverCandidatoAsync(int eleicaoId, int candidatoId)
+    {
+        var candidato = await _context.Candidatos
+            .FirstOrDefaultAsync(c => c.Id == candidatoId && c.EleicaoId == eleicaoId);
+        
+        if (candidato == null)
+            return false;
+
+        var eleicao = await _context.Eleicoes.FindAsync(eleicaoId);
+        if (eleicao?.Ativa == true)
+            throw new InvalidOperationException("Não é possível remover candidatos de uma eleição ativa");
+
+        var dadosAnteriores = SerializarCandidato(candidato);
+
+        _context.Candidatos.Remove(candidato);
+        await _context.SaveChangesAsync();
+
+        await _auditoriaService.RegistrarAcaoAsync("DELETAR", "Candidato", candidatoId,
+            $"Candidato '{candidato.Nome}' removido da eleição '{eleicao?.Titulo}'", dadosAnteriores, null);
+
+        return true;
+    }
+
     private string SerializarEleicao(Eleicao eleicao)
     {
         return System.Text.Json.JsonSerializer.Serialize(new
@@ -154,6 +235,20 @@ public class EleicaoService : IEleicaoService
             eleicao.DataFim,
             eleicao.Ativa,
             eleicao.DataCriacao
+        });
+    }
+
+    private string SerializarCandidato(Candidato candidato)
+    {
+        return System.Text.Json.JsonSerializer.Serialize(new
+        {
+            candidato.Id,
+            candidato.Nome,
+            candidato.Partido,
+            candidato.Numero,
+            candidato.EleicaoId,
+            candidato.Ativo,
+            candidato.DataCriacao
         });
     }
 } 

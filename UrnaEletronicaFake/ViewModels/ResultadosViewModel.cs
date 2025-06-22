@@ -2,13 +2,15 @@ using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using UrnaEletronicaFake.Models;
 using UrnaEletronicaFake.Services;
 using System.Collections.Generic;
 
 namespace UrnaEletronicaFake.ViewModels;
 
-public class ResultadosViewModel : ViewModelBase
+public partial class ResultadosViewModel : ViewModelBase
 {
     private readonly IEleicaoService _eleicaoService;
     private readonly IVotoService _votoService;

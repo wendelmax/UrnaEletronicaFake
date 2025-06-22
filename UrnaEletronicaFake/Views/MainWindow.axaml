@@ -9,7 +9,29 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="Sistema de Urna Eletrônica"
         Width="1200" Height="800"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="#f8fafc">
+
+    <Window.Styles>
+        <Style Selector="Button.nav">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#475569"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+        <Style Selector="Button.nav:pointerover">
+            <Setter Property="Background" Value="#e2e8f0"/>
+            <Setter Property="Foreground" Value="#1e293b"/>
+        </Style>
+        <Style Selector="Button.nav.active">
+            <Setter Property="Background" Value="#1e3a8a"/>
+            <Setter Property="Foreground" Value="#ffffff"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </Window.Styles>
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -17,86 +39,79 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
+    <Grid RowDefinitions="Auto,*,Auto">
         <!-- Header -->
-        <Border Grid.Row="0" Background="#2E86AB" Padding="20,10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+        <Border Grid.Row="0" 
+                Background="White" 
+                Padding="20,10"
+                BorderBrush="#e2e8f0"
+                BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="*,Auto">
                 
-                <TextBlock Grid.Column="0" 
-                           Text="🗳️ Sistema de Urna Eletrônica" 
-                           FontSize="24" 
-                           FontWeight="Bold" 
-                           Foreground="White"
-                           VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                    <Image Source="/Assets/avalonia-logo.ico" Width="32" Height="32"/>
+                    <TextBlock Text="Sistema de Urna Eletrônica" 
+                               FontSize="22" 
+                               FontWeight="Bold" 
+                               Foreground="#1e293b"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
                 
                 <StackPanel Grid.Column="1" 
                             Orientation="Horizontal" 
-                            Spacing="10">
+                            Spacing="5">
                     <Button Content="📊 Admin" 
                             Command="{Binding ShowAdminCommand}"
-                            Background="#A23B72" 
-                            Foreground="White"
-                            Padding="15,8"
-                            FontWeight="Bold"/>
+                            Classes="nav"
+                            Tag="Admin"/>
+                    <Button Content="🧑‍⚖️ Mesa"
+                            Command="{Binding ShowMesaCommand}"
+                            Classes="nav"
+                            Tag="Mesa"/>
                     <Button Content="🗳️ Votar" 
                             Command="{Binding ShowVotacaoCommand}"
-                            Background="#F18F01" 
-                            Foreground="White"
-                            Padding="15,8"
-                            FontWeight="Bold"/>
+                            Classes="nav"
+                            Tag="Votacao"/>
                     <Button Content="📈 Resultados" 
                             Command="{Binding ShowResultadosCommand}"
-                            Background="#C73E1D" 
-                            Foreground="White"
-                            Padding="15,8"
-                            FontWeight="Bold"/>
+                            Classes="nav"
+                            Tag="Resultados"/>
                     <Button Content="📋 Auditoria" 
                             Command="{Binding ShowAuditoriaCommand}"
-                            Background="#6B5B95" 
-                            Foreground="White"
-                            Padding="15,8"
-                            FontWeight="Bold"/>
+                            Classes="nav"
+                            Tag="Auditoria"/>
                 </StackPanel>
             </Grid>
         </Border>
 
         <!-- Main Content -->
-        <Grid Grid.Row="1" Margin="20">
-            <ContentControl Content="{Binding CurrentView}"/>
+        <ContentControl Grid.Row="1" 
+                        Margin="20"
+                        Content="{Binding CurrentView}"/>
             
-            <!-- Loading Overlay -->
-            <Border Background="#80000000" 
-                    IsVisible="{Binding IsLoading}">
-                <StackPanel HorizontalAlignment="Center" 
-                            VerticalAlignment="Center">
-                    <ProgressBar IsVisible="True" IsIndeterminate="True" Width="200" Height="20"/>
-                    <TextBlock Text="Carregando..." 
-                               Foreground="White" 
-                               FontSize="16" 
-                               Margin="0,10,0,0"/>
-                </StackPanel>
-            </Border>
-        </Grid>
+        <!-- Loading Overlay -->
+        <Border Grid.Row="1"
+                Background="#80000000" 
+                IsVisible="{Binding IsLoading}">
+            <StackPanel HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Spacing="10">
+                <ProgressBar IsIndeterminate="True" Width="200" Height="8" Foreground="#1e3a8a"/>
+                <TextBlock Text="Carregando..." 
+                           Foreground="#FFFFFF" 
+                           FontSize="16"/>
+            </StackPanel>
+        </Border>
 
         <!-- Status Bar -->
         <Border Grid.Row="2" 
-                Background="#F0F0F0" 
-                BorderBrush="#CCCCCC" 
+                Background="White" 
+                BorderBrush="#e2e8f0" 
                 BorderThickness="0,1,0,0" 
                 Padding="20,10">
             <TextBlock Text="{Binding StatusMessage}" 
                        FontSize="14" 
-                       Foreground="#666666"/>
+                       Foreground="#475569"/>
         </Border>
     </Grid>
 </Window>

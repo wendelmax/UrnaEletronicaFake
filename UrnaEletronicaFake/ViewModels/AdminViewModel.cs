@@ -5,33 +5,79 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using UrnaEletronicaFake.Models;
 using UrnaEletronicaFake.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace UrnaEletronicaFake.ViewModels;
 
-public class AdminViewModel : ViewModelBase
+public partial class AdminViewModel : ViewModelBase
 {
     private readonly IEleicaoService _eleicaoService;
     private readonly IAuditoriaService _auditoriaService;
     
-    private ObservableCollection<Eleicao> _eleicoes;
+    [ObservableProperty]
+    private ObservableCollection<Eleicao> _eleicoes = new();
+
+    [ObservableProperty]
     private Eleicao? _eleicaoSelecionada;
+
+    [ObservableProperty]
     private bool _isLoading;
+
+    [ObservableProperty]
     private string _statusMessage = "";
     
     // Propriedades do formulário
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(FormularioTitulo))]
+    [NotifyPropertyChangedFor(nameof(BotaoSalvarTexto))]
     private bool _mostrarFormulario;
+
+    [ObservableProperty]
     private bool _modoEdicao;
+
+    [ObservableProperty]
     private string _tituloEleicao = "";
+
+    [ObservableProperty]
     private string _descricaoEleicao = "";
-    private DateTime _dataInicio = DateTime.Now.AddDays(1);
-    private DateTime _dataFim = DateTime.Now.AddDays(2);
+
+    [ObservableProperty]
+    private DateTimeOffset _dataInicio = DateTimeOffset.Now.AddDays(1);
+
+    [ObservableProperty]
+    private DateTimeOffset _dataFim = DateTimeOffset.Now.AddDays(2);
+    
+    // Propriedades para gerenciamento de candidatos
+    [ObservableProperty]
+    private bool _mostrarPainelCandidatos;
+
+    [ObservableProperty]
+    private ObservableCollection<Candidato> _candidatos = new();
+
+    [ObservableProperty]
+    private Candidato? _candidatoSelecionado;
+
+    [ObservableProperty]
+    private string _nomeCandidato = "";
+
+    [ObservableProperty]
+    private string _partidoCandidato = "";
+
+    [ObservableProperty]
+    private string _numeroCandidato = "";
+
+    [ObservableProperty]
+    private bool _modoEdicaoCandidato;
+    
+    public string FormularioTitulo => ModoEdicao ? "Editar Eleição" : "Criar Nova Eleição";
+    public string BotaoSalvarTexto => ModoEdicao ? "Atualizar" : "Salvar";
+    public bool IsEleicaoSelecionada => EleicaoSelecionada != null;
 
     public AdminViewModel(IEleicaoService eleicaoService, IAuditoriaService auditoriaService)
     {
         _eleicaoService = eleicaoService;
         _auditoriaService = auditoriaService;
-        
-        _eleicoes = new ObservableCollection<Eleicao>();
         
         // Comandos
         CarregarEleicoesCommand = new RelayCommand(async () => await CarregarEleicoes());
@@ -44,69 +90,16 @@ public class AdminViewModel : ViewModelBase
         DesativarEleicaoCommand = new RelayCommand(async () => await DesativarEleicao());
         GerenciarCandidatosCommand = new RelayCommand(async () => await GerenciarCandidatos());
         
+        // Comandos para candidatos
+        AdicionarCandidatoCommand = new RelayCommand(AbrirFormularioCandidato);
+        SalvarCandidatoCommand = new RelayCommand(async () => await SalvarCandidato());
+        CancelarCandidatoCommand = new RelayCommand(CancelarFormularioCandidato);
+        EditarCandidatoCommand = new RelayCommand(async () => await EditarCandidato());
+        RemoverCandidatoCommand = new RelayCommand(async () => await RemoverCandidato());
+        VoltarParaEleicoesCommand = new RelayCommand(VoltarParaEleicoes);
+        
         // Carregar dados iniciais
         _ = CarregarEleicoes();
-    }
-
-    public ObservableCollection<Eleicao> Eleicoes
-    {
-        get => _eleicoes;
-        set => SetProperty(ref _eleicoes, value);
-    }
-
-    public Eleicao? EleicaoSelecionada
-    {
-        get => _eleicaoSelecionada;
-        set => SetProperty(ref _eleicaoSelecionada, value);
-    }
-
-    public bool IsLoading
-    {
-        get => _isLoading;
-        set => SetProperty(ref _isLoading, value);
-    }
-
-    public string StatusMessage
-    {
-        get => _statusMessage;
-        set => SetProperty(ref _statusMessage, value);
-    }
-
-    // Propriedades do formulário
-    public bool MostrarFormulario
-    {
-        get => _mostrarFormulario;
-        set => SetProperty(ref _mostrarFormulario, value);
-    }
-
-    public bool ModoEdicao
-    {
-        get => _modoEdicao;
-        set => SetProperty(ref _modoEdicao, value);
-    }
-
-    public string TituloEleicao
-    {
-        get => _tituloEleicao;
-        set => SetProperty(ref _tituloEleicao, value);
-    }
-
-    public string DescricaoEleicao
-    {
-        get => _descricaoEleicao;
-        set => SetProperty(ref _descricaoEleicao, value);
-    }
-
-    public DateTime DataInicio
-    {
-        get => _dataInicio;
-        set => SetProperty(ref _dataInicio, value);
-    }
-
-    public DateTime DataFim
-    {
-        get => _dataFim;
-        set => SetProperty(ref _dataFim, value);
     }
 
     public int EleicoesAtivas => Eleicoes.Count(e => e.Ativa);
@@ -120,6 +113,14 @@ public class AdminViewModel : ViewModelBase
     public ICommand AtivarEleicaoCommand { get; }
     public ICommand DesativarEleicaoCommand { get; }
     public ICommand GerenciarCandidatosCommand { get; }
+    
+    // Comandos para candidatos
+    public ICommand AdicionarCandidatoCommand { get; }
+    public ICommand SalvarCandidatoCommand { get; }
+    public ICommand CancelarCandidatoCommand { get; }
+    public ICommand EditarCandidatoCommand { get; }
+    public ICommand RemoverCandidatoCommand { get; }
+    public ICommand VoltarParaEleicoesCommand { get; }
 
     private async Task CarregarEleicoes()
     {
@@ -153,8 +154,8 @@ public class AdminViewModel : ViewModelBase
         ModoEdicao = false;
         TituloEleicao = "";
         DescricaoEleicao = "";
-        DataInicio = DateTime.Now.AddDays(1);
-        DataFim = DateTime.Now.AddDays(2);
+        DataInicio = DateTimeOffset.Now.AddDays(1);
+        DataFim = DateTimeOffset.Now.AddDays(2);
         MostrarFormulario = true;
         StatusMessage = "Criando nova eleição...";
     }
@@ -182,8 +183,8 @@ public class AdminViewModel : ViewModelBase
             {
                 EleicaoSelecionada.Titulo = TituloEleicao;
                 EleicaoSelecionada.Descricao = DescricaoEleicao;
-                EleicaoSelecionada.DataInicio = DataInicio;
-                EleicaoSelecionada.DataFim = DataFim;
+                EleicaoSelecionada.DataInicio = DataInicio.DateTime;
+                EleicaoSelecionada.DataFim = DataFim.DateTime;
 
                 await _eleicaoService.AtualizarEleicaoAsync(EleicaoSelecionada);
                 StatusMessage = "Eleição atualizada com sucesso!";
@@ -194,8 +195,8 @@ public class AdminViewModel : ViewModelBase
                 {
                     Titulo = TituloEleicao,
                     Descricao = DescricaoEleicao,
-                    DataInicio = DataInicio,
-                    DataFim = DataFim
+                    DataInicio = DataInicio.DateTime,
+                    DataFim = DataFim.DateTime
                 };
 
                 await _eleicaoService.CriarEleicaoAsync(novaEleicao);
@@ -352,7 +353,185 @@ public class AdminViewModel : ViewModelBase
             return;
         }
 
-        StatusMessage = $"Gerenciando candidatos da eleição: {EleicaoSelecionada.Titulo}";
-        // Aqui você implementaria a navegação para a tela de gerenciamento de candidatos
+        try
+        {
+            IsLoading = true;
+            StatusMessage = $"Carregando candidatos da eleição: {EleicaoSelecionada.Titulo}";
+            
+            var candidatos = await _eleicaoService.ObterCandidatosAsync(EleicaoSelecionada.Id);
+            
+            Candidatos.Clear();
+            foreach (var candidato in candidatos)
+            {
+                Candidatos.Add(candidato);
+            }
+            
+            MostrarPainelCandidatos = true;
+            StatusMessage = $"Gerenciando candidatos da eleição: {EleicaoSelecionada.Titulo} ({Candidatos.Count} candidatos)";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Erro ao carregar candidatos: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void AbrirFormularioCandidato()
+    {
+        ModoEdicaoCandidato = false;
+        NomeCandidato = "";
+        PartidoCandidato = "";
+        NumeroCandidato = "";
+        StatusMessage = "Preencha os dados do candidato...";
+    }
+
+    private async Task SalvarCandidato()
+    {
+        if (string.IsNullOrWhiteSpace(NomeCandidato))
+        {
+            StatusMessage = "Digite o nome do candidato";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(PartidoCandidato))
+        {
+            StatusMessage = "Digite o partido do candidato";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(NumeroCandidato))
+        {
+            StatusMessage = "Digite o número do candidato";
+            return;
+        }
+
+        try
+        {
+            IsLoading = true;
+            StatusMessage = "Salvando candidato...";
+
+            if (ModoEdicaoCandidato && CandidatoSelecionado != null)
+            {
+                CandidatoSelecionado.Nome = NomeCandidato;
+                CandidatoSelecionado.Partido = PartidoCandidato;
+                CandidatoSelecionado.Numero = NumeroCandidato;
+
+                await _eleicaoService.AtualizarCandidatoAsync(EleicaoSelecionada.Id, CandidatoSelecionado);
+                StatusMessage = "Candidato atualizado com sucesso!";
+            }
+            else
+            {
+                var novoCandidato = new Candidato
+                {
+                    Nome = NomeCandidato,
+                    Partido = PartidoCandidato,
+                    Numero = NumeroCandidato
+                };
+
+                await _eleicaoService.AdicionarCandidatoAsync(EleicaoSelecionada.Id, novoCandidato);
+                StatusMessage = "Candidato criado com sucesso!";
+            }
+
+            await CarregarCandidatos();
+            CancelarFormularioCandidato();
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Erro ao salvar candidato: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void CancelarFormularioCandidato()
+    {
+        ModoEdicaoCandidato = false;
+        NomeCandidato = "";
+        PartidoCandidato = "";
+        NumeroCandidato = "";
+        StatusMessage = "Formulário cancelado";
+    }
+
+    private async Task EditarCandidato()
+    {
+        if (CandidatoSelecionado == null)
+        {
+            StatusMessage = "Selecione um candidato para editar";
+            return;
+        }
+
+        ModoEdicaoCandidato = true;
+        NomeCandidato = CandidatoSelecionado.Nome;
+        PartidoCandidato = CandidatoSelecionado.Partido;
+        NumeroCandidato = CandidatoSelecionado.Numero;
+        StatusMessage = $"Editando candidato: {CandidatoSelecionado.Nome}";
+    }
+
+    private async Task RemoverCandidato()
+    {
+        if (CandidatoSelecionado == null)
+        {
+            StatusMessage = "Selecione um candidato para remover";
+            return;
+        }
+
+        try
+        {
+            IsLoading = true;
+            StatusMessage = "Removendo candidato...";
+            
+            var sucesso = await _eleicaoService.RemoverCandidatoAsync(EleicaoSelecionada.Id, CandidatoSelecionado.Id);
+            if (sucesso)
+            {
+                await CarregarCandidatos();
+                CandidatoSelecionado = null;
+                StatusMessage = "Candidato removido com sucesso!";
+            }
+            else
+            {
+                StatusMessage = "Erro ao remover candidato";
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Erro ao remover candidato: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task CarregarCandidatos()
+    {
+        if (EleicaoSelecionada == null) return;
+
+        try
+        {
+            var candidatos = await _eleicaoService.ObterCandidatosAsync(EleicaoSelecionada.Id);
+            
+            Candidatos.Clear();
+            foreach (var candidato in candidatos)
+            {
+                Candidatos.Add(candidato);
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Erro ao carregar candidatos: {ex.Message}";
+        }
+    }
+
+    private void VoltarParaEleicoes()
+    {
+        MostrarPainelCandidatos = false;
+        Candidatos.Clear();
+        CandidatoSelecionado = null;
+        StatusMessage = "Voltando para eleições...";
     }
 } 

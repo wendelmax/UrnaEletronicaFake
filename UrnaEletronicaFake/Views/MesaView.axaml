@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:UrnaEletronicaFake.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="UrnaEletronicaFake.Views.MesaView"
+             x:DataType="vm:MesaViewModel">
+
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Spacing="20" HorizontalAlignment="Center">
+            <TextBlock Text="🧑‍⚖️ Mesa Receptora de Votos" 
+                       FontSize="28" 
+                       FontWeight="Bold" 
+                       Foreground="#1e293b"/>
+
+            <TextBlock Text="{Binding StatusMessage}"
+                       FontSize="18"
+                       Foreground="#475569"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       MaxWidth="400"/>
+
+            <Button Content="Liberar Urna para Votação"
+                    Command="{Binding UnlockTerminalCommand}"
+                    HorizontalAlignment="Center"
+                    Padding="40,20"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Background="#16a34a"
+                    Foreground="White"
+                    CornerRadius="8">
+                <Button.Styles>
+                    <Style Selector="Button:disabled">
+                        <Setter Property="Background" Value="#9ca3af"/>
+                        <Setter Property="Opacity" Value="0.7"/>
+                    </Style>
+                </Button.Styles>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl> 

@@ -15,4 +15,10 @@ public interface IEleicaoService
     Task<bool> AtivarEleicaoAsync(int id);
     Task<bool> DesativarEleicaoAsync(int id);
     Task<bool> EleicaoEstaAtivaAsync(int id);
+    
+    // Métodos para gerenciar candidatos
+    Task<IEnumerable<Candidato>> ObterCandidatosAsync(int eleicaoId);
+    Task<Candidato> AdicionarCandidatoAsync(int eleicaoId, Candidato candidato);
+    Task<Candidato> AtualizarCandidatoAsync(int eleicaoId, Candidato candidato);
+    Task<bool> RemoverCandidatoAsync(int eleicaoId, int candidatoId);
 } 

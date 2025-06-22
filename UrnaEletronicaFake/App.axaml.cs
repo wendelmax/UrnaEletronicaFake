@@ -67,6 +67,7 @@ public partial class App : Application
             options.UseSqlite("Data Source=urna_eletronica.db"));
 
         // Registrar serviços
+        services.AddSingleton<IVotacaoStateService, VotacaoStateService>();
         services.AddScoped<IEleicaoService, EleicaoService>();
         services.AddScoped<IVotoService, VotoService>();
         services.AddScoped<IAuditoriaService, AuditoriaService>();
@@ -77,12 +78,14 @@ public partial class App : Application
         services.AddTransient<VotacaoViewModel>();
         services.AddTransient<ResultadosViewModel>();
         services.AddTransient<AuditoriaViewModel>();
+        services.AddTransient<MesaViewModel>();
 
         // Registrar Views
         services.AddTransient<AdminView>();
         services.AddTransient<VotacaoView>();
         services.AddTransient<ResultadosView>();
         services.AddTransient<AuditoriaView>();
+        services.AddTransient<MesaView>();
     }
 
     private void InitializeDatabase()

@@ -1,415 +1,138 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:UrnaEletronicaFake.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+             xmlns:vm="using:UrnaEletronicaFake.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="600"
              x:Class="UrnaEletronicaFake.Views.VotacaoView"
-             x:DataType="vm:VotacaoViewModel">
+             x:DataType="vm:VotacaoViewModel"
+             Background="#e5e7eb">
+
+    <UserControl.Styles>
+        <Style Selector="Border.digit-box">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBlock.digit-text">
+            <Setter Property="FontSize" Value="48"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button.keypad-button">
+            <Setter Property="Background" Value="#262626"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="55"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style Selector="Button.keypad-button:pointerover">
+            <Setter Property="Background" Value="#404040"/>
+        </Style>
+    </UserControl.Styles>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <!-- Header -->
-        <Border Grid.Row="0" Background="#f59e0b" Padding="20,15">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <StackPanel Grid.Column="0">
-                    <TextBlock Text="🗳️ Urna Eletrônica" 
-                               FontSize="24" 
-                               FontWeight="Bold" 
-                               Foreground="White"/>
-                    <TextBlock Text="{Binding EleicaoAtiva.Titulo}" 
-                               FontSize="16" 
-                               Foreground="White"
-                               Margin="0,5,0,0"/>
-                </StackPanel>
-                
-                <Button Grid.Column="1" 
-                        Content="🔄 Atualizar" 
-                        Command="{Binding CarregarEleicaoAtivaCommand}"
-                        Background="#d97706" 
-                        Foreground="White"
-                        Padding="15,8"
-                        FontWeight="Bold"/>
-            </Grid>
-        </Border>
-
-        <!-- Content -->
-        <Grid Grid.Row="1" Margin="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Painel de Identificação -->
+        <Grid ColumnDefinitions="*, Auto" Margin="20">
             <Border Grid.Column="0" 
                     Background="White" 
-                    BorderBrush="#e5e7eb" 
-                    BorderThickness="1" 
                     CornerRadius="8" 
-                    Margin="0,0,10,0"
-                    Effect="{DynamicResource MaterialDesignElevationShadow2}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <Border Grid.Row="0" 
-                            Background="#fef3c7" 
-                            BorderBrush="#e5e7eb" 
-                            BorderThickness="0,0,0,1" 
-                            Padding="20,15">
-                        <TextBlock Text="Identificação do Eleitor" 
-                                   FontSize="18" 
-                                   FontWeight="Bold"
-                                   Foreground="#92400e"/>
-                    </Border>
-
-                    <StackPanel Grid.Row="1" 
-                                Margin="20" 
-                                Spacing="20">
-                        <StackPanel Spacing="8">
-                            <TextBlock Text="CPF do Eleitor *" 
-                                       FontSize="14" 
-                                       FontWeight="Bold"
-                                       Foreground="#374151"/>
-                            <TextBox Text="{Binding CpfEleitor}" 
-                                     FontSize="16"
-                                     Padding="15,12"
-                                     Background="#f9fafb"
-                                     BorderBrush="#d1d5db"
-                                     BorderThickness="1"
-                                     CornerRadius="6"
-                                     Watermark="Digite o CPF (apenas números)"
-                                     MaxLength="11"/>
-                        </StackPanel>
-
-                        <Border Background="#f0f9ff" 
-                                BorderBrush="#0ea5e9" 
-                                BorderThickness="1" 
-                                CornerRadius="6" 
-                                Padding="15">
-                            <StackPanel>
-                                <TextBlock Text="⚠️ Importante" 
-                                           FontSize="14" 
-                                           FontWeight="Bold"
-                                           Foreground="#0c4a6e"/>
-                                <TextBlock Text="• Digite apenas números no CPF" 
-                                           FontSize="12" 
-                                           Foreground="#0c4a6e"
-                                           Margin="0,5,0,0"/>
-                                <TextBlock Text="• Cada CPF pode votar apenas uma vez" 
-                                           FontSize="12" 
-                                           Foreground="#0c4a6e"/>
-                                <TextBlock Text="• O voto é secreto e anônimo" 
-                                           FontSize="12" 
-                                           Foreground="#0c4a6e"/>
+                    BorderBrush="#9ca3af" 
+                    BorderThickness="2"
+                    Padding="20">
+                <Grid RowDefinitions="Auto, *, Auto">
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto, *" VerticalAlignment="Center">
+                        <StackPanel Grid.Column="0" Spacing="20" VerticalAlignment="Center" Margin="0,0,40,0">
+                            <TextBlock Text="SEU VOTO PARA" FontSize="18"/>
+                            <TextBlock Text="{Binding Cargo}" FontSize="32" FontWeight="Bold"/>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="Número:" FontSize="18" VerticalAlignment="Center"/>
+                                <Border Classes="digit-box"><TextBlock Classes="digit-text" Text="{Binding Digito1}"/></Border>
+                                <Border Classes="digit-box"><TextBlock Classes="digit-text" Text="{Binding Digito2}"/></Border>
+                                <Border Classes="digit-box"><TextBlock Classes="digit-text" Text="{Binding Digito3}"/></Border>
+                                <Border Classes="digit-box"><TextBlock Classes="digit-text" Text="{Binding Digito4}"/></Border>
+                                <Border Classes="digit-box"><TextBlock Classes="digit-text" Text="{Binding Digito5}"/></Border>
                             </StackPanel>
+                            <StackPanel IsVisible="{Binding IsTelaCandidatoVisible}">
+                                <TextBlock Text="Nome:" FontSize="18"/>
+                                <TextBlock Text="{Binding NomeCandidato}" FontSize="24" FontWeight="Bold"/>
+                                <TextBlock Text="Partido:" FontSize="18" Margin="0,10,0,0"/>
+                                <TextBlock Text="{Binding PartidoCandidato}" FontSize="24" FontWeight="Bold"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Border Grid.Column="1"
+                                BorderBrush="Black"
+                                BorderThickness="2"
+                                Width="200"
+                                Height="280"
+                                IsVisible="{Binding IsTelaCandidatoVisible}">
+                            <Image Source="{Binding FotoCandidato, TargetNullValue={x:Null}}" Stretch="UniformToFill"/>
                         </Border>
-                    </StackPanel>
+                    </Grid>
+                    <Border Grid.Row="2" BorderBrush="Black" BorderThickness="2,0,0,0" Padding="10">
+                        <TextBlock Text="{Binding Instrucoes}" 
+                                   TextWrapping="Wrap" 
+                                   FontSize="16"/>
+                    </Border>
                 </Grid>
             </Border>
 
-            <!-- Separador -->
             <Border Grid.Column="1" 
-                    Width="1" 
-                    Background="#e5e7eb" 
-                    Margin="10,0"/>
-
-            <!-- Painel de Votação -->
-            <Border Grid.Column="2" 
-                    Background="White" 
-                    BorderBrush="#e5e7eb" 
-                    BorderThickness="1" 
+                    Background="#404040" 
                     CornerRadius="8" 
-                    Margin="10,0,0,0"
-                    Effect="{DynamicResource MaterialDesignElevationShadow2}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <Border Grid.Row="0" 
-                            Background="#dbeafe" 
-                            BorderBrush="#e5e7eb" 
-                            BorderThickness="0,0,0,1" 
-                            Padding="20,15">
-                        <TextBlock Text="Votação" 
+                    Padding="20"
+                    Margin="20,0,0,0">
+                <StackPanel Spacing="15">
+                    <Border Background="White" Padding="10,5">
+                        <TextBlock Text="JUSTIÇA ELEITORAL" 
                                    FontSize="18" 
                                    FontWeight="Bold"
-                                   Foreground="#1e40af"/>
+                                   HorizontalAlignment="Center"/>
                     </Border>
 
-                    <StackPanel Grid.Row="1" 
-                                Margin="20" 
-                                Spacing="20">
+                    <Grid ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
+                        <Button Grid.Row="0" Grid.Column="0" Content="1" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="1"/>
+                        <Button Grid.Row="0" Grid.Column="1" Content="2" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="2"/>
+                        <Button Grid.Row="0" Grid.Column="2" Content="3" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="3"/>
+                        <Button Grid.Row="1" Grid.Column="0" Content="4" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="4"/>
+                        <Button Grid.Row="1" Grid.Column="1" Content="5" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="5"/>
+                        <Button Grid.Row="1" Grid.Column="2" Content="6" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="6"/>
+                        <Button Grid.Row="2" Grid.Column="0" Content="7" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="7"/>
+                        <Button Grid.Row="2" Grid.Column="1" Content="8" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="8"/>
+                        <Button Grid.Row="2" Grid.Column="2" Content="9" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="9"/>
+                        <Button Grid.Row="3" Grid.Column="1" Content="0" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="0"/>
+                    </Grid>
 
-                        <!-- Número Digitado -->
-                        <StackPanel Spacing="10">
-                            <TextBlock Text="Número do Candidato" 
-                                       FontSize="14" 
-                                       FontWeight="Bold"
-                                       Foreground="#374151"/>
-                            <Border Background="#f3f4f6" 
-                                    BorderBrush="#d1d5db" 
-                                    BorderThickness="2" 
-                                    CornerRadius="8" 
-                                    Padding="20,15">
-                                <TextBlock Text="{Binding NumeroDigitado}" 
-                                           FontSize="32" 
-                                           FontWeight="Bold"
-                                           Foreground="#1f2937"
-                                           HorizontalAlignment="Center"
-                                           FontFamily="Consolas"/>
-                            </Border>
-                        </StackPanel>
-
-                        <!-- Candidato Selecionado -->
-                        <Border Background="#f0fdf4" 
-                                BorderBrush="#22c55e" 
-                                BorderThickness="1" 
-                                CornerRadius="8" 
-                                Padding="15"
-                                IsVisible="{Binding CandidatoSelecionado}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                
-                                <Border Grid.Column="0" 
-                                        Width="60" 
-                                        Height="60" 
-                                        Background="#22c55e" 
-                                        CornerRadius="30" 
-                                        Margin="0,0,15,0">
-                                    <TextBlock Text="{Binding CandidatoSelecionado.Numero}" 
-                                               FontSize="20" 
-                                               FontWeight="Bold" 
-                                               Foreground="White" 
-                                               HorizontalAlignment="Center" 
-                                               VerticalAlignment="Center"/>
-                                </Border>
-                                
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Text="{Binding CandidatoSelecionado.Nome}" 
-                                               FontSize="16" 
-                                               FontWeight="Bold"
-                                               Foreground="#166534"/>
-                                    <TextBlock Text="{Binding CandidatoSelecionado.Partido}" 
-                                               FontSize="14" 
-                                               Foreground="#166534" 
-                                               Margin="0,5,0,0"/>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-
-                        <!-- Teclado Numérico -->
-                        <StackPanel Spacing="10">
-                            <TextBlock Text="Digite o número do candidato:" 
-                                       FontSize="14" 
-                                       FontWeight="Bold"
-                                       Foreground="#374151"/>
-                            
-                            <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*,*,*" Margin="0,10,0,0">
-                                <Button Grid.Column="0" Grid.Row="0" Content="1" 
-                                        Command="{Binding DigitarNumeroCommand}" 
-                                        CommandParameter="1"
-                                        Background="#f3f4f6" 
-                                        Foreground="#374151"
-                                        FontSize="20" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                                <Button Grid.Column="1" Grid.Row="0" Content="2" 
-                                        Command="{Binding DigitarNumeroCommand}" 
-                                        CommandParameter="2"
-                                        Background="#f3f4f6" 
-                                        Foreground="#374151"
-                                        FontSize="20" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                                <Button Grid.Column="2" Grid.Row="0" Content="3" 
-                                        Command="{Binding DigitarNumeroCommand}" 
-                                        CommandParameter="3"
-                                        Background="#f3f4f6" 
-                                        Foreground="#374151"
-                                        FontSize="20" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                                
-                                <Button Grid.Column="0" Grid.Row="1" Content="4" 
-                                        Command="{Binding DigitarNumeroCommand}" 
-                                        CommandParameter="4"
-                                        Background="#f3f4f6" 
-                                        Foreground="#374151"
-                                        FontSize="20" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                                <Button Grid.Column="1" Grid.Row="1" Content="5" 
-                                        Command="{Binding DigitarNumeroCommand}" 
-                                        CommandParameter="5"
-                                        Background="#f3f4f6" 
-                                        Foreground="#374151"
-                                        FontSize="20" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                                <Button Grid.Column="2" Grid.Row="1" Content="6" 
-                                        Command="{Binding DigitarNumeroCommand}" 
-                                        CommandParameter="6"
-                                        Background="#f3f4f6" 
-                                        Foreground="#374151"
-                                        FontSize="20" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                                
-                                <Button Grid.Column="0" Grid.Row="2" Content="7" 
-                                        Command="{Binding DigitarNumeroCommand}" 
-                                        CommandParameter="7"
-                                        Background="#f3f4f6" 
-                                        Foreground="#374151"
-                                        FontSize="20" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                                <Button Grid.Column="1" Grid.Row="2" Content="8" 
-                                        Command="{Binding DigitarNumeroCommand}" 
-                                        CommandParameter="8"
-                                        Background="#f3f4f6" 
-                                        Foreground="#374151"
-                                        FontSize="20" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                                <Button Grid.Column="2" Grid.Row="2" Content="9" 
-                                        Command="{Binding DigitarNumeroCommand}" 
-                                        CommandParameter="9"
-                                        Background="#f3f4f6" 
-                                        Foreground="#374151"
-                                        FontSize="20" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                                
-                                <Button Grid.Column="0" Grid.Row="3" Content="0" 
-                                        Command="{Binding DigitarNumeroCommand}" 
-                                        CommandParameter="0"
-                                        Background="#f3f4f6" 
-                                        Foreground="#374151"
-                                        FontSize="20" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                                <Button Grid.Column="1" Grid.Row="3" Content="⌫" 
-                                        Command="{Binding CorrigirCommand}"
-                                        Background="#fef2f2" 
-                                        Foreground="#dc2626"
-                                        FontSize="16" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                                <Button Grid.Column="2" Grid.Row="3" Content="✓" 
-                                        Command="{Binding ConfirmarVotoCommand}"
-                                        Background="#dcfce7" 
-                                        Foreground="#166534"
-                                        FontSize="16" 
-                                        FontWeight="Bold"
-                                        Padding="20,15"
-                                        CornerRadius="8"
-                                        Margin="4"/>
-                            </Grid>
-                        </StackPanel>
-
-                        <!-- Botões de Voto Especial -->
-                        <StackPanel Orientation="Horizontal" 
-                                    HorizontalAlignment="Center" 
-                                    Spacing="15">
-                            <Button Content="VOTO BRANCO" 
-                                    Command="{Binding VotarBrancoCommand}"
-                                    Background="#fef3c7" 
-                                    Foreground="#92400e"
-                                    Padding="20,12"
-                                    FontWeight="Bold"
-                                    CornerRadius="8"/>
-                            <Button Content="VOTO NULO" 
-                                    Command="{Binding VotarNuloCommand}"
-                                    Background="#fef2f2" 
-                                    Foreground="#dc2626"
-                                    Padding="20,12"
-                                    FontWeight="Bold"
-                                    CornerRadius="8"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
-            </Border>
-        </Grid>
-
-        <!-- Status -->
-        <Border Grid.Row="2" 
-                Background="#f8fafc" 
-                BorderBrush="#e5e7eb" 
-                BorderThickness="0,1,0,0" 
-                Padding="20,12">
-            <TextBlock Text="{Binding StatusMessage}" 
-                       FontSize="14" 
-                       Foreground="#6b7280"/>
-        </Border>
-
-        <!-- Overlay de Confirmação -->
-        <Border Grid.RowSpan="3"
-                Background="#80000000" 
-                IsVisible="{Binding VotoConfirmado}">
-            <Border Background="White" 
-                    CornerRadius="12" 
-                    Padding="40"
-                    Width="400"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Effect="{DynamicResource MaterialDesignElevationShadow4}">
-                <StackPanel Spacing="20" HorizontalAlignment="Center">
-                    <TextBlock Text="✅" 
-                               FontSize="48" 
-                               HorizontalAlignment="Center"/>
-                    <TextBlock Text="Voto Registrado!" 
-                               FontSize="24" 
-                               FontWeight="Bold" 
-                               HorizontalAlignment="Center"
-                               Foreground="#166534"/>
-                    <TextBlock Text="Seu voto foi registrado com sucesso. Obrigado por participar!" 
-                               FontSize="14" 
-                               HorizontalAlignment="Center"
-                               Foreground="#6b7280"
-                               TextWrapping="Wrap"/>
+                    <Grid ColumnDefinitions="Auto,Auto,Auto">
+                        <Button Grid.Column="0" Content="BRANCO" Background="White" Foreground="Black" FontWeight="Bold" Height="50" Width="85" CornerRadius="4" Command="{Binding VotarBrancoCommand}" Margin="5,0,5,0"/>
+                        <Button Grid.Column="1" Content="CORRIGE" Background="#f97316" Foreground="White" FontWeight="Bold" Height="50" Width="85" CornerRadius="4" Command="{Binding CorrigirCommand}" Margin="5,0,5,0"/>
+                        <Button Grid.Column="2" Content="CONFIRMA" Background="#16a34a" Foreground="White" FontWeight="Bold" Height="60" Width="95" CornerRadius="4" Command="{Binding ConfirmarCommand}" Margin="5,0,5,0"/>
+                    </Grid>
                 </StackPanel>
             </Border>
+        </Grid>
+        <Border Background="#A0000000" IsVisible="{Binding IsTerminalLocked}">
+            <TextBlock Text="URNA BLOQUEADA"
+                       FontSize="48"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Border>
+        <Border Background="White" IsVisible="{Binding IsTelaFimVisible}">
+            <TextBlock Text="FIM"
+                       FontSize="120"
+                       FontWeight="ExtraBold"
+                       Foreground="Black"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
         </Border>
     </Grid>
 </UserControl> 

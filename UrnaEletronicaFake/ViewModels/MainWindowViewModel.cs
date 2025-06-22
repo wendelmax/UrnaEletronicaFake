@@ -9,89 +9,51 @@ using UrnaEletronicaFake.ViewModels;
 using UrnaEletronicaFake.Views;
 using Avalonia.Controls;
 using Microsoft.Extensions.DependencyInjection;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace UrnaEletronicaFake.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public partial class MainWindowViewModel : ViewModelBase
 {
-    private readonly IEleicaoService _eleicaoService;
-    private readonly IVotoService _votoService;
-    private readonly IAuditoriaService _auditoriaService;
-    private readonly IServiceProvider _serviceProvider;
-    
-    private UserControl? _currentView;
-    private string _statusMessage = "Sistema de Urna Eletrônica";
+    [ObservableProperty]
+    private ViewModelBase? _currentView;
+
+    [ObservableProperty]
+    private string _statusMessage = "";
+
+    [ObservableProperty]
     private bool _isLoading;
-
-    public MainWindowViewModel(IEleicaoService eleicaoService, IVotoService votoService, IAuditoriaService auditoriaService, IServiceProvider serviceProvider)
-    {
-        _eleicaoService = eleicaoService;
-        _votoService = votoService;
-        _auditoriaService = auditoriaService;
-        _serviceProvider = serviceProvider;
-        
-        // Inicializar comandos
-        ShowAdminCommand = new RelayCommand(ShowAdmin);
-        ShowVotacaoCommand = new RelayCommand(ShowVotacao);
-        ShowResultadosCommand = new RelayCommand(ShowResultados);
-        ShowAuditoriaCommand = new RelayCommand(ShowAuditoria);
-        
-        // Inicializar com a tela de votação
-        ShowVotacao();
-    }
-
-    public UserControl? CurrentView
-    {
-        get => _currentView;
-        set => SetProperty(ref _currentView, value);
-    }
-
-    public string StatusMessage
-    {
-        get => _statusMessage;
-        set => SetProperty(ref _statusMessage, value);
-    }
-
-    public bool IsLoading
-    {
-        get => _isLoading;
-        set => SetProperty(ref _isLoading, value);
-    }
 
     public ICommand ShowAdminCommand { get; }
     public ICommand ShowVotacaoCommand { get; }
     public ICommand ShowResultadosCommand { get; }
     public ICommand ShowAuditoriaCommand { get; }
+    public ICommand ShowMesaCommand { get; }
 
-    private void ShowAdmin()
+    public MainWindowViewModel(
+        AdminView adminView, AdminViewModel adminViewModel,
+        VotacaoView votacaoView, VotacaoViewModel votacaoViewModel,
+        ResultadosView resultadosView, ResultadosViewModel resultadosViewModel,
+        AuditoriaView auditoriaView, AuditoriaViewModel auditoriaViewModel,
+        MesaView mesaView, MesaViewModel mesaViewModel)
     {
-        var adminView = _serviceProvider.GetRequiredService<AdminView>();
-        adminView.DataContext = _serviceProvider.GetRequiredService<AdminViewModel>();
-        CurrentView = adminView;
+        // Vincular Views aos seus ViewModels
+        adminView.DataContext = adminViewModel;
+        votacaoView.DataContext = votacaoViewModel;
+        resultadosView.DataContext = resultadosViewModel;
+        auditoriaView.DataContext = auditoriaViewModel;
+        mesaView.DataContext = mesaViewModel;
+
+        // Comandos de navegação
+        ShowAdminCommand = new RelayCommand(() => { CurrentView = adminViewModel; StatusMessage = "Painel Administrativo"; });
+        ShowVotacaoCommand = new RelayCommand(() => { CurrentView = votacaoViewModel; StatusMessage = "Terminal de Votação"; });
+        ShowResultadosCommand = new RelayCommand(() => { CurrentView = resultadosViewModel; StatusMessage = "Resultados da Eleição"; });
+        ShowAuditoriaCommand = new RelayCommand(() => { CurrentView = auditoriaViewModel; StatusMessage = "Log de Auditoria"; });
+        ShowMesaCommand = new RelayCommand(() => { CurrentView = mesaViewModel; StatusMessage = "Mesa Receptora de Votos"; });
+        
+        // View inicial
+        CurrentView = adminViewModel;
         StatusMessage = "Painel Administrativo";
-    }
-
-    private void ShowVotacao()
-    {
-        var votacaoView = _serviceProvider.GetRequiredService<VotacaoView>();
-        votacaoView.DataContext = _serviceProvider.GetRequiredService<VotacaoViewModel>();
-        CurrentView = votacaoView;
-        StatusMessage = "Tela de Votação";
-    }
-
-    private void ShowResultados()
-    {
-        var resultadosView = _serviceProvider.GetRequiredService<ResultadosView>();
-        resultadosView.DataContext = _serviceProvider.GetRequiredService<ResultadosViewModel>();
-        CurrentView = resultadosView;
-        StatusMessage = "Resultados da Eleição";
-    }
-
-    private void ShowAuditoria()
-    {
-        var auditoriaView = _serviceProvider.GetRequiredService<AuditoriaView>();
-        auditoriaView.DataContext = _serviceProvider.GetRequiredService<AuditoriaViewModel>();
-        CurrentView = auditoriaView;
-        StatusMessage = "Log de Auditoria";
     }
 }
