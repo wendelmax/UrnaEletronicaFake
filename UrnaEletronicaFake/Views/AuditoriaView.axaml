@@ -87,7 +87,7 @@
 
                                         <!-- Tipo de Ação -->
                                         <Border Grid.Row="0" Grid.Column="0" 
-                                                Background="{Binding TipoAcao, Converter={x:Static StringConverters.StartsWith}, ConverterParameter='VOTAR', Converter={x:Static BoolConverters.True}, ConverterParameter='#28A745', FallbackValue='#17A2B8'}" 
+                                                Background="#17A2B8" 
                                                 CornerRadius="10" 
                                                 Padding="8,4" 
                                                 HorizontalAlignment="Left">
@@ -99,7 +99,7 @@
 
                                         <!-- Data/Hora -->
                                         <TextBlock Grid.Row="0" Grid.Column="1" 
-                                                   Text="{Binding DataAcao, StringFormat='{0:dd/MM/yyyy HH:mm:ss}'}" 
+                                                   Text="{Binding DataAcao}" 
                                                    FontSize="12" 
                                                    Foreground="#666666"/>
 

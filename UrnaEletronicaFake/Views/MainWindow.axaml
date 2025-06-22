@@ -79,10 +79,7 @@
                     IsVisible="{Binding IsLoading}">
                 <StackPanel HorizontalAlignment="Center" 
                             VerticalAlignment="Center">
-                    <ProgressRing IsIndeterminate="True" 
-                                  Width="50" 
-                                  Height="50" 
-                                  Foreground="White"/>
+                    <ProgressBar IsVisible="True" IsIndeterminate="True" Width="200" Height="20"/>
                     <TextBlock Text="Carregando..." 
                                Foreground="White" 
                                FontSize="16" 

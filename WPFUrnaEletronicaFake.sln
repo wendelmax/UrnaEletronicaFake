@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFUrnaEletronicaFake", "WPFUrnaEletronicaFake\WPFUrnaEletronicaFake.csproj", "{075FA4AC-0C86-4005-AEEC-D91B9CC407D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrnaEletronicaFake", "UrnaEletronicaFake\UrnaEletronicaFake.csproj", "{A02D7D2E-3BB7-4932-A53E-C8714BAC16BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{075FA4AC-0C86-4005-AEEC-D91B9CC407D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{075FA4AC-0C86-4005-AEEC-D91B9CC407D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{075FA4AC-0C86-4005-AEEC-D91B9CC407D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A02D7D2E-3BB7-4932-A53E-C8714BAC16BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A02D7D2E-3BB7-4932-A53E-C8714BAC16BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A02D7D2E-3BB7-4932-A53E-C8714BAC16BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A02D7D2E-3BB7-4932-A53E-C8714BAC16BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using UrnaEletronicaFake.Models;
 using UrnaEletronicaFake.Services;
+using System.Collections.Generic;
 
 namespace UrnaEletronicaFake.ViewModels;
 
@@ -14,7 +15,7 @@ public class ResultadosViewModel : ViewModelBase
     
     private ObservableCollection<Eleicao> _eleicoes;
     private Eleicao? _eleicaoSelecionada;
-    private object? _resultadoEleicao;
+    private ResultadoEleicaoDto? _resultadoEleicao;
     private bool _isLoading;
     private string _statusMessage = "";
 
@@ -52,7 +53,7 @@ public class ResultadosViewModel : ViewModelBase
         }
     }
 
-    public object? ResultadoEleicao
+    public ResultadoEleicaoDto? ResultadoEleicao
     {
         get => _resultadoEleicao;
         set => SetProperty(ref _resultadoEleicao, value);
@@ -109,9 +110,62 @@ public class ResultadosViewModel : ViewModelBase
         {
             IsLoading = true;
             StatusMessage = "Carregando resultados...";
-            
-            ResultadoEleicao = await _votoService.ObterResultadoEleicaoAsync(EleicaoSelecionada.Id);
-            
+
+            var resultado = await _votoService.ObterResultadoEleicaoAsync(EleicaoSelecionada.Id);
+            // Conversão do objeto anônimo para DTO
+            if (resultado != null)
+            {
+                var eleicaoProp = resultado.GetType().GetProperty("Eleicao")?.GetValue(resultado);
+                var estatProp = resultado.GetType().GetProperty("Estatisticas")?.GetValue(resultado);
+                var candProp = resultado.GetType().GetProperty("Candidatos")?.GetValue(resultado);
+
+                var eleicaoDto = new EleicaoDto
+                {
+                    Id = (int)eleicaoProp?.GetType().GetProperty("Id")?.GetValue(eleicaoProp)!,
+                    Titulo = (string)eleicaoProp?.GetType().GetProperty("Titulo")?.GetValue(eleicaoProp)!,
+                    Descricao = (string)eleicaoProp?.GetType().GetProperty("Descricao")?.GetValue(eleicaoProp)!,
+                    DataInicio = (DateTime)eleicaoProp?.GetType().GetProperty("DataInicio")?.GetValue(eleicaoProp)!,
+                    DataFim = (DateTime)eleicaoProp?.GetType().GetProperty("DataFim")?.GetValue(eleicaoProp)!,
+                    Ativa = (bool)eleicaoProp?.GetType().GetProperty("Ativa")?.GetValue(eleicaoProp)!,
+                };
+                var estatDto = new EstatisticasDto
+                {
+                    TotalVotos = (int)estatProp?.GetType().GetProperty("TotalVotos")?.GetValue(estatProp)!,
+                    VotosValidos = (int)estatProp?.GetType().GetProperty("VotosValidos")?.GetValue(estatProp)!,
+                    VotosNulos = (int)estatProp?.GetType().GetProperty("VotosNulos")?.GetValue(estatProp)!,
+                    VotosBrancos = (int)estatProp?.GetType().GetProperty("VotosBrancos")?.GetValue(estatProp)!,
+                    PercentualValidos = (double)estatProp?.GetType().GetProperty("PercentualValidos")?.GetValue(estatProp)!,
+                    PercentualNulos = (double)estatProp?.GetType().GetProperty("PercentualNulos")?.GetValue(estatProp)!,
+                    PercentualBrancos = (double)estatProp?.GetType().GetProperty("PercentualBrancos")?.GetValue(estatProp)!,
+                };
+                var candidatosDto = new List<CandidatoResultadoDto>();
+                if (candProp is IEnumerable<object> candList)
+                {
+                    foreach (var c in candList)
+                    {
+                        candidatosDto.Add(new CandidatoResultadoDto
+                        {
+                            Id = (int)c.GetType().GetProperty("Id")?.GetValue(c)!,
+                            Nome = (string)c.GetType().GetProperty("Nome")?.GetValue(c)!,
+                            Partido = (string)c.GetType().GetProperty("Partido")?.GetValue(c)!,
+                            Numero = (string)c.GetType().GetProperty("Numero")?.GetValue(c)!,
+                            Votos = (int)c.GetType().GetProperty("Votos")?.GetValue(c)!,
+                            Percentual = (double)c.GetType().GetProperty("Percentual")?.GetValue(c)!,
+                        });
+                    }
+                }
+                ResultadoEleicao = new ResultadoEleicaoDto
+                {
+                    Eleicao = eleicaoDto,
+                    Estatisticas = estatDto,
+                    Candidatos = candidatosDto
+                };
+            }
+            else
+            {
+                ResultadoEleicao = null;
+            }
+
             StatusMessage = $"Resultados carregados para: {EleicaoSelecionada.Titulo}";
         }
         catch (Exception ex)
@@ -123,4 +177,50 @@ public class ResultadosViewModel : ViewModelBase
             IsLoading = false;
         }
     }
+}
+
+public class ResultadoEleicaoDto
+{
+    public EleicaoDto Eleicao { get; set; } = new();
+    public EstatisticasDto Estatisticas { get; set; } = new();
+    public List<CandidatoResultadoDto> Candidatos { get; set; } = new();
+
+    public int TotalVotos => Estatisticas.TotalVotos;
+    public int VotosValidos => Estatisticas.VotosValidos;
+    public int VotosNulos => Estatisticas.VotosNulos;
+    public int VotosBrancos => Estatisticas.VotosBrancos;
+    public double PercentualValidos => Estatisticas.PercentualValidos;
+    public double PercentualNulos => Estatisticas.PercentualNulos;
+    public double PercentualBrancos => Estatisticas.PercentualBrancos;
+}
+
+public class EleicaoDto
+{
+    public int Id { get; set; }
+    public string Titulo { get; set; } = string.Empty;
+    public string Descricao { get; set; } = string.Empty;
+    public DateTime DataInicio { get; set; }
+    public DateTime DataFim { get; set; }
+    public bool Ativa { get; set; }
+}
+
+public class EstatisticasDto
+{
+    public int TotalVotos { get; set; }
+    public int VotosValidos { get; set; }
+    public int VotosNulos { get; set; }
+    public int VotosBrancos { get; set; }
+    public double PercentualValidos { get; set; }
+    public double PercentualNulos { get; set; }
+    public double PercentualBrancos { get; set; }
+}
+
+public class CandidatoResultadoDto
+{
+    public int Id { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public string Partido { get; set; } = string.Empty;
+    public string Numero { get; set; } = string.Empty;
+    public int Votos { get; set; }
+    public double Percentual { get; set; }
 } 

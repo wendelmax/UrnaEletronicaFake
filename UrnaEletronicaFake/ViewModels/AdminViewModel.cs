@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using UrnaEletronicaFake.Models;
@@ -16,6 +17,14 @@ public class AdminViewModel : ViewModelBase
     private Eleicao? _eleicaoSelecionada;
     private bool _isLoading;
     private string _statusMessage = "";
+    
+    // Propriedades do formulário
+    private bool _mostrarFormulario;
+    private bool _modoEdicao;
+    private string _tituloEleicao = "";
+    private string _descricaoEleicao = "";
+    private DateTime _dataInicio = DateTime.Now.AddDays(1);
+    private DateTime _dataFim = DateTime.Now.AddDays(2);
 
     public AdminViewModel(IEleicaoService eleicaoService, IAuditoriaService auditoriaService)
     {
@@ -26,11 +35,14 @@ public class AdminViewModel : ViewModelBase
         
         // Comandos
         CarregarEleicoesCommand = new RelayCommand(async () => await CarregarEleicoes());
-        CriarEleicaoCommand = new RelayCommand(async () => await CriarEleicao());
+        MostrarFormularioCommand = new RelayCommand(AbrirFormulario);
+        SalvarEleicaoCommand = new RelayCommand(async () => await SalvarEleicao());
+        CancelarFormularioCommand = new RelayCommand(CancelarFormulario);
         EditarEleicaoCommand = new RelayCommand(async () => await EditarEleicao());
         DeletarEleicaoCommand = new RelayCommand(async () => await DeletarEleicao());
         AtivarEleicaoCommand = new RelayCommand(async () => await AtivarEleicao());
         DesativarEleicaoCommand = new RelayCommand(async () => await DesativarEleicao());
+        GerenciarCandidatosCommand = new RelayCommand(async () => await GerenciarCandidatos());
         
         // Carregar dados iniciais
         _ = CarregarEleicoes();
@@ -60,12 +72,54 @@ public class AdminViewModel : ViewModelBase
         set => SetProperty(ref _statusMessage, value);
     }
 
+    // Propriedades do formulário
+    public bool MostrarFormulario
+    {
+        get => _mostrarFormulario;
+        set => SetProperty(ref _mostrarFormulario, value);
+    }
+
+    public bool ModoEdicao
+    {
+        get => _modoEdicao;
+        set => SetProperty(ref _modoEdicao, value);
+    }
+
+    public string TituloEleicao
+    {
+        get => _tituloEleicao;
+        set => SetProperty(ref _tituloEleicao, value);
+    }
+
+    public string DescricaoEleicao
+    {
+        get => _descricaoEleicao;
+        set => SetProperty(ref _descricaoEleicao, value);
+    }
+
+    public DateTime DataInicio
+    {
+        get => _dataInicio;
+        set => SetProperty(ref _dataInicio, value);
+    }
+
+    public DateTime DataFim
+    {
+        get => _dataFim;
+        set => SetProperty(ref _dataFim, value);
+    }
+
+    public int EleicoesAtivas => Eleicoes.Count(e => e.Ativa);
+
     public ICommand CarregarEleicoesCommand { get; }
-    public ICommand CriarEleicaoCommand { get; }
+    public ICommand MostrarFormularioCommand { get; }
+    public ICommand SalvarEleicaoCommand { get; }
+    public ICommand CancelarFormularioCommand { get; }
     public ICommand EditarEleicaoCommand { get; }
     public ICommand DeletarEleicaoCommand { get; }
     public ICommand AtivarEleicaoCommand { get; }
     public ICommand DesativarEleicaoCommand { get; }
+    public ICommand GerenciarCandidatosCommand { get; }
 
     private async Task CarregarEleicoes()
     {
@@ -94,26 +148,80 @@ public class AdminViewModel : ViewModelBase
         }
     }
 
-    private async Task CriarEleicao()
+    private void AbrirFormulario()
     {
+        ModoEdicao = false;
+        TituloEleicao = "";
+        DescricaoEleicao = "";
+        DataInicio = DateTime.Now.AddDays(1);
+        DataFim = DateTime.Now.AddDays(2);
+        MostrarFormulario = true;
+        StatusMessage = "Criando nova eleição...";
+    }
+
+    private async Task SalvarEleicao()
+    {
+        if (string.IsNullOrWhiteSpace(TituloEleicao))
+        {
+            StatusMessage = "Digite o título da eleição";
+            return;
+        }
+
+        if (DataInicio >= DataFim)
+        {
+            StatusMessage = "A data de início deve ser anterior à data de fim";
+            return;
+        }
+
         try
         {
-            var novaEleicao = new Eleicao
-            {
-                Titulo = "Nova Eleição",
-                Descricao = "Descrição da nova eleição",
-                DataInicio = DateTime.Now.AddDays(1),
-                DataFim = DateTime.Now.AddDays(2)
-            };
+            IsLoading = true;
+            StatusMessage = "Salvando eleição...";
 
-            await _eleicaoService.CriarEleicaoAsync(novaEleicao);
+            if (ModoEdicao && EleicaoSelecionada != null)
+            {
+                EleicaoSelecionada.Titulo = TituloEleicao;
+                EleicaoSelecionada.Descricao = DescricaoEleicao;
+                EleicaoSelecionada.DataInicio = DataInicio;
+                EleicaoSelecionada.DataFim = DataFim;
+
+                await _eleicaoService.AtualizarEleicaoAsync(EleicaoSelecionada);
+                StatusMessage = "Eleição atualizada com sucesso!";
+            }
+            else
+            {
+                var novaEleicao = new Eleicao
+                {
+                    Titulo = TituloEleicao,
+                    Descricao = DescricaoEleicao,
+                    DataInicio = DataInicio,
+                    DataFim = DataFim
+                };
+
+                await _eleicaoService.CriarEleicaoAsync(novaEleicao);
+                StatusMessage = "Eleição criada com sucesso!";
+            }
+
             await CarregarEleicoes();
-            StatusMessage = "Eleição criada com sucesso!";
+            CancelarFormulario();
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Erro ao criar eleição: {ex.Message}";
+            StatusMessage = $"Erro ao salvar eleição: {ex.Message}";
         }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void CancelarFormulario()
+    {
+        MostrarFormulario = false;
+        ModoEdicao = false;
+        TituloEleicao = "";
+        DescricaoEleicao = "";
+        StatusMessage = "Formulário cancelado";
     }
 
     private async Task EditarEleicao()
@@ -124,15 +232,13 @@ public class AdminViewModel : ViewModelBase
             return;
         }
 
-        try
-        {
-            // Aqui você implementaria a lógica para abrir uma janela de edição
-            StatusMessage = $"Editando eleição: {EleicaoSelecionada.Titulo}";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Erro ao editar eleição: {ex.Message}";
-        }
+        ModoEdicao = true;
+        TituloEleicao = EleicaoSelecionada.Titulo;
+        DescricaoEleicao = EleicaoSelecionada.Descricao;
+        DataInicio = EleicaoSelecionada.DataInicio;
+        DataFim = EleicaoSelecionada.DataFim;
+        MostrarFormulario = true;
+        StatusMessage = $"Editando eleição: {EleicaoSelecionada.Titulo}";
     }
 
     private async Task DeletarEleicao()
@@ -145,10 +251,14 @@ public class AdminViewModel : ViewModelBase
 
         try
         {
+            IsLoading = true;
+            StatusMessage = "Deletando eleição...";
+            
             var sucesso = await _eleicaoService.DeletarEleicaoAsync(EleicaoSelecionada.Id);
             if (sucesso)
             {
                 await CarregarEleicoes();
+                EleicaoSelecionada = null;
                 StatusMessage = "Eleição deletada com sucesso!";
             }
             else
@@ -159,6 +269,10 @@ public class AdminViewModel : ViewModelBase
         catch (Exception ex)
         {
             StatusMessage = $"Erro ao deletar eleição: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
         }
     }
 
@@ -172,6 +286,9 @@ public class AdminViewModel : ViewModelBase
 
         try
         {
+            IsLoading = true;
+            StatusMessage = "Ativando eleição...";
+            
             var sucesso = await _eleicaoService.AtivarEleicaoAsync(EleicaoSelecionada.Id);
             if (sucesso)
             {
@@ -187,6 +304,10 @@ public class AdminViewModel : ViewModelBase
         {
             StatusMessage = $"Erro ao ativar eleição: {ex.Message}";
         }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     private async Task DesativarEleicao()
@@ -199,6 +320,9 @@ public class AdminViewModel : ViewModelBase
 
         try
         {
+            IsLoading = true;
+            StatusMessage = "Desativando eleição...";
+            
             var sucesso = await _eleicaoService.DesativarEleicaoAsync(EleicaoSelecionada.Id);
             if (sucesso)
             {
@@ -214,5 +338,21 @@ public class AdminViewModel : ViewModelBase
         {
             StatusMessage = $"Erro ao desativar eleição: {ex.Message}";
         }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task GerenciarCandidatos()
+    {
+        if (EleicaoSelecionada == null)
+        {
+            StatusMessage = "Selecione uma eleição para gerenciar candidatos";
+            return;
+        }
+
+        StatusMessage = $"Gerenciando candidatos da eleição: {EleicaoSelecionada.Titulo}";
+        // Aqui você implementaria a navegação para a tela de gerenciamento de candidatos
     }
 } 
