@@ -5,7 +5,7 @@
         xmlns:views="using:UrnaEletronicaFake.Views"
         mc:Ignorable="d"
         x:Class="UrnaEletronicaFake.Views.VotacaoWindow"
-        Width="600" Height="800"
-        Title="Urna Eletrônica">
+        Width="1024" Height="600"
+        Title="Urna Eletrônica - Terminal de Votação">
     <views:VotacaoView/>
 </Window> 

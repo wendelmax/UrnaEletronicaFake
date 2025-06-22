@@ -1,48 +1,93 @@
 using Avalonia.Controls;
 using UrnaEletronicaFake.ViewModels;
 using System;
+using Avalonia;
 
 namespace UrnaEletronicaFake.Views;
 
 public partial class MainWindow : Window
 {
     private VotacaoWindow? _votacaoWindow;
+    private VotacaoViewModel? _votacaoVmConectado;
 
     public MainWindow()
     {
         InitializeComponent();
-
-        // Acessar o ViewModel da urna
-        if (DataContext is MainWindowViewModel mainVm)
+        this.PropertyChanged += MainWindow_PropertyChanged;
+        if (DataContext != null)
         {
-            if (mainVm.CurrentView is VotacaoViewModel votacaoVm)
-            {
-                votacaoVm.OnDesanexarUrna += AbrirUrnaEmNovaJanela;
-                votacaoVm.OnAnexarUrna += FecharUrnaNovaJanela;
-            }
+            ConectarDataContext();
         }
     }
 
-    private void AbrirUrnaEmNovaJanela()
+    private void MainWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
-        if (_votacaoWindow == null)
+        if (e.Property == DataContextProperty && DataContext != null)
         {
-            _votacaoWindow = new VotacaoWindow();
+            ConectarDataContext();
+        }
+    }
+
+    private void ConectarDataContext()
+    {
+        if (DataContext is MainWindowViewModel mainVm)
+        {
+            mainVm.PropertyChanged -= MainVm_PropertyChanged; // Evita múltiplas inscrições
+            mainVm.PropertyChanged += MainVm_PropertyChanged;
+            ConectarEventosVotacao(mainVm.CurrentView);
+        }
+    }
+
+    private void MainVm_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(MainWindowViewModel.CurrentView) && DataContext is MainWindowViewModel mainVm)
+        {
+            ConectarEventosVotacao(mainVm.CurrentView);
+        }
+    }
+
+    private void ConectarEventosVotacao(object? viewModel)
+    {
+        if (_votacaoVmConectado != null)
+        {
+            _votacaoVmConectado.OnDesanexarUrna -= AbrirUrnaEmNovaJanela;
+            _votacaoVmConectado.OnAnexarUrna -= FecharUrnaNovaJanela;
+        }
+
+        if (viewModel is VotacaoViewModel votacaoVm)
+        {
+            votacaoVm.OnDesanexarUrna += AbrirUrnaEmNovaJanela;
+            votacaoVm.OnAnexarUrna += FecharUrnaNovaJanela;
+            _votacaoVmConectado = votacaoVm;
+        }
+        else
+        {
+            _votacaoVmConectado = null;
+        }
+    }
+
+    private async void AbrirUrnaEmNovaJanela()
+    {
+        if (_votacaoWindow == null && _votacaoVmConectado != null)
+        {
+            _votacaoWindow = new VotacaoWindow(_votacaoVmConectado);
             _votacaoWindow.Closed += (s, e) =>
             {
                 if (DataContext is MainWindowViewModel mainVm && mainVm.CurrentView is VotacaoViewModel votacaoVm)
                 {
-                    votacaoVm.UrnaDesanexada = false;
+                    if (votacaoVm.UrnaDesanexada)
+                    {
+                        votacaoVm.AlternarUrnaCommand.Execute(null);
+                    }
                 }
                 _votacaoWindow = null;
             };
-            _votacaoWindow.Show();
+            await _votacaoWindow.ShowDialog(this);
         }
     }
 
     private void FecharUrnaNovaJanela()
     {
         _votacaoWindow?.Close();
-        _votacaoWindow = null;
     }
 }
