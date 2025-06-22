@@ -93,18 +93,23 @@ public class UrnaDbContext : DbContext
         modelBuilder.Entity<Auditoria>(entity =>
         {
             entity.HasKey(a => a.Id);
-            entity.Property(a => a.Acao).IsRequired().HasMaxLength(50);
-            entity.Property(a => a.Entidade).IsRequired().HasMaxLength(50);
-            entity.Property(a => a.Detalhes).HasMaxLength(500);
-            entity.Property(a => a.IpAddress).HasMaxLength(45);
-            entity.Property(a => a.UserAgent).HasMaxLength(200);
-            entity.Property(a => a.DataHora).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(a => a.TipoAcao).IsRequired().HasMaxLength(50);
+            entity.Property(a => a.Entidade).IsRequired().HasMaxLength(100);
+            entity.Property(a => a.Descricao).HasMaxLength(500);
+            entity.Property(a => a.Usuario).HasMaxLength(100);
+            entity.Property(a => a.IpAddress).HasMaxLength(100);
+            entity.Property(a => a.DataAcao).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(a => a.DadosAnteriores).HasMaxLength(1000);
+            entity.Property(a => a.DadosNovos).HasMaxLength(1000);
             
             entity.HasOne(a => a.Eleicao)
                   .WithMany(e => e.Auditorias)
                   .HasForeignKey(a => a.EleicaoId)
                   .OnDelete(DeleteBehavior.SetNull);
         });
+
+        modelBuilder.Entity<Auditoria>()
+            .HasIndex(a => a.DataAcao);
 
         // Índices para melhor performance
         modelBuilder.Entity<Voto>()
@@ -116,8 +121,5 @@ public class UrnaDbContext : DbContext
         modelBuilder.Entity<Candidato>()
             .HasIndex(c => new { c.EleicaoId, c.Numero })
             .IsUnique();
-            
-        modelBuilder.Entity<Auditoria>()
-            .HasIndex(a => a.DataHora);
     }
 } 

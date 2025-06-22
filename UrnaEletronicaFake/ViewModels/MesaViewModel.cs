@@ -8,6 +8,7 @@ namespace UrnaEletronicaFake.ViewModels;
 public partial class MesaViewModel : ViewModelBase
 {
     private readonly IVotacaoStateService _votacaoStateService;
+    private readonly ITerminalLogService _terminalLogService;
 
     [ObservableProperty]
     private string _statusMessage = "Aguardando identificação do eleitor.";
@@ -18,9 +19,10 @@ public partial class MesaViewModel : ViewModelBase
 
     public IRelayCommand LiberarUrnaCommand { get; }
 
-    public MesaViewModel(IVotacaoStateService votacaoStateService)
+    public MesaViewModel(IVotacaoStateService votacaoStateService, ITerminalLogService terminalLogService)
     {
         _votacaoStateService = votacaoStateService;
+        _terminalLogService = terminalLogService;
         LiberarUrnaCommand = new RelayCommand(LiberarUrna, CanLiberarUrna);
 
         _votacaoStateService.OnTerminalStateChanged += OnTerminalStateChanged;
@@ -36,6 +38,7 @@ public partial class MesaViewModel : ViewModelBase
         if (_votacaoStateService.IsTerminalLocked)
         {
             IdentificacaoEleitor = "";
+            _terminalLogService.Registrar("Urna bloqueada. Aguardando nova identificação de eleitor.");
         }
     }
     
@@ -59,5 +62,6 @@ public partial class MesaViewModel : ViewModelBase
     private void LiberarUrna()
     {
         _votacaoStateService.UnlockTerminal(IdentificacaoEleitor);
+        _terminalLogService.Registrar($"Eleitor identificado: {IdentificacaoEleitor}. Urna liberada para votação.");
     }
 } 

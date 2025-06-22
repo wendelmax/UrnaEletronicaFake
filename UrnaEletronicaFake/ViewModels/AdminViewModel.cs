@@ -14,6 +14,7 @@ public partial class AdminViewModel : ViewModelBase
 {
     private readonly IEleicaoService _eleicaoService;
     private readonly IAuditoriaService _auditoriaService;
+    private readonly ITerminalLogService _terminalLogService;
     
     [ObservableProperty]
     private ObservableCollection<Eleicao> _eleicoes = new();
@@ -96,10 +97,11 @@ public partial class AdminViewModel : ViewModelBase
     public string BotaoSalvarTexto => ModoEdicao ? "Atualizar" : "Salvar";
     public bool IsEleicaoSelecionada => EleicaoSelecionada != null;
 
-    public AdminViewModel(IEleicaoService eleicaoService, IAuditoriaService auditoriaService)
+    public AdminViewModel(IEleicaoService eleicaoService, IAuditoriaService auditoriaService, ITerminalLogService terminalLogService)
     {
         _eleicaoService = eleicaoService;
         _auditoriaService = auditoriaService;
+        _terminalLogService = terminalLogService;
         
         // Comandos
         CarregarEleicoesCommand = new RelayCommand(async () => await CarregarEleicoes());
@@ -226,6 +228,7 @@ public partial class AdminViewModel : ViewModelBase
                 EleicaoSelecionada.DataFim = DataFim.DateTime;
 
                 await _eleicaoService.AtualizarEleicaoAsync(EleicaoSelecionada);
+                _terminalLogService.Registrar($"Eleição atualizada: {TituloEleicao}");
                 StatusMessage = "Eleição atualizada com sucesso!";
             }
             else
@@ -239,6 +242,7 @@ public partial class AdminViewModel : ViewModelBase
                 };
 
                 await _eleicaoService.CriarEleicaoAsync(novaEleicao);
+                _terminalLogService.Registrar($"Nova eleição criada: {TituloEleicao}");
                 StatusMessage = "Eleição criada com sucesso!";
             }
 
@@ -248,6 +252,7 @@ public partial class AdminViewModel : ViewModelBase
         catch (Exception ex)
         {
             StatusMessage = $"Erro ao salvar eleição: {ex.Message}";
+            _terminalLogService.Registrar($"Erro ao salvar eleição: {ex.Message}");
         }
         finally
         {
@@ -297,6 +302,7 @@ public partial class AdminViewModel : ViewModelBase
             var sucesso = await _eleicaoService.DeletarEleicaoAsync(EleicaoSelecionada.Id);
             if (sucesso)
             {
+                _terminalLogService.Registrar($"Eleição deletada: {EleicaoSelecionada.Titulo}");
                 await CarregarEleicoes();
                 EleicaoSelecionada = null;
                 StatusMessage = "Eleição deletada com sucesso!";
@@ -309,6 +315,7 @@ public partial class AdminViewModel : ViewModelBase
         catch (Exception ex)
         {
             StatusMessage = $"Erro ao deletar eleição: {ex.Message}";
+            _terminalLogService.Registrar($"Erro ao deletar eleição: {ex.Message}");
         }
         finally
         {
@@ -332,6 +339,7 @@ public partial class AdminViewModel : ViewModelBase
             var sucesso = await _eleicaoService.AtivarEleicaoAsync(EleicaoSelecionada.Id);
             if (sucesso)
             {
+                _terminalLogService.Registrar($"Eleição ativada: {EleicaoSelecionada.Titulo}");
                 await CarregarEleicoes();
                 StatusMessage = "Eleição ativada com sucesso!";
             }
@@ -343,6 +351,7 @@ public partial class AdminViewModel : ViewModelBase
         catch (Exception ex)
         {
             StatusMessage = $"Erro ao ativar eleição: {ex.Message}";
+            _terminalLogService.Registrar($"Erro ao ativar eleição: {ex.Message}");
         }
         finally
         {
@@ -366,6 +375,7 @@ public partial class AdminViewModel : ViewModelBase
             var sucesso = await _eleicaoService.DesativarEleicaoAsync(EleicaoSelecionada.Id);
             if (sucesso)
             {
+                _terminalLogService.Registrar($"Eleição desativada: {EleicaoSelecionada.Titulo}");
                 await CarregarEleicoes();
                 StatusMessage = "Eleição desativada com sucesso!";
             }
@@ -377,6 +387,7 @@ public partial class AdminViewModel : ViewModelBase
         catch (Exception ex)
         {
             StatusMessage = $"Erro ao desativar eleição: {ex.Message}";
+            _terminalLogService.Registrar($"Erro ao desativar eleição: {ex.Message}");
         }
         finally
         {
@@ -667,7 +678,7 @@ public partial class AdminViewModel : ViewModelBase
             IsLoading = true;
             StatusMessage = "Removendo cargo...";
             
-            var sucesso = await _eleicaoService.RemoverCargoEleitoralAsync(EleicaoSelecionada.Id, CargoSelecionado.Id);
+            var sucesso = await _eleicaoService.RemoverCargoAsync(EleicaoSelecionada.Id, CargoSelecionado.Id);
             if (sucesso)
             {
                 await CarregarCargos();
@@ -695,7 +706,7 @@ public partial class AdminViewModel : ViewModelBase
 
         try
         {
-            var cargos = await _eleicaoService.ObterCargosEleitoraisAsync(EleicaoSelecionada.Id);
+            var cargos = await _eleicaoService.ObterCargosAsync(EleicaoSelecionada.Id);
             
             Cargos.Clear();
             foreach (var cargo in cargos)
