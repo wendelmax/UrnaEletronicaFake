@@ -3,14 +3,14 @@ using UrnaEletronicaFake.ViewModels;
 
 namespace UrnaEletronicaFake.Views;
 
-public partial class VotacaoWindow : Window
+public partial class DashboardWindow : Window
 {
-    public VotacaoWindow()
+    public DashboardWindow()
     {
         InitializeComponent();
     }
     
-    public VotacaoWindow(VotacaoViewModel viewModel)
+    public DashboardWindow(DashboardViewModel viewModel)
     {
         InitializeComponent();
         DataContext = viewModel;
@@ -20,4 +20,4 @@ public partial class VotacaoWindow : Window
     {
         Close();
     }
-} 
+}

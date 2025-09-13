@@ -7,34 +7,64 @@
              x:Class="UrnaEletronicaFake.Views.MesaView"
              x:DataType="vm:MesaViewModel">
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <StackPanel Spacing="20" HorizontalAlignment="Center" MaxWidth="500">
-            <TextBlock Text="🧑‍⚖️ Mesa Receptora de Votos" 
-                       FontSize="28" 
-                       FontWeight="Bold" 
-                       Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
+    <Grid RowDefinitions="Auto,*" Margin="20">
+        <!-- Status Header -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource SurfaceBrushDynamic}" 
+                Padding="15,10"
+                BorderBrush="{DynamicResource DividerBrushDynamic}"
+                BorderThickness="0,0,0,1"
+                CornerRadius="8"
+                Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="🧑‍⚖️ Mesa Receptora de Votos" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           Foreground="{DynamicResource TextPrimaryBrushDynamic}"
+                           HorizontalAlignment="Center"/>
+                
+                <TextBlock Text="{Binding StatusMessage}"
+                           FontSize="16"
+                           Foreground="{DynamicResource TextSecondaryBrushDynamic}"
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>
 
-            <TextBlock Text="{Binding StatusMessage}"
-                       FontSize="18"
-                       Foreground="{DynamicResource TextSecondaryBrushDynamic}"
-                       HorizontalAlignment="Center"
-                       TextWrapping="Wrap"
-                       TextAlignment="Center"/>
+        <!-- Conteúdo Principal -->
+        <StackPanel Grid.Row="1" 
+                    Spacing="25" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    MaxWidth="500">
             
-            <StackPanel Spacing="8">
+            <StackPanel Spacing="10">
                 <TextBlock Text="Identificação do Eleitor:"
-                           FontSize="14"
+                           FontSize="16"
                            FontWeight="Bold"
                            Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
+                
                 <TextBox Text="{Binding IdentificacaoEleitor}"
-                         FontSize="16"
-                         Padding="15,12"
+                         FontSize="18"
+                         Padding="20,15"
                          Watermark="Digite o CPF ou Título de Eleitor"
                          HorizontalAlignment="Stretch"
-                         Theme="{DynamicResource ModernTextBoxTheme}"/>
+                         Background="{DynamicResource SurfaceBrushDynamic}"
+                         Foreground="{DynamicResource TextPrimaryBrushDynamic}"
+                         BorderBrush="{DynamicResource DividerBrushDynamic}"
+                         BorderThickness="2"
+                         CornerRadius="10">
+                    <TextBox.Styles>
+                        <Style Selector="TextBox:focus">
+                            <Setter Property="BorderBrush" Value="{DynamicResource AccentBrushDynamic}"/>
+                        </Style>
+                    </TextBox.Styles>
+                </TextBox>
             </StackPanel>
 
-            <Button Content="Liberar Urna para Votação"
+            <Button Content="✅ Liberar Urna para Votação"
                     Command="{Binding LiberarUrnaCommand}"
                     HorizontalAlignment="Stretch"
                     Padding="40,20"
@@ -42,18 +72,44 @@
                     FontWeight="Bold"
                     Background="{DynamicResource SuccessBrushDynamic}"
                     Foreground="White"
-                    CornerRadius="8"
-                    Theme="{DynamicResource PrimaryButtonTheme}">
+                    CornerRadius="12"
+                    BorderThickness="0">
                 <Button.Styles>
                     <Style Selector="Button:disabled">
                         <Setter Property="Background" Value="{DynamicResource TextHintBrushDynamic}"/>
-                        <Setter Property="Opacity" Value="0.7"/>
+                        <Setter Property="Opacity" Value="0.6"/>
                     </Style>
                     <Style Selector="Button:pointerover">
-                        <Setter Property="Background" Value="{DynamicResource SuccessBrushDynamic}"/>
+                        <Setter Property="Background" Value="{DynamicResource SuccessBrush2Dynamic}"/>
                     </Style>
                 </Button.Styles>
             </Button>
+            
+            <!-- Informações Adicionais -->
+            <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                    Padding="15" 
+                    CornerRadius="8"
+                    BorderBrush="{DynamicResource DividerBrushDynamic}"
+                    BorderThickness="1">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="💡 Informações:"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
+                    
+                    <TextBlock Text="• Digite o CPF ou Título do eleitor"
+                               FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
+                    
+                    <TextBlock Text="• A urna será liberada para votação"
+                               FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
+                    
+                    <TextBlock Text="• Após o voto, a urna será bloqueada automaticamente"
+                               FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </Grid>
 </UserControl> 

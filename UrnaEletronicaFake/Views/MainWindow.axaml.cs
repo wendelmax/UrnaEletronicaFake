@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using UrnaEletronicaFake.ViewModels;
+using UrnaEletronicaFake.Services;
 using System;
 using Avalonia;
 
@@ -9,6 +10,7 @@ public partial class MainWindow : Window
 {
     private VotacaoWindow? _votacaoWindow;
     private VotacaoViewModel? _votacaoVmConectado;
+    private IWindowManagerService? _windowManagerService;
 
     public MainWindow()
     {
@@ -18,6 +20,14 @@ public partial class MainWindow : Window
         {
             ConectarDataContext();
         }
+    }
+    
+    public void ConfigurarWindowManager(IWindowManagerService windowManagerService)
+    {
+        _windowManagerService = windowManagerService;
+        _windowManagerService.OnDashboardWindowFechada += OnDashboardWindowFechada;
+        _windowManagerService.OnMesaWindowFechada += OnMesaWindowFechada;
+        _windowManagerService.OnVotacaoWindowFechada += OnVotacaoWindowFechada;
     }
 
     private void MainWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -89,5 +99,29 @@ public partial class MainWindow : Window
     private void FecharUrnaNovaJanela()
     {
         _votacaoWindow?.Close();
+    }
+    
+    private void OnDashboardWindowFechada()
+    {
+        if (DataContext is MainWindowViewModel mainVm)
+        {
+            mainVm.AtualizarStatusDashboardWindow(false);
+        }
+    }
+    
+    private void OnMesaWindowFechada()
+    {
+        if (DataContext is MainWindowViewModel mainVm)
+        {
+            mainVm.AtualizarStatusMesaWindow(false);
+        }
+    }
+    
+    private void OnVotacaoWindowFechada()
+    {
+        if (DataContext is MainWindowViewModel mainVm)
+        {
+            mainVm.AtualizarStatusVotacaoWindow(false);
+        }
     }
 }

@@ -5,13 +5,12 @@
         xmlns:views="using:UrnaEletronicaFake.Views"
         xmlns:vm="using:UrnaEletronicaFake.ViewModels"
         mc:Ignorable="d"
-        x:Class="UrnaEletronicaFake.Views.VotacaoWindow"
-        Width="1024" Height="600"
-        Title="Urna Eletrônica - Terminal de Votação"
+        x:Class="UrnaEletronicaFake.Views.DashboardWindow"
+        Width="1200" Height="800"
+        Title="Dashboard de Monitoramento - Urna Eletrônica"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
-        Icon="/Assets/avalonia-logo.ico"
-        CanResize="True">
+        Icon="/Assets/avalonia-logo.ico">
     
     <Window.Styles>
         <Style Selector="Window">
@@ -58,7 +57,7 @@
             <Grid ColumnDefinitions="*,Auto">
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
                     <Image Source="/Assets/avalonia-logo.ico" Width="24" Height="24"/>
-                    <TextBlock Text="Urna Eletrônica - Terminal de Votação" 
+                    <TextBlock Text="📊 Dashboard de Monitoramento" 
                                FontSize="18" 
                                FontWeight="Bold" 
                                Foreground="{DynamicResource TextPrimaryBrushDynamic}"
@@ -68,10 +67,10 @@
                 <StackPanel Grid.Column="1" 
                             Orientation="Horizontal" 
                             Spacing="10">
-                    <Button Content="🔗 Anexar à Mesa"
+                    <Button Content="🔄 Atualizar"
                             Classes="control-button secondary"
-                            Command="{Binding AlternarUrnaCommand}"
-                            x:DataType="vm:VotacaoViewModel"/>
+                            Command="{Binding AtualizarDadosCommand}"
+                            x:DataType="vm:DashboardViewModel"/>
                     <Button Content="❌ Fechar"
                             Classes="control-button"
                             Click="FecharJanela_Click"/>
@@ -79,7 +78,7 @@
             </Grid>
         </Border>
         
-        <!-- Conteúdo da votação -->
-        <views:VotacaoView Grid.Row="1"/>
+        <!-- Conteúdo do Dashboard -->
+        <views:DashboardView Grid.Row="1"/>
     </Grid>
-</Window> 
+</Window>
