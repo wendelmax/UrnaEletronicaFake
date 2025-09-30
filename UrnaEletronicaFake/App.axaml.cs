@@ -12,6 +12,8 @@ using UrnaEletronicaFake.ViewModels;
 using UrnaEletronicaFake.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using UrnaEletronicaFake.Modules.Core.DependencyInjection;
 
 namespace UrnaEletronicaFake;
 
@@ -63,6 +65,12 @@ public partial class App : Application
 
     private void ConfigureServices(IServiceCollection services)
     {
+        // Configurar logging
+        services.AddLogging(builder => builder.AddConsole());
+        
+        // Configurar módulo Core (MediatR e Event Bus)
+        services.AddCoreModule();
+        
         // Configurar Entity Framework
         services.AddDbContext<UrnaDbContext>(options =>
             options.UseSqlite("Data Source=urna_eletronica.db"));
