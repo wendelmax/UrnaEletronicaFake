@@ -12,6 +12,10 @@ using UrnaEletronicaFake.ViewModels;
 using UrnaEletronicaFake.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using UrnaEletronicaFake.Modules.Core.DependencyInjection;
+using UrnaEletronicaFake.Modules.Mesa.DependencyInjection;
+using UrnaEletronicaFake.Modules.Mesa.ViewModels;
 
 namespace UrnaEletronicaFake;
 
@@ -67,12 +71,24 @@ public partial class App : Application
         services.AddDbContext<UrnaDbContext>(options =>
             options.UseSqlite("Data Source=urna_eletronica.db"));
 
-        // Registrar serviços
-        services.AddSingleton<IVotacaoStateService, VotacaoStateService>();
+        // Configurar Logging
+        services.AddLogging(builder => 
+        {
+            builder.AddConsole();
+            builder.SetMinimumLevel(LogLevel.Information);
+        });
+
+        // Registrar módulos
+        services.AddCoreModule();
+        services.AddMesaModule();
+
+        // Registrar serviços legados (para compatibilidade)
         services.AddSingleton<ITerminalLogService, TerminalLogService>();
+        services.AddSingleton<IVotacaoStateService, LegacyIntegrationService>();
         services.AddScoped<IEleicaoService, EleicaoService>();
         services.AddScoped<IVotoService, VotoService>();
         services.AddScoped<IAuditoriaService, AuditoriaService>();
+        services.AddScoped<IMesaIntegrationService, MesaIntegrationService>();
 
         // Registrar ViewModels
         services.AddTransient<MainWindowViewModel>();
@@ -80,7 +96,21 @@ public partial class App : Application
         services.AddTransient<VotacaoViewModel>();
         services.AddTransient<ResultadosViewModel>();
         services.AddTransient<AuditoriaViewModel>();
-        services.AddTransient<MesaViewModel>();
+        
+        // Registrar o MesaViewModel antigo apenas se o novo não estiver disponível
+        services.AddTransient<MesaViewModel>(provider => 
+        {
+            try 
+            {
+                return provider.GetRequiredService<UrnaEletronicaFake.Modules.Mesa.ViewModels.MesaViewModel>();
+            }
+            catch 
+            {
+                var votacaoService = provider.GetRequiredService<IVotacaoStateService>();
+                var logService = provider.GetRequiredService<ITerminalLogService>();
+                return new UrnaEletronicaFake.ViewModels.MesaViewModel(votacaoService, logService);
+            }
+        });
 
         // Registrar Views
         services.AddTransient<AdminView>();

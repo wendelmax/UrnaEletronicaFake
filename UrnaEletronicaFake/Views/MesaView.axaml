@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:UrnaEletronicaFake.ViewModels"
+             xmlns:vm="using:UrnaEletronicaFake.Modules.Mesa.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="UrnaEletronicaFake.Views.MesaView"
              x:DataType="vm:MesaViewModel">
@@ -21,39 +21,106 @@
                        TextWrapping="Wrap"
                        TextAlignment="Center"/>
             
-            <StackPanel Spacing="8">
-                <TextBlock Text="Identificação do Eleitor:"
-                           FontSize="14"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
-                <TextBox Text="{Binding IdentificacaoEleitor}"
-                         FontSize="16"
-                         Padding="15,12"
-                         Watermark="Digite o CPF ou Título de Eleitor"
-                         HorizontalAlignment="Stretch"
-                         Theme="{DynamicResource ModernTextBoxTheme}"/>
+            <!-- Campos de entrada -->
+            <StackPanel Spacing="15">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Identificação do Mesário:"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
+                    <TextBox Text="{Binding MesarioId}"
+                             FontSize="16"
+                             Padding="15,12"
+                             Watermark="ID do Mesário (obrigatório)"
+                             HorizontalAlignment="Stretch"
+                             Theme="{DynamicResource ModernTextBoxTheme}"/>
+                </StackPanel>
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Identificação do Eleitor:"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
+                    <TextBox Text="{Binding IdentificacaoEleitor}"
+                             FontSize="16"
+                             Padding="15,12"
+                             Watermark="Digite o CPF ou Título de Eleitor"
+                             HorizontalAlignment="Stretch"
+                             Theme="{DynamicResource ModernTextBoxTheme}"/>
+                </StackPanel>
             </StackPanel>
 
-            <Button Content="Liberar Urna para Votação"
-                    Command="{Binding LiberarUrnaCommand}"
-                    HorizontalAlignment="Stretch"
-                    Padding="40,20"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    Background="{DynamicResource SuccessBrushDynamic}"
+            <!-- Botões de Controle -->
+            <StackPanel Spacing="10">
+                <Button Content="Liberar Urna para Votação"
+                        Command="{Binding LiberarUrnaCommand}"
+                        HorizontalAlignment="Stretch"
+                        Padding="40,20"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Background="{DynamicResource SuccessBrushDynamic}"
+                        Foreground="White"
+                        CornerRadius="8"
+                        Theme="{DynamicResource PrimaryButtonTheme}">
+                    <Button.Styles>
+                        <Style Selector="Button:disabled">
+                            <Setter Property="Background" Value="{DynamicResource TextHintBrushDynamic}"/>
+                            <Setter Property="Opacity" Value="0.7"/>
+                        </Style>
+                        <Style Selector="Button:pointerover">
+                            <Setter Property="Background" Value="{DynamicResource SuccessBrushDynamic}"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+
+                <Button Content="Bloquear Urna (Emergência)"
+                        Command="{Binding BloquearUrnaCommand}"
+                        HorizontalAlignment="Stretch"
+                        Padding="20,15"
+                        FontSize="16"
+                        Background="#CC5555"
+                        Foreground="White"
+                        CornerRadius="8">
+                    <Button.Styles>
+                        <Style Selector="Button:disabled">
+                            <Setter Property="Background" Value="{DynamicResource TextHintBrushDynamic}"/>
+                            <Setter Property="Opacity" Value="0.7"/>
+                        </Style>
+                        <Style Selector="Button:pointerover">
+                            <Setter Property="Background" Value="#AA3333"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+            </StackPanel>
+
+            <!-- Informações do Terminal -->
+            <StackPanel Spacing="5">
+                <TextBlock Text="Informações do Terminal:" 
+                           FontSize="14" 
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
+                <TextBlock Text="{Binding TerminalId, StringFormat='Terminal: {0}'}" 
+                           FontSize="12"
+                           Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
+                <TextBlock Text="{Binding UltimaLiberacao, StringFormat='Última Liberação: {0:HH:mm:ss dd/MM/yyyy}'}" 
+                           FontSize="12"
+                           IsVisible="{Binding UltimaLiberacao, Converter={x:Static ObjectConverters.IsNotNull}}"
+                           Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
+                <TextBlock Text="{Binding UltimoBloqueio, StringFormat='Último Bloqueio: {0:HH:mm:ss dd/MM/yyyy}'}" 
+                           FontSize="12"
+                           IsVisible="{Binding UltimoBloqueio, Converter={x:Static ObjectConverters.IsNotNull}}"
+                           Foreground="{DynamicResource TextSecondaryBrushDynamic}"/>
+            </StackPanel>
+
+            <!-- Botão para limpar log -->
+            <Button Content="Limpar Log"
+                    Command="{Binding LimparLogCommand}"
+                    HorizontalAlignment="Center"
+                    Padding="20,10"
+                    FontSize="12"
+                    Background="{DynamicResource TextHintBrushDynamic}"
                     Foreground="White"
-                    CornerRadius="8"
-                    Theme="{DynamicResource PrimaryButtonTheme}">
-                <Button.Styles>
-                    <Style Selector="Button:disabled">
-                        <Setter Property="Background" Value="{DynamicResource TextHintBrushDynamic}"/>
-                        <Setter Property="Opacity" Value="0.7"/>
-                    </Style>
-                    <Style Selector="Button:pointerover">
-                        <Setter Property="Background" Value="{DynamicResource SuccessBrushDynamic}"/>
-                    </Style>
-                </Button.Styles>
-            </Button>
+                    CornerRadius="4"/>
         </StackPanel>
     </Grid>
 </UserControl> 
