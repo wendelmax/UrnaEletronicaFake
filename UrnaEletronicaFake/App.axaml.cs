@@ -12,6 +12,8 @@ using UrnaEletronicaFake.ViewModels;
 using UrnaEletronicaFake.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MediatR;
+using UrnaEletronicaFake.Modules.Voting.DependencyInjection;
 
 namespace UrnaEletronicaFake;
 
@@ -66,6 +68,14 @@ public partial class App : Application
         // Configurar Entity Framework
         services.AddDbContext<UrnaDbContext>(options =>
             options.UseSqlite("Data Source=urna_eletronica.db"));
+
+        // Configurar MediatR
+        services.AddMediatR(cfg => {
+            cfg.RegisterServicesFromAssembly(typeof(App).Assembly);
+        });
+
+        // Registrar módulos
+        services.AddVotingModule();
 
         // Registrar serviços
         services.AddSingleton<IVotacaoStateService, VotacaoStateService>();
