@@ -1,0 +1,417 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:behaviors="using:UrnaEletronicaFake.UI.Behaviors">
+
+    <!-- Design System Styles - Urna Eletrônica -->
+
+    <!-- Botões Primários -->
+    <Style Selector="Button.primary">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextOnPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeM}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="MinHeight" Value="{StaticResource ComponentHeightL}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+    </Style>
+
+    <Style Selector="Button.primary:pointerover">
+        <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryDarkBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowMedium}"/>
+    </Style>
+
+    <Style Selector="Button.primary:pressed">
+        <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryDarkBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+        <Setter Property="RenderTransform" Value="scale(0.98)"/>
+    </Style>
+
+    <Style Selector="Button.primary:disabled">
+        <Setter Property="Background" Value="{StaticResource NeutralLightBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextDisabledBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NeutralLightBrush}"/>
+        <Setter Property="Effect" Value="{x:Null}"/>
+    </Style>
+
+    <!-- Botões Secundários -->
+    <Style Selector="Button.secondary">
+        <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeM}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="MinHeight" Value="{StaticResource ComponentHeightL}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+    </Style>
+
+    <Style Selector="Button.secondary:pointerover">
+        <Setter Property="Background" Value="{StaticResource PrimaryLightBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowMedium}"/>
+    </Style>
+
+    <Style Selector="Button.secondary:pressed">
+        <Setter Property="Background" Value="{StaticResource PrimaryLightBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+        <Setter Property="RenderTransform" Value="scale(0.98)"/>
+    </Style>
+
+    <!-- Botões de Sucesso -->
+    <Style Selector="Button.success">
+        <Setter Property="Background" Value="{StaticResource SuccessBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextOnPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SuccessBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeM}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="MinHeight" Value="{StaticResource ComponentHeightL}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+    </Style>
+
+    <Style Selector="Button.success:pointerover">
+        <Setter Property="Background" Value="{StaticResource SuccessDarkBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SuccessDarkBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowMedium}"/>
+    </Style>
+
+    <!-- Botões de Aviso -->
+    <Style Selector="Button.warning">
+        <Setter Property="Background" Value="{StaticResource WarningBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextOnPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource WarningBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeM}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="MinHeight" Value="{StaticResource ComponentHeightL}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+    </Style>
+
+    <Style Selector="Button.warning:pointerover">
+        <Setter Property="Background" Value="{StaticResource WarningDarkBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource WarningDarkBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowMedium}"/>
+    </Style>
+
+    <!-- Botões de Erro -->
+    <Style Selector="Button.error">
+        <Setter Property="Background" Value="{StaticResource ErrorBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextOnPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ErrorBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeM}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="MinHeight" Value="{StaticResource ComponentHeightL}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+    </Style>
+
+    <Style Selector="Button.error:pointerover">
+        <Setter Property="Background" Value="{StaticResource ErrorDarkBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ErrorDarkBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowMedium}"/>
+    </Style>
+
+    <!-- Botões de Informação -->
+    <Style Selector="Button.info">
+        <Setter Property="Background" Value="{StaticResource InfoBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextOnPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource InfoBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeM}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="MinHeight" Value="{StaticResource ComponentHeightL}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+    </Style>
+
+    <Style Selector="Button.info:pointerover">
+        <Setter Property="Background" Value="{StaticResource InfoDarkBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource InfoDarkBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowMedium}"/>
+    </Style>
+
+    <!-- Botões de Tamanho Grande -->
+    <Style Selector="Button.large">
+        <Setter Property="Padding" Value="{StaticResource SpacingL}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeL}"/>
+        <Setter Property="MinHeight" Value="{StaticResource ComponentHeightXL}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusLarge}"/>
+    </Style>
+
+    <!-- Botões de Tamanho Pequeno -->
+    <Style Selector="Button.small">
+        <Setter Property="Padding" Value="{StaticResource SpacingS}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeS}"/>
+        <Setter Property="MinHeight" Value="{StaticResource ComponentHeightM}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSmall}"/>
+    </Style>
+
+    <!-- Cards -->
+    <Style Selector="Border.card">
+        <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusLarge}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingL}"/>
+        <Setter Property="Margin" Value="{StaticResource SpacingS}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowMedium}"/>
+        <Setter Property="Transitions" Value="{StaticResource DefaultTransitions}"/>
+    </Style>
+
+    <Style Selector="Border.card:pointerover">
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowLarge}"/>
+        <Setter Property="RenderTransform" Value="scale(1.02)"/>
+    </Style>
+
+    <!-- Cards Elevados -->
+    <Style Selector="Border.card-elevated">
+        <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusLarge}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingL}"/>
+        <Setter Property="Margin" Value="{StaticResource SpacingS}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowLarge}"/>
+        <Setter Property="Transitions" Value="{StaticResource DefaultTransitions}"/>
+    </Style>
+
+    <!-- Cards de Status -->
+    <Style Selector="Border.status-card">
+        <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+        <Setter Property="Margin" Value="{StaticResource SpacingXs}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+    </Style>
+
+    <!-- TextBlocks -->
+    <Style Selector="TextBlock.heading">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeXxxl}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+    </Style>
+
+    <Style Selector="TextBlock.subheading">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeXxl}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+
+    <Style Selector="TextBlock.body">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeM}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+
+    <Style Selector="TextBlock.caption">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeS}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+        <Setter Property="Margin" Value="0,0,0,2"/>
+    </Style>
+
+    <Style Selector="TextBlock.label">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeS}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="Margin" Value="0,0,0,2"/>
+    </Style>
+
+    <!-- Inputs -->
+    <Style Selector="TextBox">
+        <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeM}"/>
+        <Setter Property="MinHeight" Value="{StaticResource ComponentHeightL}"/>
+        <Setter Property="Transitions" Value="{StaticResource DefaultTransitions}"/>
+    </Style>
+
+    <Style Selector="TextBox:focus">
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+
+    <Style Selector="TextBox:pointerover">
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+    </Style>
+
+    <Style Selector="TextBox:disabled">
+        <Setter Property="Background" Value="{StaticResource BackgroundTertiaryBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextDisabledBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+    </Style>
+
+    <!-- ComboBox -->
+    <Style Selector="ComboBox">
+        <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeM}"/>
+        <Setter Property="MinHeight" Value="{StaticResource ComponentHeightL}"/>
+        <Setter Property="Transitions" Value="{StaticResource DefaultTransitions}"/>
+    </Style>
+
+    <Style Selector="ComboBox:focus">
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+
+    <Style Selector="ComboBox:pointerover">
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+    </Style>
+
+    <!-- Indicadores de Status -->
+    <Style Selector="Ellipse.status-online">
+        <Setter Property="Fill" Value="{StaticResource SuccessBrush}"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Margin" Value="0,0,4,0"/>
+    </Style>
+
+    <Style Selector="Ellipse.status-offline">
+        <Setter Property="Fill" Value="{StaticResource TextDisabledBrush}"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Margin" Value="0,0,4,0"/>
+    </Style>
+
+    <Style Selector="Ellipse.status-warning">
+        <Setter Property="Fill" Value="{StaticResource WarningBrush}"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Margin" Value="0,0,4,0"/>
+    </Style>
+
+    <Style Selector="Ellipse.status-error">
+        <Setter Property="Fill" Value="{StaticResource ErrorBrush}"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Margin" Value="0,0,4,0"/>
+    </Style>
+
+    <!-- ScrollViewer -->
+    <Style Selector="ScrollViewer">
+        <Setter Property="Background" Value="{StaticResource BackgroundPrimaryBrush}"/>
+    </Style>
+
+    <Style Selector="ScrollViewer > ScrollBar">
+        <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+    </Style>
+
+    <Style Selector="ScrollViewer > ScrollBar > Thumb">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSmall}"/>
+    </Style>
+
+    <Style Selector="ScrollViewer > ScrollBar > Thumb:pointerover">
+        <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}"/>
+    </Style>
+
+    <!-- ListBox -->
+    <Style Selector="ListBox">
+        <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+    </Style>
+
+    <Style Selector="ListBoxItem">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+        <Setter Property="Margin" Value="{StaticResource SpacingXs}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSmall}"/>
+        <Setter Property="Transitions" Value="{StaticResource DefaultTransitions}"/>
+    </Style>
+
+    <Style Selector="ListBoxItem:selected">
+        <Setter Property="Background" Value="{StaticResource PrimarySurfaceBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+    </Style>
+
+    <Style Selector="ListBoxItem:pointerover">
+        <Setter Property="Background" Value="{StaticResource PrimaryLightBrush}"/>
+    </Style>
+
+    <!-- ProgressBar -->
+    <Style Selector="ProgressBar">
+        <Setter Property="Background" Value="{StaticResource BackgroundTertiaryBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="Height" Value="8"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSmall}"/>
+    </Style>
+
+    <!-- Badge -->
+    <Style Selector="Border.badge">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSmall}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingS}"/>
+        <Setter Property="MinWidth" Value="20"/>
+        <Setter Property="MinHeight" Value="20"/>
+    </Style>
+
+    <Style Selector="Border.badge.success">
+        <Setter Property="Background" Value="{StaticResource SuccessBrush}"/>
+    </Style>
+
+    <Style Selector="Border.badge.warning">
+        <Setter Property="Background" Value="{StaticResource WarningBrush}"/>
+    </Style>
+
+    <Style Selector="Border.badge.error">
+        <Setter Property="Background" Value="{StaticResource ErrorBrush}"/>
+    </Style>
+
+    <Style Selector="Border.badge.info">
+        <Setter Property="Background" Value="{StaticResource InfoBrush}"/>
+    </Style>
+
+    <!-- Divider -->
+    <Style Selector="Border.divider">
+        <Setter Property="Background" Value="{StaticResource BorderLightBrush}"/>
+        <Setter Property="Height" Value="1"/>
+        <Setter Property="Margin" Value="{StaticResource SpacingM}"/>
+    </Style>
+
+    <Style Selector="Border.divider-vertical">
+        <Setter Property="Background" Value="{StaticResource BorderLightBrush}"/>
+        <Setter Property="Width" Value="1"/>
+        <Setter Property="Margin" Value="{StaticResource SpacingM}"/>
+    </Style>
+
+</Styles>
+

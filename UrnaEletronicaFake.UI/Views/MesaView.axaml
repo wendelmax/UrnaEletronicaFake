@@ -1,0 +1,144 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:UrnaEletronicaFake.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="UrnaEletronicaFake.UI.Views.MesaView"
+             x:DataType="vm:MesaViewModel"
+             Background="{StaticResource BackgroundPrimaryBrush}">
+
+    <Grid RowDefinitions="Auto,*" Margin="24">
+
+        <!-- Header -->
+        <Border Grid.Row="0" 
+                Classes="card"
+                Margin="0,0,0,24">
+            <StackPanel>
+                <TextBlock Text="Mesa Receptora de Votos" 
+                           FontSize="{StaticResource FontSizeXxxl}" 
+                           FontWeight="Bold" 
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           HorizontalAlignment="Center"/>
+                
+                <TextBlock Text="{Binding StatusMessage}"
+                           FontSize="{StaticResource FontSizeL}"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Margin="0,4,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Conteúdo Principal -->
+        <StackPanel Grid.Row="1" 
+                    Spacing="32" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    MaxWidth="600">
+            
+            <!-- Formulário de Identificação -->
+            <Border Classes="card-elevated">
+                <StackPanel Spacing="24">
+                    
+                    <!-- Identificação do Mesário -->
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Identificação do Mesário"
+                                   Classes="label"/>
+                        <TextBox Text="{Binding MesarioId}"
+                                 FontSize="{StaticResource FontSizeL}"
+                                 Padding="8"
+                                 Watermark="ID do Mesário (obrigatório)"
+                                 HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+
+                    <!-- Identificação do Eleitor -->
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Identificação do Eleitor"
+                                   Classes="label"/>
+                <TextBox Text="{Binding IdentificacaoEleitor}"
+                                 FontSize="{StaticResource FontSizeL}"
+                                 Padding="8"
+                         Watermark="Digite o CPF ou Título de Eleitor"
+                                 HorizontalAlignment="Stretch"/>
+            </StackPanel>
+
+                    <!-- Botões de Ação -->
+                    <StackPanel Spacing="8">
+                        <Button Content="Liberar Urna para Votação"
+                                Classes="success large"
+                    Command="{Binding LiberarUrnaCommand}"
+                                HorizontalAlignment="Stretch"/>
+
+                        <Button Content="Bloquear Urna (Emergência)"
+                                Classes="error"
+                                Command="{Binding BloquearUrnaCommand}"
+                                HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Informações do Terminal -->
+            <Border Classes="card">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Informações do Terminal" 
+                               Classes="subheading"/>
+                    
+                    <Grid ColumnDefinitions="Auto,*" 
+                          RowDefinitions="Auto,Auto,Auto"
+>
+                        
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Text="Terminal:"
+                                   Classes="label"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding TerminalId}"
+                                   Classes="body"/>
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Text="Última Liberação:"
+                                   Classes="label"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding UltimaLiberacao, StringFormat='{}{0:HH:mm:ss dd/MM/yyyy}'}"
+                                   Classes="body"
+                                   IsVisible="{Binding UltimaLiberacao, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                        
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                   Text="Último Bloqueio:"
+                                   Classes="label"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1"
+                                   Text="{Binding UltimoBloqueio, StringFormat='{}{0:HH:mm:ss dd/MM/yyyy}'}"
+                                   Classes="body"
+                                   IsVisible="{Binding UltimoBloqueio, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Informações Adicionais -->
+            <Border Classes="card">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Informações Importantes"
+                               Classes="subheading"/>
+                    
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="• Digite o CPF ou Título do eleitor"
+                                   Classes="caption"/>
+                        <TextBlock Text="• A urna será liberada para votação"
+                                   Classes="caption"/>
+                        <TextBlock Text="• Após o voto, a urna será bloqueada automaticamente"
+                                   Classes="caption"/>
+                        <TextBlock Text="• Em caso de emergência, use o botão de bloqueio"
+                                   Classes="caption"/>
+            </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Botão de Limpeza -->
+            <Button Content="Limpar Log"
+                    Classes="secondary small"
+                    Command="{Binding LimparLogCommand}"
+                    HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</UserControl> 

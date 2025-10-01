@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:components="using:UrnaEletronicaFake.UI.Components"
+             x:Class="UrnaEletronicaFake.UI.Components.NotificationOverlay">
+    
+    <ItemsControl ItemsSource="{Binding Notifications}"
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Right"
+                  Margin="24"
+                  ZIndex="9999">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Spacing="8"/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <components:ToastNotification/>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>
+
+

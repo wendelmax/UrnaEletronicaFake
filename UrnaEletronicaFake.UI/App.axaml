@@ -1,0 +1,24 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:UrnaEletronicaFake.UI.Converters"
+             x:Class="UrnaEletronicaFake.UI.App"
+             RequestedThemeVariant="Default">
+        <Application.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceInclude Source="avares://UrnaEletronicaFake.UI/Resources/DesignTokens.axaml"/>
+                    <ResourceInclude Source="avares://UrnaEletronicaFake.UI/Resources/Colors.axaml"/>
+                    <ResourceInclude Source="avares://UrnaEletronicaFake.UI/Resources/Themes.axaml"/>
+                </ResourceDictionary.MergedDictionaries>
+                
+                <!-- Converters -->
+                <converters:AnonymizeDataConverter x:Key="AnonymizeDataConverter"/>
+                <converters:ValidationErrorToVisibilityConverter x:Key="ValidationErrorToVisibilityConverter"/>
+                <converters:ValidationErrorToBoolConverter x:Key="ValidationErrorToBoolConverter"/>
+            </ResourceDictionary>
+        </Application.Resources>
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="avares://UrnaEletronicaFake.UI/Resources/ComponentStyles.axaml"/>
+    </Application.Styles>
+</Application>

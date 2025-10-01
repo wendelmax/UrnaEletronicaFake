@@ -1,0 +1,301 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:UrnaEletronicaFake.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="600"
+             x:Class="UrnaEletronicaFake.UI.Views.VotacaoView"
+             x:DataType="vm:VotacaoViewModel"
+             Background="{StaticResource BackgroundPrimaryBrush}">
+
+    <UserControl.Styles>
+        <Style Selector="Border.digit-box">
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="70"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+            <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+        </Style>
+        <Style Selector="TextBlock.digit-text">
+            <Setter Property="FontSize" Value="48"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        </Style>
+        <Style Selector="Button.keypad-button">
+            <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+            <Setter Property="Margin" Value="32"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+        </Style>
+        <Style Selector="Button.keypad-button:pointerover">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextOnPrimaryBrush}"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowMedium}"/>
+        </Style>
+        <Style Selector="Button.keypad-button:pressed">
+            <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextOnPrimaryBrush}"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+            <Setter Property="RenderTransform" Value="scale(0.95)"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid>
+        <Grid ColumnDefinitions="*, Auto" Margin="24">
+            
+            <!-- Painel Principal de Votação -->
+            <Border Grid.Column="0" 
+                    Classes="card-elevated">
+                <Grid RowDefinitions="Auto, *, Auto">
+                    
+                    <!-- Header do Cargo -->
+                    <Border Grid.Row="0" 
+                            Background="{StaticResource PrimarySurfaceBrush}"
+                            CornerRadius="{StaticResource RadiusMedium}"
+                            Padding="8"
+                            Margin="0,0,0,8">
+                        <StackPanel>
+                            <TextBlock Text="SEU VOTO PARA" 
+                                       FontSize="{StaticResource FontSizeL}" 
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Cargo}" 
+                                       FontSize="{StaticResource FontSizeDisplay}" 
+                                       FontWeight="Bold" 
+                                       Foreground="{StaticResource PrimaryBrush}"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Conteúdo Principal -->
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto, *" VerticalAlignment="Center">
+                        
+                        <!-- Informações do Candidato -->
+                        <StackPanel Grid.Column="0" 
+                                    Spacing="24" 
+                                    VerticalAlignment="Center" 
+                                    Margin="0,0,48,0">
+                            
+                            <!-- Número Digitado -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Número:" 
+                                           FontSize="{StaticResource FontSizeL}" 
+                                           VerticalAlignment="Center" 
+                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                           HorizontalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" 
+                                            Spacing="4"
+                                            HorizontalAlignment="Center">
+                                    <Border Classes="digit-box">
+                                        <TextBlock Classes="digit-text" Text="{Binding Digito1}"/>
+                                    </Border>
+                                    <Border Classes="digit-box">
+                                        <TextBlock Classes="digit-text" Text="{Binding Digito2}"/>
+                                    </Border>
+                                    <Border Classes="digit-box">
+                                        <TextBlock Classes="digit-text" Text="{Binding Digito3}"/>
+                                    </Border>
+                                    <Border Classes="digit-box">
+                                        <TextBlock Classes="digit-text" Text="{Binding Digito4}"/>
+                                    </Border>
+                                    <Border Classes="digit-box">
+                                        <TextBlock Classes="digit-text" Text="{Binding Digito5}"/>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Informações do Candidato -->
+                            <StackPanel IsVisible="{Binding IsTelaCandidatoVisible}"
+                                        Spacing="8">
+                                <TextBlock Text="Nome:" 
+                                           FontSize="{StaticResource FontSizeL}" 
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <TextBlock Text="{Binding NomeCandidato}" 
+                                           FontSize="{StaticResource FontSizeXxl}" 
+                                           FontWeight="Bold" 
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Partido:" 
+                                           FontSize="{StaticResource FontSizeL}" 
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <TextBlock Text="{Binding PartidoCandidato}" 
+                                           FontSize="{StaticResource FontSizeXxl}" 
+                                           FontWeight="Bold" 
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Foto do Candidato -->
+                        <Border Grid.Column="1"
+                                BorderBrush="{StaticResource BorderLightBrush}"
+                                BorderThickness="2"
+                                Width="240"
+                                Height="320"
+                                CornerRadius="{StaticResource RadiusLarge}"
+                                IsVisible="{Binding IsTelaCandidatoVisible}">
+                            <Grid>
+                                <!-- Foto do candidato -->
+                                <Image Source="{Binding FotoCandidato}" 
+                                       Stretch="UniformToFill"
+                                       IsVisible="{Binding FotoCandidato}"/>
+                                
+                                <!-- Placeholder quando não há foto -->
+                                <Border Background="{StaticResource BackgroundTertiaryBrush}"
+                                        IsVisible="{Binding !FotoCandidato}">
+                                    <StackPanel HorizontalAlignment="Center" 
+                                                VerticalAlignment="Center" 
+                                                Spacing="8">
+                                        <TextBlock Text="📸" 
+                                                   FontSize="64" 
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        <TextBlock Text="Sem Foto" 
+                                                   FontSize="{StaticResource FontSizeM}" 
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        <TextBlock Text="{Binding NomeCandidato}" 
+                                                   FontSize="{StaticResource FontSizeS}" 
+                                                   HorizontalAlignment="Center"
+                                                   TextWrapping="Wrap"
+                                                   TextAlignment="Center"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- Instruções -->
+                    <Border Grid.Row="2" 
+                            BorderBrush="{StaticResource BorderLightBrush}" 
+                            BorderThickness="0,1,0,0" 
+                            Padding="8"
+                            Margin="0,8,0,0">
+                        <TextBlock Text="{Binding Instrucoes}" 
+                                   TextWrapping="Wrap" 
+                                   FontSize="{StaticResource FontSizeL}"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   HorizontalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Teclado -->
+            <Border Grid.Column="1" 
+                    Background="{StaticResource BackgroundElevatedBrush}" 
+                    CornerRadius="{StaticResource RadiusLarge}" 
+                    Padding="24"
+                    Margin="24,0,0,0"
+                    Effect="{StaticResource ShadowMedium}">
+                <StackPanel Spacing="8">
+                    
+                    <!-- Header do Teclado -->
+                    <Border Background="{StaticResource PrimaryBrush}" 
+                            Padding="8"
+                            CornerRadius="{StaticResource RadiusMedium}">
+                        <TextBlock Text="JUSTIÇA ELEITORAL" 
+                                   FontSize="{StaticResource FontSizeXl}" 
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   Foreground="{StaticResource TextOnPrimaryBrush}"/>
+                    </Border>
+
+                    <!-- Teclado Numérico -->
+                    <Grid ColumnDefinitions="Auto,Auto,Auto" 
+                          RowDefinitions="Auto,Auto,Auto,Auto"
+>
+                        <Button Grid.Row="0" Grid.Column="0" Content="1" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="1"/>
+                        <Button Grid.Row="0" Grid.Column="1" Content="2" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="2"/>
+                        <Button Grid.Row="0" Grid.Column="2" Content="3" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="3"/>
+                        <Button Grid.Row="1" Grid.Column="0" Content="4" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="4"/>
+                        <Button Grid.Row="1" Grid.Column="1" Content="5" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="5"/>
+                        <Button Grid.Row="1" Grid.Column="2" Content="6" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="6"/>
+                        <Button Grid.Row="2" Grid.Column="0" Content="7" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="7"/>
+                        <Button Grid.Row="2" Grid.Column="1" Content="8" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="8"/>
+                        <Button Grid.Row="2" Grid.Column="2" Content="9" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="9"/>
+                        <Button Grid.Row="3" Grid.Column="1" Content="0" Classes="keypad-button" Command="{Binding DigitarNumeroCommand}" CommandParameter="0"/>
+                    </Grid>
+
+                    <!-- Botões de Ação -->
+                    <Grid ColumnDefinitions="Auto,Auto,Auto" 
+>
+                        <Button Grid.Column="0" 
+                                Content="BRANCO" 
+                                Classes="secondary"
+                                Height="60" 
+                                Width="100" 
+                                Command="{Binding VotarBrancoCommand}"/>
+                        <Button Grid.Column="1" 
+                                Content="CORRIGE" 
+                                Classes="warning"
+                                Height="60" 
+                                Width="100" 
+                                Command="{Binding CorrigirCommand}"/>
+                        <Button Grid.Column="2" 
+                                Content="CONFIRMA" 
+                                Classes="success"
+                                Height="70" 
+                                Width="110" 
+                                Command="{Binding ConfirmarCommand}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Overlay de Urna Bloqueada -->
+        <Border Background="#80000000" 
+                IsVisible="{Binding IsTerminalLocked}"
+                CornerRadius="{StaticResource RadiusLarge}">
+            <StackPanel HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Spacing="24">
+                <TextBlock Text="🔒" 
+                           FontSize="64" 
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="URNA BLOQUEADA"
+                           FontSize="{StaticResource FontSizeDisplay}"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource TextOnPrimaryBrush}"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Aguardando liberação do mesário"
+                           FontSize="{StaticResource FontSizeL}"
+                           Foreground="{StaticResource TextOnPrimaryBrush}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Tela de Fim -->
+        <Border Background="{StaticResource BackgroundElevatedBrush}" 
+                IsVisible="{Binding IsTelaFimVisible}"
+                CornerRadius="{StaticResource RadiusLarge}">
+            <StackPanel HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Spacing="24">
+                <TextBlock Text="✅" 
+                           FontSize="64" 
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="FIM"
+                           FontSize="120"
+                           FontWeight="ExtraBold"
+                           Foreground="{StaticResource SuccessBrush}"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Votação concluída com sucesso"
+                           FontSize="{StaticResource FontSizeL}"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

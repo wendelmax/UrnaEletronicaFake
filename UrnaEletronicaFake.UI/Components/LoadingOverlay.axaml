@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:components="using:UrnaEletronicaFake.UI.Components"
+             x:Class="UrnaEletronicaFake.UI.Components.LoadingOverlay">
+    
+    <Border Background="#CC000000"
+            IsVisible="{Binding IsLoading}">
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="16">
+            
+            <Border Width="64"
+                    Height="64"
+                    BorderBrush="{StaticResource PrimaryBrush}"
+                    BorderThickness="4"
+                    CornerRadius="32">
+                <Border.Styles>
+                    <Style Selector="Border">
+                        <Style.Animations>
+                            <Animation Duration="0:0:1" 
+                                       IterationCount="Infinite">
+                                <KeyFrame Cue="0%">
+                                    <Setter Property="RenderTransform" Value="rotate(0)"/>
+                                </KeyFrame>
+                                <KeyFrame Cue="100%">
+                                    <Setter Property="RenderTransform" Value="rotate(360)"/>
+                                </KeyFrame>
+                            </Animation>
+                        </Style.Animations>
+                    </Style>
+                </Border.Styles>
+                <Border.RenderTransform>
+                    <RotateTransform/>
+                </Border.RenderTransform>
+            </Border>
+            
+            <TextBlock Text="{Binding LoadingMessage, FallbackValue='Carregando...'}"
+                       FontSize="{StaticResource FontSizeL}"
+                       Foreground="White"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Border>
+</UserControl>
+

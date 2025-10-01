@@ -1,0 +1,268 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:UrnaEletronicaFake.UI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+        x:Class="UrnaEletronicaFake.UI.Views.VotacaoWindow"
+        x:DataType="vm:VotacaoViewModel"
+        Title="Urna Eletrônica - Terminal de Votação"
+        Width="1000" Height="700"
+        MinWidth="800" MinHeight="600"
+        Background="{DynamicResource BackgroundBrushDynamic}">
+
+    <Design.DataContext>
+        <vm:VotacaoViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        
+        <!-- Header da Urna -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource PrimaryBrushDynamic}" 
+                Padding="24,16"
+                CornerRadius="0,0,16,16">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                    <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                            CornerRadius="8" 
+                            Padding="8"
+                            Width="40" Height="40">
+                        <TextBlock Text="🗳️" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Urna Eletrônica" 
+                                   FontSize="20" 
+                                   FontWeight="Bold" 
+                                   Foreground="{DynamicResource TextOnPrimaryBrushDynamic}"/>
+                        <TextBlock Text="Terminal de Votação" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource TextOnPrimaryBrushDynamic}" 
+                                   Opacity="0.9"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" 
+                            Orientation="Horizontal" 
+                            Spacing="12"
+                            VerticalAlignment="Center">
+                    <Border Background="{DynamicResource SuccessBrushDynamic}" 
+                            CornerRadius="16" 
+                            Padding="8,4">
+                        <StackPanel Orientation="Horizontal" Spacing="6">
+                            <Ellipse Fill="{DynamicResource TextOnPrimaryBrushDynamic}" 
+                                     Width="6" Height="6"/>
+                            <TextBlock Text="Sistema Ativo" 
+                                       FontSize="10" 
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextOnPrimaryBrushDynamic}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Área Principal de Votação -->
+        <Grid Grid.Row="1" 
+              ColumnDefinitions="2*,3*" 
+              Margin="24">
+            
+            <!-- Painel de Informações do Candidato -->
+            <Border Grid.Column="0" 
+                    Classes="card"
+                    Margin="0,0,12,0">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="Candidato Selecionado" 
+                               Classes="subheading"
+                               HorizontalAlignment="Center"/>
+                    
+                    <!-- Foto do Candidato -->
+                    <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                            BorderBrush="{DynamicResource BorderBrushDynamic}"
+                            BorderThickness="2"
+                            CornerRadius="12" 
+                            Padding="20"
+                            HorizontalAlignment="Center">
+                        <StackPanel Spacing="12">
+                            <Border Background="{DynamicResource PrimaryBrushDynamic}" 
+                                    CornerRadius="8" 
+                                    Padding="16"
+                                    Width="120" Height="120">
+                                <TextBlock Text="👤" 
+                                           FontSize="48" 
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="Foto do Candidato" 
+                                       Classes="caption"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Informações do Candidato -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Nome: [Nome do Candidato]" 
+                                   Classes="body"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Text="Partido: [Nome do Partido]" 
+                                   Classes="body"/>
+                        <TextBlock Text="Número: [Número]" 
+                                   Classes="body"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryBrushDynamic}"/>
+                    </StackPanel>
+                    
+                    <!-- Status da Votação -->
+                    <Border Background="{DynamicResource HoverBrushDynamic}" 
+                            CornerRadius="8" 
+                            Padding="12">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Status da Votação" 
+                                       Classes="caption"
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Text="Aguardando confirmação do voto" 
+                                       Classes="body"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- Teclado Numérico -->
+            <Border Grid.Column="1" 
+                    Classes="card"
+                    Margin="12,0,0,0">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="Teclado Numérico" 
+                               Classes="subheading"
+                               HorizontalAlignment="Center"/>
+                    
+                    <!-- Display do Número -->
+                    <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                            BorderBrush="{DynamicResource PrimaryBrushDynamic}"
+                            BorderThickness="3"
+                            CornerRadius="12" 
+                            Padding="20,16">
+                        <TextBlock Text="[Número Digitado]" 
+                                   FontSize="32" 
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrushDynamic}"
+                                   HorizontalAlignment="Center"/>
+                    </Border>
+                    
+                    <!-- Teclado -->
+                    <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*,*,*" 
+>
+                        
+                        <!-- Linha 1 -->
+                        <Button Grid.Row="0" Grid.Column="0" 
+                                Content="1" 
+                                Classes="primary-button"
+                                FontSize="24"
+                                MinHeight="60"/>
+                        <Button Grid.Row="0" Grid.Column="1" 
+                                Content="2" 
+                                Classes="primary-button"
+                                FontSize="24"
+                                MinHeight="60"/>
+                        <Button Grid.Row="0" Grid.Column="2" 
+                                Content="3" 
+                                Classes="primary-button"
+                                FontSize="24"
+                                MinHeight="60"/>
+                        
+                        <!-- Linha 2 -->
+                        <Button Grid.Row="1" Grid.Column="0" 
+                                Content="4" 
+                                Classes="primary-button"
+                                FontSize="24"
+                                MinHeight="60"/>
+                        <Button Grid.Row="1" Grid.Column="1" 
+                                Content="5" 
+                                Classes="primary-button"
+                                FontSize="24"
+                                MinHeight="60"/>
+                        <Button Grid.Row="1" Grid.Column="2" 
+                                Content="6" 
+                                Classes="primary-button"
+                                FontSize="24"
+                                MinHeight="60"/>
+                        
+                        <!-- Linha 3 -->
+                        <Button Grid.Row="2" Grid.Column="0" 
+                                Content="7" 
+                                Classes="primary-button"
+                                FontSize="24"
+                                MinHeight="60"/>
+                        <Button Grid.Row="2" Grid.Column="1" 
+                                Content="8" 
+                                Classes="primary-button"
+                                FontSize="24"
+                                MinHeight="60"/>
+                        <Button Grid.Row="2" Grid.Column="2" 
+                                Content="9" 
+                                Classes="primary-button"
+                                FontSize="24"
+                                MinHeight="60"/>
+                        
+                        <!-- Linha 4 -->
+                        <Button Grid.Row="3" Grid.Column="0" 
+                                Content="Branco" 
+                                Classes="secondary-button"
+                                FontSize="16"
+                                MinHeight="60"/>
+                        <Button Grid.Row="3" Grid.Column="1" 
+                                Content="0" 
+                                Classes="primary-button"
+                                FontSize="24"
+                                MinHeight="60"/>
+                        <Button Grid.Row="3" Grid.Column="2" 
+                                Content="Corrige" 
+                                Classes="error-button"
+                                FontSize="16"
+                                MinHeight="60"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Botões de Ação -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource SurfaceBrushDynamic}" 
+                Padding="24,16"
+                BorderBrush="{DynamicResource DividerBrushDynamic}"
+                BorderThickness="0,1,0,0">
+            <Grid ColumnDefinitions="*,Auto,*">
+                
+                <!-- Botão Anterior -->
+                <Button Grid.Column="0" 
+                        Content="⬅️ Anterior" 
+                        Classes="secondary-button"
+                        HorizontalAlignment="Left"
+                        MaxWidth="150"/>
+                
+                <!-- Botões Centrais -->
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            Spacing="16">
+                    <Button Content="✅ Confirmar" 
+                            Classes="primary-button"
+                            MinWidth="150"/>
+                    <Button Content="❌ Cancelar" 
+                            Classes="error-button"
+                            MinWidth="150"/>
+                </StackPanel>
+                
+                <!-- Botão Próximo -->
+                <Button Grid.Column="2" 
+                        Content="Próximo ➡️" 
+                        Classes="secondary-button"
+                        HorizontalAlignment="Right"
+                        MaxWidth="150"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

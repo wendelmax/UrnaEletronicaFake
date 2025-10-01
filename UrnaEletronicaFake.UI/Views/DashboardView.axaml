@@ -1,0 +1,233 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:UrnaEletronicaFake.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="UrnaEletronicaFake.UI.Views.DashboardView"
+             x:DataType="vm:DashboardViewModel"
+             Background="{StaticResource BackgroundPrimaryBrush}">
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" 
+                Classes="card"
+                Margin="0,0,0,24">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Dashboard de Monitoramento" 
+                               Classes="heading"/>
+                    
+                    <StackPanel Orientation="Horizontal" 
+                                Spacing="24" 
+                                Margin="0,8,0,0">
+                        <StackPanel Orientation="Horizontal" 
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Processo Eleitoral:"
+                                       Classes="body"/>
+                            
+                            <ComboBox SelectedItem="{Binding EleicaoSelecionada}"
+                                      ItemsSource="{Binding Eleicoes}"
+                                      Width="400"
+                                      Margin="8,0,0,0"
+                                      Classes="secondary">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Classes="status-online" 
+                                                     IsVisible="{Binding Ativa}"/>
+                                            <Ellipse Classes="status-offline" 
+                                                     IsVisible="{Binding !Ativa}"/>
+                                            <StackPanel Margin="4,0,0,0">
+                                                <TextBlock Text="{Binding Titulo}" 
+                                                           FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Descricao}" 
+                                                           FontSize="{StaticResource FontSizeS}"
+                                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        
+                        <Button Content="Atualizar"
+                                Classes="primary"
+                                Command="{Binding AtualizarDadosCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" 
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{Binding StatusMessage}"
+                               Classes="body"
+                               HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding DashboardData.UltimaAtualizacaoFormatada, StringFormat='Última atualização: {0}'}"
+                               Classes="caption"
+                               HorizontalAlignment="Right"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Métricas Principais -->
+        <Grid Grid.Row="1" 
+              ColumnDefinitions="*,*,*,*,*" 
+              Margin="0,0,0,24">
+            
+            <!-- Total de Votos -->
+            <Border Classes="status-card">
+                <StackPanel>
+                    <TextBlock Text="Total de Votos" 
+                               Classes="label"/>
+                    <TextBlock Text="{Binding DashboardData.Estatisticas.TotalVotos}" 
+                               FontSize="{StaticResource FontSizeXxxl}"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                    <TextBlock Text="votos realizados" 
+                               Classes="caption"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Status da Urna -->
+            <Border Classes="status-card">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Center">
+                        <TextBlock Text="Status da Urna" 
+                                   Classes="label"/>
+                        <Ellipse Classes="status-warning"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding DashboardData.StatusUrna}" 
+                               FontSize="{StaticResource FontSizeXxxl}"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding DashboardData.EleitorAtual, StringFormat='Eleitor: {0}'}" 
+                               Classes="caption"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Votos Válidos -->
+            <Border Classes="status-card">
+                <StackPanel>
+                    <TextBlock Text="Votos Válidos" 
+                               Classes="label"/>
+                    <TextBlock Text="{Binding DashboardData.Estatisticas.VotosValidos}" 
+                               FontSize="{StaticResource FontSizeXxxl}"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource SuccessBrush}"/>
+                    <TextBlock Text="{Binding DashboardData.Estatisticas.PercentualValidosFormatado}" 
+                               Classes="caption"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Votos Nulos -->
+            <Border Classes="status-card">
+                <StackPanel>
+                    <TextBlock Text="Votos Nulos" 
+                               Classes="label"/>
+                    <TextBlock Text="{Binding DashboardData.Estatisticas.VotosNulos}" 
+                               FontSize="{StaticResource FontSizeXxxl}"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource ErrorBrush}"/>
+                    <TextBlock Text="{Binding DashboardData.Estatisticas.PercentualNulosFormatado}" 
+                               Classes="caption"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Votos Brancos -->
+            <Border Classes="status-card">
+                <StackPanel>
+                    <TextBlock Text="Votos Brancos" 
+                               Classes="label"/>
+                    <TextBlock Text="{Binding DashboardData.Estatisticas.VotosBrancos}" 
+                               FontSize="{StaticResource FontSizeXxxl}"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource WarningBrush}"/>
+                    <TextBlock Text="{Binding DashboardData.Estatisticas.PercentualBrancosFormatado}" 
+                               Classes="caption"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Resultados dos Candidatos -->
+        <Border Grid.Row="2" 
+                Classes="card-elevated">
+            <StackPanel>
+                <TextBlock Text="Resultados por Candidato" 
+                           Classes="subheading"
+                           Margin="0,0,0,24"/>
+                
+                <ItemsControl ItemsSource="{Binding DashboardData.Candidatos}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Classes="card"
+                                    Margin="0,0,0,8">
+                                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                                    
+                                    <!-- Número do Candidato -->
+                                    <Border Grid.Column="0"
+                                            Background="{StaticResource PrimaryBrush}"
+                                            CornerRadius="{StaticResource RadiusMedium}"
+                                            Padding="8"
+                                            Margin="0,0,24,0">
+                                        <TextBlock Text="{Binding Numero}" 
+                                                   FontSize="{StaticResource FontSizeL}" 
+                                                   FontWeight="Bold"
+                                                   Foreground="{StaticResource TextOnPrimaryBrush}"/>
+                                    </Border>
+                                    
+                                    <!-- Informações do Candidato -->
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding Nome}" 
+                                                   Classes="subheading"/>
+                                        <TextBlock Text="{Binding Partido}" 
+                                                   Classes="body"/>
+                                    </StackPanel>
+                                    
+                                    <!-- Votos -->
+                                    <StackPanel Grid.Column="2" 
+                                                HorizontalAlignment="Right"
+                                                Margin="24,0,0,0">
+                                        <TextBlock Text="{Binding Votos}" 
+                                                   FontSize="{StaticResource FontSizeXxl}" 
+                                                   FontWeight="Bold"
+                                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                                   HorizontalAlignment="Right"/>
+                                        <TextBlock Text="votos" 
+                                                   Classes="caption"
+                                                   HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                    
+                                    <!-- Percentual -->
+                                    <StackPanel Grid.Column="3" 
+                                                HorizontalAlignment="Right" 
+                                                Margin="24,0,0,0">
+                                        <TextBlock Text="{Binding PercentualFormatado}" 
+                                                   FontSize="{StaticResource FontSizeXl}" 
+                                                   FontWeight="Bold"
+                                                   Foreground="{StaticResource PrimaryBrush}"
+                                                   HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+                <!-- Mensagem quando não há candidatos -->
+                <TextBlock Text="Nenhum candidato encontrado para esta eleição."
+                           Classes="body"
+                           HorizontalAlignment="Center"
+                           IsVisible="{Binding !DashboardData.Candidatos.Count}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

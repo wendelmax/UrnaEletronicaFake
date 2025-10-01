@@ -1,0 +1,113 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:behaviors="using:UrnaEletronicaFake.UI.Behaviors"
+        xmlns:converters="using:UrnaEletronicaFake.UI.Converters"
+        xmlns:components="using:UrnaEletronicaFake.UI.Components"
+        x:Class="UrnaEletronicaFake.UI.Views.ExampleUsageView"
+        Title="Exemplo de Uso das Melhorias"
+        Width="800" Height="600"
+        Background="{StaticResource BackgroundPrimaryBrush}">
+
+    <ScrollViewer Padding="24">
+        <StackPanel Spacing="24">
+            
+            <!-- Exemplo de Validação de Formulário -->
+            <Border Classes="card">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Validação de Formulário" Classes="subheading"/>
+                    
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="CPF (obrigatório):" Classes="label"/>
+                        <TextBox Name="CpfTextBox"
+                                 behaviors:ValidationTextBoxBehavior.IsRequired="True"
+                                 behaviors:ValidationTextBoxBehavior.MinLength="11"
+                                 behaviors:ValidationTextBoxBehavior.Pattern="^\d{11}$"
+                                 Watermark="Digite o CPF"/>
+                        <TextBlock Text="{Binding #CpfTextBox.(behaviors:ValidationTextBoxBehavior.ValidationError)}"
+                                   Foreground="{StaticResource ErrorBrush}"
+                                   IsVisible="{Binding #CpfTextBox.(behaviors:ValidationTextBoxBehavior.ValidationError), Converter={StaticResource ValidationErrorToVisibilityConverter}}"/>
+                    </StackPanel>
+                    
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Nome:" Classes="label"/>
+                        <TextBox Name="NameTextBox"
+                                 behaviors:ValidationTextBoxBehavior.IsRequired="True"
+                                 behaviors:ValidationTextBoxBehavior.MinLength="2"
+                                 Watermark="Digite o nome completo"/>
+                        <TextBlock Text="{Binding #NameTextBox.(behaviors:ValidationTextBoxBehavior.ValidationError)}"
+                                   Foreground="{StaticResource ErrorBrush}"
+                                   IsVisible="{Binding #NameTextBox.(behaviors:ValidationTextBoxBehavior.ValidationError), Converter={StaticResource ValidationErrorToVisibilityConverter}}"/>
+                    </StackPanel>
+                    
+                    <Button Content="Validar Formulário" Classes="primary"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Exemplo de Anonimização de Dados -->
+            <Border Classes="card">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Anonimização de Dados Sensíveis" Classes="subheading"/>
+                    
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="CPF Original:" Classes="label"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="123.456.789-00" Classes="body"/>
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="CPF Anonimizado:" Classes="label"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" 
+                                   Text="{Binding '123.456.789-00', Converter={StaticResource AnonymizeDataConverter}, ConverterParameter=cpf}" 
+                                   Classes="body"/>
+                        
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Email Anonimizado:" Classes="label"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" 
+                                   Text="{Binding 'usuario@exemplo.com', Converter={StaticResource AnonymizeDataConverter}, ConverterParameter=email}" 
+                                   Classes="body"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            
+            <!-- Exemplo de Sistema de Notificações -->
+            <Border Classes="card">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Sistema de Notificações" Classes="subheading"/>
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="Sucesso" Classes="success small"
+                                Click="ShowSuccessNotification"/>
+                        <Button Content="Aviso" Classes="warning small"
+                                Click="ShowWarningNotification"/>
+                        <Button Content="Erro" Classes="error small"
+                                Click="ShowErrorNotification"/>
+                        <Button Content="Info" Classes="info small"
+                                Click="ShowInfoNotification"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            
+            <!-- Exemplo de Dialog de Confirmação -->
+            <Border Classes="card">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Dialog de Confirmação" Classes="subheading"/>
+                    
+                    <Button Content="Mostrar Confirmação" Classes="primary"
+                            Click="ShowConfirmationDialog"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Exemplo de Loading Spinner -->
+            <Border Classes="card">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Indicadores de Loading" Classes="subheading"/>
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="16">
+                        <components:LoadingSpinner IsVisible="True"/>
+                        <TextBlock Text="Processando..." Classes="body" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            
+        </StackPanel>
+    </ScrollViewer>
+    
+</Window>
+
+

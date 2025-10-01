@@ -1,0 +1,486 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:UrnaEletronicaFake.UI.ViewModels"
+             xmlns:converters="using:UrnaEletronicaFake.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+             x:Class="UrnaEletronicaFake.UI.Views.AdminView"
+             x:DataType="vm:AdminViewModel"
+             Background="{StaticResource BackgroundPrimaryBrush}">
+
+    <UserControl.Resources>
+        <converters:BoolToStatusConverter x:Key="BoolToStatusConverter"/>
+        <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
+        <converters:BoolToBackgroundConverter x:Key="BoolToBackgroundConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource PrimaryBrush}"
+                Padding="24">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" 
+                            Orientation="Horizontal" 
+                            Spacing="24" 
+                            VerticalAlignment="Center">
+                    <TextBlock Text="🏛️" 
+                               FontSize="{StaticResource FontSizeXxxl}" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Administração da Urna Eletrônica" 
+                               FontSize="{StaticResource FontSizeXxl}" 
+                               FontWeight="Bold" 
+                               Foreground="{StaticResource TextOnPrimaryBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <Button Grid.Column="1" 
+                        Content="Nova Eleição" 
+                        Classes="secondary"
+                        Command="{Binding MostrarFormularioCommand}"/>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <Grid Grid.Row="1" 
+                             Margin="0,24,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Lista de Eleições -->
+            <Border Grid.Column="0" 
+                    Classes="card-elevated"
+                    Margin="0,0,8,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" 
+                            Background="{StaticResource BackgroundSecondaryBrush}" 
+                            BorderBrush="{StaticResource BorderLightBrush}" 
+                            BorderThickness="0,0,0,1" 
+                            Padding="24">
+                        <TextBlock Text="Eleições Cadastradas" 
+                                   Classes="subheading"/>
+                    </Border>
+
+                    <ListBox Grid.Row="1" 
+                             ItemsSource="{Binding Eleicoes}" 
+                             SelectedItem="{Binding EleicaoSelecionada}"
+                             Background="Transparent"
+                             BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="{StaticResource SpacingXs}" 
+                                        Padding="24" 
+                                        Classes="card">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <TextBlock Grid.Row="0" 
+                                                   Text="{Binding Titulo}" 
+                                                   Classes="subheading"/>
+                                        
+                                        <TextBlock Grid.Row="1" 
+                                                   Text="{Binding Descricao}" 
+                                                   Classes="body"/>
+                                        
+                                        <!-- Informações da Eleição -->
+                                        <StackPanel Grid.Row="2" 
+                                                    Orientation="Horizontal" 
+                                                    Margin="0,8,0,0" 
+                                                    Spacing="24">
+                                            <Border Background="{Binding Ativa, Converter={StaticResource BoolToBackgroundConverter}}" 
+                                                    CornerRadius="{StaticResource RadiusMedium}" 
+                                                    Padding="4">
+                                                <TextBlock Text="{Binding Ativa, Converter={StaticResource BoolToStatusConverter}}" 
+                                                           Foreground="{Binding Ativa, Converter={StaticResource BoolToColorConverter}}" 
+                                                           FontSize="{StaticResource FontSizeS}" 
+                                                           FontWeight="Bold"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding DataInicio, StringFormat='Início: {0:dd/MM/yyyy HH:mm}'}" 
+                                                       Classes="caption"/>
+                                            <TextBlock Text="{Binding DataFim, StringFormat='Fim: {0:dd/MM/yyyy HH:mm}'}" 
+                                                       Classes="caption"/>
+                                        </StackPanel>
+
+                                        <!-- Contadores -->
+                                        <StackPanel Grid.Row="3" 
+                                                    Orientation="Horizontal" 
+                                                    Margin="0,8,0,0" 
+                                                    Spacing="4">
+                                            <TextBlock Text="{Binding Candidatos.Count, StringFormat='{}{0} candidatos'}" 
+                                                       Classes="caption"/>
+                                            <TextBlock Text="•" 
+                                                       Classes="caption" 
+                                                       IsVisible="{Binding CargosEleitorais.Count}"/>
+                                            <TextBlock Text="{Binding CargosEleitorais.Count, StringFormat='{}{0} cargos'}" 
+                                                       Classes="caption"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <!-- Separador -->
+            <Border Grid.Column="1" 
+                    Width="1" 
+                    Background="{StaticResource BorderLightBrush}" 
+                    Margin="8,0"/>
+
+            <!-- Painel de Ações -->
+            <StackPanel Grid.Column="2" 
+                        Spacing="24">
+                
+                <!-- Ações da Eleição Selecionada -->
+                <Border Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Ações da Eleição" 
+                                   Classes="subheading"
+                                   HorizontalAlignment="Center"/>
+                        
+                        <TextBlock Text="Selecione uma eleição para ver as ações" 
+                                   IsVisible="{Binding !IsEleicaoSelecionada}" 
+                                   Classes="caption" 
+                                   HorizontalAlignment="Center"/>
+                        
+                        <StackPanel Spacing="4" 
+                                    IsVisible="{Binding IsEleicaoSelecionada}">
+                            <Button Content="Editar Detalhes" 
+                                    Classes="secondary"
+                                    Command="{Binding EditarEleicaoCommand}"/>
+                            <Button Content="Gerenciar Candidatos" 
+                                    Classes="secondary"
+                                    Command="{Binding GerenciarCandidatosCommand}"/>
+                            <Button Content="Gerenciar Cargos" 
+                                    Classes="secondary"
+                                    Command="{Binding GerenciarCargosCommand}"/>
+                            
+                            <Button Content="Ativar Eleição" 
+                                    Classes="success"
+                                    Command="{Binding AtivarEleicaoCommand}"/>
+                            
+                            <Button Content="Pausar Eleição" 
+                                    Classes="warning"
+                                    Command="{Binding DesativarEleicaoCommand}"/>
+                            
+                            <Button Content="Excluir Eleição" 
+                                    Classes="error"
+                                    Command="{Binding DeletarEleicaoCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Status -->
+        <Border Grid.Row="2" 
+                Background="{StaticResource BackgroundSecondaryBrush}" 
+                BorderBrush="{StaticResource BorderLightBrush}" 
+                BorderThickness="0,1,0,0" 
+                Padding="24">
+            <TextBlock Text="{Binding StatusMessage}" 
+                       Classes="body"/>
+        </Border>
+
+        <!-- Overlay do Formulário -->
+        <Border Grid.RowSpan="3"
+                Background="#80000000" 
+                IsVisible="{Binding MostrarFormulario}">
+            <Border Background="{StaticResource BackgroundElevatedBrush}" 
+                    CornerRadius="{StaticResource RadiusLarge}" 
+                    Padding="{StaticResource SpacingXl}"
+                    Width="500"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Effect="{StaticResource ShadowLarge}">
+                <StackPanel Spacing="24">
+                    <TextBlock Text="{Binding FormularioTitulo}" 
+                               Classes="subheading"
+                               HorizontalAlignment="Center"/>
+                    
+                    <StackPanel Spacing="24">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Título da Eleição *" 
+                                       Classes="label"/>
+                            <TextBox Text="{Binding TituloEleicao}" 
+                                     FontSize="{StaticResource FontSizeM}"
+                                     Padding="8"/>
+                        </StackPanel>
+                        
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Descrição" 
+                                       Classes="label"/>
+                            <TextBox Text="{Binding DescricaoEleicao}" 
+                                     FontSize="{StaticResource FontSizeM}"
+                                     Padding="8"
+                                     AcceptsReturn="True"
+                                     Height="80"/>
+                        </StackPanel>
+                        
+                        <Grid ColumnDefinitions="*,16,*">
+                            <StackPanel Grid.Column="0" 
+                                        Spacing="4"
+                                        Margin="0,0,8,0">
+                                <TextBlock Text="Data de Início *" 
+                                           Classes="label"/>
+                                <DatePicker SelectedDate="{Binding DataInicio}" 
+                                           FontSize="{StaticResource FontSizeM}"
+                                           Padding="8"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="2" 
+                                        Spacing="4"
+                                        Margin="8,0,0,0">
+                                <TextBlock Text="Data de Fim *" 
+                                           Classes="label"/>
+                                <DatePicker SelectedDate="{Binding DataFim}" 
+                                           FontSize="{StaticResource FontSizeM}"
+                                           Padding="8"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Right" 
+                                Spacing="8">
+                        <Button Content="Cancelar" 
+                                Classes="secondary"
+                                Command="{Binding CancelarFormularioCommand}"/>
+                        <Button Content="{Binding BotaoSalvarTexto}" 
+                                Classes="primary"
+                                Command="{Binding SalvarEleicaoCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Border>
+
+        <!-- Overlay de Gerenciamento de Candidatos -->
+        <Border Grid.RowSpan="3"
+                Background="#80000000" 
+                IsVisible="{Binding MostrarPainelCandidatos}">
+            <Border Background="{StaticResource BackgroundElevatedBrush}" 
+                    CornerRadius="{StaticResource RadiusLarge}" 
+                    Padding="{StaticResource SpacingXl}"
+                    Width="800"
+                    Height="600"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Effect="{StaticResource ShadowLarge}">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    <!-- Header -->
+                    <StackPanel Grid.Row="0" 
+                                Spacing="8">
+                        <TextBlock Text="Gerenciar Candidatos" 
+                                   Classes="subheading"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding EleicaoSelecionada.Titulo}" 
+                                   Classes="body"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Lista de Candidatos -->
+                    <Grid Grid.Row="1" 
+                          ColumnDefinitions="*,Auto" 
+                             Margin="0,24,0,0">
+                        <Border Grid.Column="0" 
+                                Background="{StaticResource BackgroundSecondaryBrush}" 
+                                BorderBrush="{StaticResource BorderLightBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="{StaticResource RadiusMedium}" 
+                                Margin="0,0,8,0">
+                            <Grid RowDefinitions="Auto,*">
+                                <Border Grid.Row="0" 
+                                        Background="{StaticResource BackgroundTertiaryBrush}" 
+                                        BorderBrush="{StaticResource BorderLightBrush}" 
+                                        BorderThickness="0,0,0,1" 
+                                        Padding="24">
+                                    <TextBlock Text="Candidatos Cadastrados" 
+                                               Classes="subheading"/>
+                                </Border>
+
+                                <ListBox Grid.Row="1" 
+                                         ItemsSource="{Binding Candidatos}" 
+                                         SelectedItem="{Binding CandidatoSelecionado}"
+                                         Background="Transparent"
+                                         BorderThickness="0">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="{StaticResource SpacingXs}" 
+                                                    Padding="24" 
+                                                    Classes="card">
+                                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                                    <Border Grid.Column="0" 
+                                                            Background="{StaticResource PrimaryBrush}" 
+                                                            CornerRadius="{StaticResource RadiusLarge}" 
+                                                            Width="40" 
+                                                            Height="40"
+                                                            Margin="0,0,24,0">
+                                                        <TextBlock Text="{Binding Numero}" 
+                                                                   FontSize="{StaticResource FontSizeL}" 
+                                                                   FontWeight="Bold"
+                                                                   Foreground="{StaticResource TextOnPrimaryBrush}"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    
+                                                    <StackPanel Grid.Column="1" 
+                                                                Spacing="4">
+                                                        <TextBlock Text="{Binding Nome}" 
+                                                                   Classes="subheading"/>
+                                                        <TextBlock Text="{Binding Partido}" 
+                                                                   Classes="body"/>
+                                                    </StackPanel>
+                                                    
+                                                    <StackPanel Grid.Column="2" 
+                                                              Orientation="Horizontal" 
+                                                              Spacing="4">
+                                                        <Button Content="✏️" 
+                                                                Command="{Binding $parent[UserControl].DataContext.EditarCandidatoCommand}"
+                                                                Classes="info small"/>
+                                                        <Button Content="🗑️" 
+                                                                Command="{Binding $parent[UserControl].DataContext.RemoverCandidatoCommand}"
+                                                                Classes="error small"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </Border>
+
+                        <!-- Coluna Direita: Formulário e Ações -->
+                        <StackPanel Grid.Column="1" 
+                                    Spacing="24" 
+                                    Width="320">
+                            
+                            <!-- Botão para Adicionar Novo Candidato -->
+                            <Button Content="Adicionar Novo Candidato"
+                                    Classes="success"
+                                    Command="{Binding AdicionarCandidatoCommand}"
+                                    IsVisible="{Binding !MostrarFormularioCandidato}"/>
+
+                            <!-- Formulário de Candidato -->
+                            <Border Classes="card"
+                                    IsVisible="{Binding MostrarFormularioCandidato}">
+                                <StackPanel Spacing="24">
+                                    <TextBlock Text="{Binding FormularioCandidatoTitulo}" 
+                                               Classes="subheading"/>
+                                    
+                                    <StackPanel Spacing="8">
+                                        <!-- Campo Nome -->
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Text="Nome *" 
+                                                       Classes="label"/>
+                                            <TextBox Text="{Binding NomeCandidato}"/>
+                                        </StackPanel>
+                                        
+                                        <!-- Campo Partido -->
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Text="Partido *" 
+                                                       Classes="label"/>
+                                            <TextBox Text="{Binding PartidoCandidato}"/>
+                                        </StackPanel>
+                                        
+                                        <!-- Campo Número -->
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Text="Número *" 
+                                                       Classes="label"/>
+                                            <TextBox Text="{Binding NumeroCandidato}"/>
+                                        </StackPanel>
+
+                                        <!-- Campo Foto -->
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Text="URL da Foto" 
+                                                       Classes="label"/>
+                                            <TextBox Text="{Binding FotoCandidato}" 
+                                                     Watermark="https://exemplo.com/foto.jpg (opcional)"/>
+                                            <TextBlock Text="Dica: Cole aqui a URL de uma imagem do candidato" 
+                                                       Classes="caption"/>
+                                            
+                                            <!-- Pré-visualização da Foto -->
+                                            <Border IsVisible="{Binding FotoCandidato}"
+                                                    Background="{StaticResource BackgroundTertiaryBrush}" 
+                                                    BorderBrush="{StaticResource BorderLightBrush}" 
+                                                    BorderThickness="1" 
+                                                    CornerRadius="{StaticResource RadiusMedium}" 
+                                                    Padding="8" 
+                                                    Margin="0,8,0,0">
+                                                <StackPanel Spacing="4" 
+                                                            HorizontalAlignment="Center">
+                                                    <TextBlock Text="Pré-visualização:" 
+                                                               Classes="label"/>
+                                                    <Border Background="{StaticResource BackgroundElevatedBrush}" 
+                                                            BorderBrush="{StaticResource BorderLightBrush}" 
+                                                            BorderThickness="1" 
+                                                            CornerRadius="{StaticResource RadiusSmall}" 
+                                                            Width="120" 
+                                                            Height="160">
+                                                        <Image Source="{Binding FotoCandidato}" 
+                                                               Stretch="UniformToFill" 
+                                                               HorizontalAlignment="Center" 
+                                                               VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <!-- Campo Cargo -->
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Text="Cargo *" 
+                                                       Classes="label"/>
+                                            <ComboBox ItemsSource="{Binding Cargos}"
+                                                      SelectedItem="{Binding CargoCandidatoSelecionado}"
+                                                      DisplayMemberBinding="{Binding Nome}"
+                                                      PlaceholderText="Selecione um cargo"
+                                                      HorizontalAlignment="Stretch"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    
+                                    <!-- Botões de Ação do Formulário -->
+                                    <StackPanel Spacing="4">
+                                        <Button Content="{Binding BotaoSalvarCandidatoTexto}" 
+                                                Classes="success"
+                                                Command="{Binding SalvarCandidatoCommand}"/>
+                                        <Button Content="Cancelar" 
+                                                Classes="secondary"
+                                                Command="{Binding CancelarCandidatoCommand}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Botão para Voltar -->
+                    <Button Grid.Row="2" 
+                            Content="Voltar para Eleições" 
+                            Classes="primary"
+                            Command="{Binding VoltarParaEleicoesCommand}"
+                            HorizontalAlignment="Right"
+                             Margin="0,24,0,0"/>
+                </Grid>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

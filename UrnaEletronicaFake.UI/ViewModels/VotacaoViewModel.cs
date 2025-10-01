@@ -1,0 +1,296 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Collections.Generic;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using UrnaEletronicaFake.Shared.Models;
+using UrnaEletronicaFake.UI.Services;
+using Microsoft.Extensions.Logging;
+
+namespace UrnaEletronicaFake.UI.ViewModels;
+
+public partial class VotacaoViewModel : ViewModelBase
+{
+    private readonly IEleicaoService _eleicaoService;
+    private readonly IVotoService _votoService;
+    private readonly IVotacaoStateService _votacaoStateService;
+    private readonly ITerminalLogService _terminalLogService;
+
+    private Eleicao? _eleicaoAtiva;
+    private string _numeroDigitado = "";
+    private int _indiceCargoAtual = 0;
+    private List<CargoEleitoral> _cargos = new();
+    private CargoEleitoral? CargoAtual => (_cargos.Count > _indiceCargoAtual) ? _cargos[_indiceCargoAtual] : null;
+    private int QuantidadeDigitosCargoAtual => CargoAtual?.QuantidadeDigitos ?? 2;
+
+    // --- Propriedades de Estado ---
+    [ObservableProperty] private bool _isTerminalLocked = true;
+    [ObservableProperty] private bool _isTelaFimVisible;
+    [ObservableProperty] private bool _isTelaCandidatoVisible;
+    [ObservableProperty] private bool _isVotoBranco;
+    [ObservableProperty] private bool _isVotoNulo;
+
+    // --- Propriedades de Tela ---
+    [ObservableProperty] private string _cargo = "CARGO";
+    [ObservableProperty] private string? _digito1;
+    [ObservableProperty] private string? _digito2;
+    [ObservableProperty] private string? _digito3;
+    [ObservableProperty] private string? _digito4;
+    [ObservableProperty] private string? _digito5;
+    [ObservableProperty] private string _nomeCandidato = "";
+    [ObservableProperty] private string _partidoCandidato = "";
+    [ObservableProperty] private string? _fotoCandidato;
+    [ObservableProperty] private string _instrucoes = "Aguardando liberação do terminal...";
+
+    public ICommand ConfirmarCommand { get; }
+    public ICommand DigitarNumeroCommand { get; }
+    public ICommand VotarBrancoCommand { get; }
+    public ICommand CorrigirCommand { get; }
+
+    public VotacaoViewModel(IEleicaoService eleicaoService, IVotoService votoService, IVotacaoStateService votacaoStateService, ITerminalLogService terminalLogService, ILogger<VotacaoViewModel> logger) : base(logger)
+    {
+        _eleicaoService = eleicaoService;
+        _votoService = votoService;
+        _votacaoStateService = votacaoStateService;
+        _terminalLogService = terminalLogService;
+
+        _votacaoStateService.OnTerminalStateChanged += OnTerminalStateChanged;
+        IsTerminalLocked = _votacaoStateService.IsTerminalLocked;
+        
+        // Comandos
+        ConfirmarCommand = new RelayCommand(ConfirmarVoto, () => !IsTerminalLocked && !string.IsNullOrWhiteSpace(_numeroDigitado));
+        DigitarNumeroCommand = new RelayCommand<string>(DigitarNumero);
+        VotarBrancoCommand = new RelayCommand(VotarBranco);
+        CorrigirCommand = new RelayCommand(Corrigir);
+    }
+
+
+    private async void OnTerminalStateChanged()
+    {
+        IsTerminalLocked = _votacaoStateService.IsTerminalLocked;
+        if (!IsTerminalLocked)
+        {
+            await IniciarVotacao();
+        }
+    }
+
+    private async Task IniciarVotacao()
+    {
+        _eleicaoAtiva = await _eleicaoService.ObterEleicaoAtivaAsync();
+        if (_eleicaoAtiva != null)
+        {
+            _cargos = _eleicaoAtiva.CargosEleitorais.OrderBy(c => c.Ordem).ToList();
+            _indiceCargoAtual = 0;
+            if (_cargos.Count == 0)
+            {
+                Cargo = "SEM CARGOS DEFINIDOS";
+                Instrucoes = "Contate o mesário.";
+                return;
+            }
+            ExibirCargoAtual();
+        }
+        else
+        {
+            Cargo = "NENHUMA ELEIÇÃO ATIVA";
+            Instrucoes = "Contate o mesário.";
+        }
+    }
+
+    private void ExibirCargoAtual()
+    {
+        var cargo = CargoAtual;
+        if (cargo == null)
+        {
+            Cargo = "FIM";
+            IsTelaFimVisible = true;
+            Instrucoes = "FIM DE VOTAÇÃO. Aguarde o próximo eleitor.";
+            _votacaoStateService.LockTerminal();
+            return;
+        }
+        Cargo = cargo.Nome.ToUpper();
+        ResetarTela(true);
+    }
+
+    private void DigitarNumero(string? numero)
+    {
+        if (string.IsNullOrEmpty(numero) || _numeroDigitado.Length >= QuantidadeDigitosCargoAtual || IsTelaFimVisible) return;
+
+        _numeroDigitado += numero;
+        AtualizarDigitos();
+
+        if (_numeroDigitado.Length == QuantidadeDigitosCargoAtual)
+        {
+            BuscarCandidato();
+        }
+    }
+
+    private void AtualizarDigitos()
+    {
+        var qtd = QuantidadeDigitosCargoAtual;
+        var digitos = _numeroDigitado.PadRight(qtd, ' ').ToCharArray();
+        Digito1 = digitos.Length > 0 && digitos[0] != ' ' ? digitos[0].ToString() : null;
+        Digito2 = digitos.Length > 1 && digitos[1] != ' ' ? digitos[1].ToString() : null;
+        Digito3 = digitos.Length > 2 && digitos[2] != ' ' ? digitos[2].ToString() : null;
+        Digito4 = digitos.Length > 3 && digitos[3] != ' ' ? digitos[3].ToString() : null;
+        Digito5 = digitos.Length > 4 && digitos[4] != ' ' ? digitos[4].ToString() : null;
+    }
+
+    private void BuscarCandidato()
+    {
+        IsTelaCandidatoVisible = true;
+        var cargo = CargoAtual;
+        var candidato = _eleicaoAtiva?.Candidatos.FirstOrDefault(c => c.CargoEleitoralId == cargo?.Id && c.Numero == _numeroDigitado);
+
+        if (candidato != null)
+        {
+            NomeCandidato = candidato.Nome;
+            PartidoCandidato = candidato.Partido;
+            FotoCandidato = string.IsNullOrWhiteSpace(candidato.Foto) ? null : candidato.Foto;
+            Instrucoes = "Aperte a tecla:\nVERDE para CONFIRMAR\nLARANJA para CORRIGIR";
+            IsVotoNulo = false;
+        }
+        else
+        {
+            NomeCandidato = "VOTO NULO";
+            PartidoCandidato = "";
+            FotoCandidato = null;
+            Instrucoes = "Aperte a tecla:\nVERDE para CONFIRMAR\nLARANJA para CORRIGIR";
+            IsVotoNulo = true;
+        }
+        ((RelayCommand)ConfirmarCommand).NotifyCanExecuteChanged();
+    }
+
+    private void VotarBranco()
+    {
+        if (_numeroDigitado.Length > 0 || IsTelaFimVisible) return;
+
+        ResetarTela(false);
+        IsVotoBranco = true;
+        IsTelaCandidatoVisible = true;
+        NomeCandidato = "VOTO EM BRANCO";
+        PartidoCandidato = "";
+        FotoCandidato = null;
+        Instrucoes = "Aperte a tecla:\nVERDE para CONFIRMAR\nLARANJA para CORRIGIR";
+        ((RelayCommand)ConfirmarCommand).NotifyCanExecuteChanged();
+    }
+
+    private void Corrigir()
+    {
+        ResetarTela(true);
+    }
+
+    private async void ConfirmarVoto()
+    {
+        if (_eleicaoAtiva == null || CargoAtual == null) return;
+        
+        string? eleitorId = _votacaoStateService.EleitorAutenticadoId;
+        if (string.IsNullOrWhiteSpace(eleitorId))
+        {
+            IsTelaFimVisible = true;
+            Instrucoes = "ERRO: Eleitor não identificado.";
+            _votacaoStateService.LockTerminal();
+            return;
+        }
+
+        try
+        {
+            if (IsVotoBranco)
+            {
+                await _votoService.RegistrarVotoAsync(eleitorId, _eleicaoAtiva.Id, CargoAtual.Id, null, votoBranco: true);
+            }
+            else if (IsVotoNulo)
+            {
+                await _votoService.RegistrarVotoAsync(eleitorId, _eleicaoAtiva.Id, CargoAtual.Id, null, votoNulo: true);
+            }
+            else
+            {
+                var candidato = _eleicaoAtiva.Candidatos.FirstOrDefault(c => c.CargoEleitoralId == CargoAtual.Id && c.Numero == _numeroDigitado);
+                if (candidato != null)
+                {
+                    await _votoService.RegistrarVotoAsync(eleitorId, _eleicaoAtiva.Id, CargoAtual.Id, candidato.Id);
+                }
+                else
+                {
+                    await _votoService.RegistrarVotoAsync(eleitorId, _eleicaoAtiva.Id, CargoAtual.Id, null, votoNulo: true);
+                }
+            }
+
+            _indiceCargoAtual++;
+            if (_indiceCargoAtual < _cargos.Count)
+            {
+                ExibirCargoAtual();
+            }
+            else
+            {
+                IsTelaFimVisible = true;
+                Instrucoes = "FIM DE VOTAÇÃO. Aguarde o próximo eleitor.";
+                await Task.Delay(2000);
+                _votacaoStateService.LockTerminal();
+                ResetarTela(false);
+                IsTelaFimVisible = false;
+                Instrucoes = "Aguardando liberação do terminal...";
+            }
+        }
+        catch (Exception)
+        {
+            Instrucoes = "Erro ao registrar voto. Contate o mesário.";
+            await Task.Delay(3000);
+        }
+        finally
+        {
+            ((RelayCommand)ConfirmarCommand).NotifyCanExecuteChanged();
+        }
+    }
+
+    private void ResetarTela(bool manterCargo)
+    {
+        _numeroDigitado = "";
+        IsVotoBranco = false;
+        IsVotoNulo = false;
+        IsTelaCandidatoVisible = false;
+        NomeCandidato = "";
+        PartidoCandidato = "";
+        FotoCandidato = null;
+        if (manterCargo)
+        {
+            Instrucoes = "Digite o número do seu candidato.";
+        }
+        ResetarDigitos();
+        ((RelayCommand)ConfirmarCommand).NotifyCanExecuteChanged();
+    }
+
+    private void ResetarDigitos()
+    {
+        Digito1 = null;
+        Digito2 = null;
+        Digito3 = null;
+        Digito4 = null;
+        Digito5 = null;
+    }
+
+    private void ReiniciarVotacao()
+    {
+        _indiceCargoAtual = 0;
+        _numeroDigitado = "";
+        IsTelaFimVisible = false;
+        IsTelaCandidatoVisible = false;
+        IsVotoBranco = false;
+        IsVotoNulo = false;
+        ResetarDigitos();
+        
+        if (_cargos.Count > 0)
+        {
+            ExibirCargoAtual();
+        }
+        else
+        {
+            Cargo = "AGUARDANDO ELEIÇÃO";
+            Instrucoes = "Nenhuma eleição ativa. Contate o administrador.";
+        }
+        
+        _terminalLogService.Registrar("Votação reiniciada manualmente");
+    }
+
+} 

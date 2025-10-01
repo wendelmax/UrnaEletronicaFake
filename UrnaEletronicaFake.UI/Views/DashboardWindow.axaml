@@ -1,0 +1,453 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:UrnaEletronicaFake.UI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
+        x:Class="UrnaEletronicaFake.UI.Views.DashboardWindow"
+        x:DataType="vm:DashboardViewModel"
+        Title="Dashboard de Monitoramento - Sistema de Urna Eletrônica"
+        Width="1400" Height="900"
+        MinWidth="1200" MinHeight="800"
+        Background="{DynamicResource BackgroundBrushDynamic}">
+
+    <Design.DataContext>
+        <vm:DashboardViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        
+        <!-- Header do Dashboard -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource WarningBrushDynamic}" 
+                Padding="24,16"
+                CornerRadius="0,0,16,16">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                    <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                            CornerRadius="8" 
+                            Padding="8"
+                            Width="40" Height="40">
+                        <TextBlock Text="📊" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Dashboard de Monitoramento" 
+                                   FontSize="20" 
+                                   FontWeight="Bold" 
+                                   Foreground="{DynamicResource TextOnPrimaryBrushDynamic}"/>
+                        <TextBlock Text="Acompanhamento em Tempo Real" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource TextOnPrimaryBrushDynamic}" 
+                                   Opacity="0.9"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" 
+                            Orientation="Horizontal" 
+                            Spacing="12"
+                            VerticalAlignment="Center">
+                    <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                            CornerRadius="16" 
+                            Padding="8,4">
+                        <StackPanel Orientation="Horizontal" Spacing="6">
+                            <Ellipse Fill="{DynamicResource SuccessBrushDynamic}" 
+                                     Width="6" Height="6"/>
+                            <TextBlock Text="Monitoramento Ativo" 
+                                       FontSize="10" 
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Conteúdo Principal -->
+        <ScrollViewer Grid.Row="1" 
+                      Padding="24" 
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="24">
+                
+                <!-- Status Geral do Sistema -->
+                <Border Classes="card">
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="🌐 Status Geral do Sistema" 
+                                   Classes="subheading"/>
+                        
+                        <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="Auto,Auto" 
+>
+                            
+                            <!-- Urnas -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" 
+                                        Spacing="8">
+                                <TextBlock Text="Urnas Conectadas" 
+                                           Classes="caption"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="3" 
+                                           FontSize="24" 
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource SuccessBrushDynamic}"/>
+                                <TextBlock Text="de 3 total" 
+                                           Classes="caption"/>
+                            </StackPanel>
+                            
+                            <!-- Mesas -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" 
+                                        Spacing="8">
+                                <TextBlock Text="Mesas Ativas" 
+                                           Classes="caption"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="2" 
+                                           FontSize="24" 
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource InfoBrushDynamic}"/>
+                                <TextBlock Text="de 3 total" 
+                                           Classes="caption"/>
+                            </StackPanel>
+                            
+                            <!-- Eleitores -->
+                            <StackPanel Grid.Row="0" Grid.Column="2" 
+                                        Spacing="8">
+                                <TextBlock Text="Eleitores Atendidos" 
+                                           Classes="caption"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="1,247" 
+                                           FontSize="24" 
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryBrushDynamic}"/>
+                                <TextBlock Text="votos registrados" 
+                                           Classes="caption"/>
+                            </StackPanel>
+                            
+                            <!-- Status -->
+                            <StackPanel Grid.Row="0" Grid.Column="3" 
+                                        Spacing="8">
+                                <TextBlock Text="Status da Eleição" 
+                                           Classes="caption"
+                                           FontWeight="SemiBold"/>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Ellipse Classes="status-online"/>
+                                    <TextBlock Text="Em Andamento" 
+                                               FontSize="16" 
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SuccessBrushDynamic}"/>
+                                </StackPanel>
+                                <TextBlock Text="Iniciada às 08:00" 
+                                           Classes="caption"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Estatísticas de Votação -->
+                <Grid ColumnDefinitions="2*,*">
+                    
+                    <!-- Gráfico de Votação -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="📈 Estatísticas de Votação" 
+                                       Classes="subheading"/>
+                            
+                            <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                                    BorderBrush="{DynamicResource BorderBrushDynamic}"
+                                    BorderThickness="1"
+                                    CornerRadius="8" 
+                                    Padding="20"
+                                    Height="200">
+                                <StackPanel Spacing="16">
+                                    <TextBlock Text="Votos por Hora" 
+                                               Classes="body"
+                                               FontWeight="SemiBold"/>
+                                    
+                                    <!-- Simulação de gráfico -->
+                                    <Grid ColumnDefinitions="*,*,*,*,*,*,*,*" 
+                                          RowDefinitions="*,*,*,*,*" 
+                                          Height="120">
+                                        
+                                        <!-- Barras do gráfico -->
+                                        <Rectangle Grid.Row="4" Grid.Column="0" 
+                                                   Fill="{DynamicResource PrimaryBrushDynamic}" 
+                                                   Height="20" 
+                                                   Margin="2"/>
+                                        <Rectangle Grid.Row="3" Grid.Column="1" 
+                                                   Fill="{DynamicResource PrimaryBrushDynamic}" 
+                                                   Height="40" 
+                                                   Margin="2"/>
+                                        <Rectangle Grid.Row="2" Grid.Column="2" 
+                                                   Fill="{DynamicResource PrimaryBrushDynamic}" 
+                                                   Height="60" 
+                                                   Margin="2"/>
+                                        <Rectangle Grid.Row="1" Grid.Column="3" 
+                                                   Fill="{DynamicResource PrimaryBrushDynamic}" 
+                                                   Height="80" 
+                                                   Margin="2"/>
+                                        <Rectangle Grid.Row="0" Grid.Column="4" 
+                                                   Fill="{DynamicResource PrimaryBrushDynamic}" 
+                                                   Height="100" 
+                                                   Margin="2"/>
+                                        <Rectangle Grid.Row="1" Grid.Column="5" 
+                                                   Fill="{DynamicResource PrimaryBrushDynamic}" 
+                                                   Height="80" 
+                                                   Margin="2"/>
+                                        <Rectangle Grid.Row="2" Grid.Column="6" 
+                                                   Fill="{DynamicResource PrimaryBrushDynamic}" 
+                                                   Height="60" 
+                                                   Margin="2"/>
+                                        <Rectangle Grid.Row="3" Grid.Column="7" 
+                                                   Fill="{DynamicResource PrimaryBrushDynamic}" 
+                                                   Height="40" 
+                                                   Margin="2"/>
+                                    </Grid>
+                                    
+                                    <Grid ColumnDefinitions="*,*,*,*,*,*,*,*">
+                                        <TextBlock Grid.Column="0" Text="08h" Classes="caption" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="09h" Classes="caption" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="10h" Classes="caption" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="11h" Classes="caption" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="12h" Classes="caption" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="5" Text="13h" Classes="caption" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="6" Text="14h" Classes="caption" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="7" Text="15h" Classes="caption" HorizontalAlignment="Center"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Log de Atividades -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Grid.Column="0" 
+                                           Text="📝 Log de Atividades" 
+                                           Classes="subheading"/>
+                                <Button Grid.Column="1" 
+                                        Content="🔄 Atualizar" 
+                                        Classes="secondary-button"
+                                        Padding="8,4"/>
+                            </Grid>
+                            
+                            <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                                    BorderBrush="{DynamicResource BorderBrushDynamic}"
+                                    BorderThickness="1"
+                                    CornerRadius="8" 
+                                    Padding="12"
+                                    Height="200">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="[15:30:25] Urna 001: Voto registrado" 
+                                                   Classes="caption"/>
+                                        <TextBlock Text="[15:30:20] Mesa 002: Eleitor identificado" 
+                                                   Classes="caption"/>
+                                        <TextBlock Text="[15:30:15] Urna 003: Sistema reiniciado" 
+                                                   Classes="caption"/>
+                                        <TextBlock Text="[15:30:10] Mesa 001: Urna liberada" 
+                                                   Classes="caption"/>
+                                        <TextBlock Text="[15:30:05] Urna 002: Voto registrado" 
+                                                   Classes="caption"/>
+                                        <TextBlock Text="[15:30:00] Sistema: Backup automático realizado" 
+                                                   Classes="caption"/>
+                                        <TextBlock Text="[15:29:55] Mesa 003: Eleitor identificado" 
+                                                   Classes="caption"/>
+                                        <TextBlock Text="[15:29:50] Urna 001: Voto registrado" 
+                                                   Classes="caption"/>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Equipamentos Conectados -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="🔌 Equipamentos Conectados" 
+                                   Classes="subheading"/>
+                        
+                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto" 
+>
+                            
+                            <!-- Urna 001 -->
+                            <Border Grid.Row="0" Grid.Column="0" 
+                                    Background="{DynamicResource SurfaceBrushDynamic}" 
+                                    BorderBrush="{DynamicResource SuccessBrushDynamic}"
+                                    BorderThickness="2"
+                                    CornerRadius="8" 
+                                    Padding="16">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="Urna 001" 
+                                               Classes="body"
+                                               FontWeight="SemiBold"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Ellipse Classes="status-online"/>
+                                        <TextBlock Text="Online" 
+                                                   Classes="caption"/>
+                                    </StackPanel>
+                                    <TextBlock Text="IP: 192.168.1.101" 
+                                               Classes="caption"/>
+                                    <TextBlock Text="Votos: 156" 
+                                               Classes="caption"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Urna 002 -->
+                            <Border Grid.Row="0" Grid.Column="1" 
+                                    Background="{DynamicResource SurfaceBrushDynamic}" 
+                                    BorderBrush="{DynamicResource SuccessBrushDynamic}"
+                                    BorderThickness="2"
+                                    CornerRadius="8" 
+                                    Padding="16">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="Urna 002" 
+                                               Classes="body"
+                                               FontWeight="SemiBold"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Ellipse Classes="status-online"/>
+                                        <TextBlock Text="Online" 
+                                                   Classes="caption"/>
+                                    </StackPanel>
+                                    <TextBlock Text="IP: 192.168.1.102" 
+                                               Classes="caption"/>
+                                    <TextBlock Text="Votos: 142" 
+                                               Classes="caption"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Urna 003 -->
+                            <Border Grid.Row="0" Grid.Column="2" 
+                                    Background="{DynamicResource SurfaceBrushDynamic}" 
+                                    BorderBrush="{DynamicResource WarningBrushDynamic}"
+                                    BorderThickness="2"
+                                    CornerRadius="8" 
+                                    Padding="16">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="Urna 003" 
+                                               Classes="body"
+                                               FontWeight="SemiBold"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Ellipse Classes="status-warning"/>
+                                        <TextBlock Text="Manutenção" 
+                                                   Classes="caption"/>
+                                    </StackPanel>
+                                    <TextBlock Text="IP: 192.168.1.103" 
+                                               Classes="caption"/>
+                                    <TextBlock Text="Votos: 89" 
+                                               Classes="caption"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Mesa 001 -->
+                            <Border Grid.Row="1" Grid.Column="0" 
+                                    Background="{DynamicResource SurfaceBrushDynamic}" 
+                                    BorderBrush="{DynamicResource InfoBrushDynamic}"
+                                    BorderThickness="2"
+                                    CornerRadius="8" 
+                                    Padding="16">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="Mesa 001" 
+                                               Classes="body"
+                                               FontWeight="SemiBold"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Ellipse Classes="status-online"/>
+                                        <TextBlock Text="Ativa" 
+                                                   Classes="caption"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Mesário: João Silva" 
+                                               Classes="caption"/>
+                                    <TextBlock Text="Eleitores: 45" 
+                                               Classes="caption"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Mesa 002 -->
+                            <Border Grid.Row="1" Grid.Column="1" 
+                                    Background="{DynamicResource SurfaceBrushDynamic}" 
+                                    BorderBrush="{DynamicResource InfoBrushDynamic}"
+                                    BorderThickness="2"
+                                    CornerRadius="8" 
+                                    Padding="16">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="Mesa 002" 
+                                               Classes="body"
+                                               FontWeight="SemiBold"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Ellipse Classes="status-online"/>
+                                        <TextBlock Text="Ativa" 
+                                                   Classes="caption"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Mesário: Maria Santos" 
+                                               Classes="caption"/>
+                                    <TextBlock Text="Eleitores: 38" 
+                                               Classes="caption"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Mesa 003 -->
+                            <Border Grid.Row="1" Grid.Column="2" 
+                                    Background="{DynamicResource SurfaceBrushDynamic}" 
+                                    BorderBrush="{DynamicResource ErrorBrushDynamic}"
+                                    BorderThickness="2"
+                                    CornerRadius="8" 
+                                    Padding="16">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="Mesa 003" 
+                                               Classes="body"
+                                               FontWeight="SemiBold"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Ellipse Classes="status-offline"/>
+                                        <TextBlock Text="Offline" 
+                                                   Classes="caption"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Mesário: -" 
+                                               Classes="caption"/>
+                                    <TextBlock Text="Eleitores: 0" 
+                                               Classes="caption"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource SurfaceBrushDynamic}" 
+                Padding="24,12"
+                BorderBrush="{DynamicResource DividerBrushDynamic}"
+                BorderThickness="0,1,0,0">
+            <Grid ColumnDefinitions="*,Auto,*">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                    <TextBlock Text="📊 Dashboard de Monitoramento" 
+                               Classes="caption"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="•" 
+                               Classes="caption" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Sistema de Urna Eletrônica" 
+                               Classes="caption"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            Spacing="16">
+                    <TextBlock Text="Última atualização: 15:30:25" 
+                               Classes="caption"/>
+                    <TextBlock Text="•" 
+                               Classes="caption" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Status: Online" 
+                               Classes="caption"/>
+                </StackPanel>
+                
+                <TextBlock Grid.Column="2" 
+                           Text="Versão 1.0.0" 
+                           Classes="caption"
+                           HorizontalAlignment="Right"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

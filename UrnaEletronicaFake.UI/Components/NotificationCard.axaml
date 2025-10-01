@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="80"
+             x:Class="UrnaEletronicaFake.UI.Components.NotificationCard"
+             Background="Transparent">
+
+    <UserControl.Styles>
+        <Style Selector="Border.notification">
+            <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+            <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+            <Setter Property="Margin" Value="{StaticResource SpacingS}"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowMedium}"/>
+        </Style>
+        
+        <Style Selector="Border.notification.success">
+            <Setter Property="BorderBrush" Value="{StaticResource SuccessBrush}"/>
+            <Setter Property="Background" Value="{StaticResource SuccessLightBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.notification.warning">
+            <Setter Property="BorderBrush" Value="{StaticResource WarningBrush}"/>
+            <Setter Property="Background" Value="{StaticResource WarningLightBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.notification.error">
+            <Setter Property="BorderBrush" Value="{StaticResource ErrorBrush}"/>
+            <Setter Property="Background" Value="{StaticResource ErrorLightBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.notification.info">
+            <Setter Property="BorderBrush" Value="{StaticResource InfoBrush}"/>
+            <Setter Property="Background" Value="{StaticResource InfoLightBrush}"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Border Classes="notification">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+            <TextBlock Grid.Column="0"
+                       Text="{Binding Icon}"
+                       FontSize="{StaticResource FontSizeXl}"
+                       VerticalAlignment="Center"
+                       Margin="0,0,8,0"/>
+            
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="{Binding Title}" 
+                           Classes="subheading"/>
+                <TextBlock Text="{Binding Message}" 
+                           Classes="body"/>
+            </StackPanel>
+            
+            <Button Grid.Column="2"
+                    Content="✕"
+                    Classes="secondary small"
+                    Command="{Binding CloseCommand}"
+                    Width="24"
+                    Height="24"
+                    Padding="0"/>
+        </Grid>
+    </Border>
+</UserControl>

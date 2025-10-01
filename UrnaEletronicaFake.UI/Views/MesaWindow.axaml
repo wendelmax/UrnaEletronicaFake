@@ -1,0 +1,313 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:UrnaEletronicaFake.UI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        x:Class="UrnaEletronicaFake.UI.Views.MesaWindow"
+        x:DataType="vm:MesaViewModel"
+        Title="Mesa Receptora - Controle de Acesso"
+        Width="1200" Height="800"
+        MinWidth="1000" MinHeight="700"
+        Background="{DynamicResource BackgroundBrushDynamic}">
+
+    <Design.DataContext>
+        <vm:MesaViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        
+        <!-- Header da Mesa -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource SuccessBrushDynamic}" 
+                Padding="24,16"
+                CornerRadius="0,0,16,16">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                    <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                            CornerRadius="8" 
+                            Padding="8"
+                            Width="40" Height="40">
+                        <TextBlock Text="👥" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Mesa Receptora" 
+                                   FontSize="20" 
+                                   FontWeight="Bold" 
+                                   Foreground="{DynamicResource TextOnPrimaryBrushDynamic}"/>
+                        <TextBlock Text="Controle de Acesso" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource TextOnPrimaryBrushDynamic}" 
+                                   Opacity="0.9"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" 
+                            Orientation="Horizontal" 
+                            Spacing="12"
+                            VerticalAlignment="Center">
+                    <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                            CornerRadius="16" 
+                            Padding="8,4">
+                        <StackPanel Orientation="Horizontal" Spacing="6">
+                            <Ellipse Fill="{DynamicResource SuccessBrushDynamic}" 
+                                     Width="6" Height="6"/>
+                            <TextBlock Text="Sistema Ativo" 
+                                       FontSize="10" 
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Conteúdo Principal -->
+        <Grid Grid.Row="1" 
+              ColumnDefinitions="*,*" 
+              Margin="24">
+            
+            <!-- Painel Esquerdo - Identificação -->
+            <StackPanel Grid.Column="0" 
+                        Spacing="24"
+                        Margin="0,0,12,0">
+                
+                <!-- Identificação do Mesário -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="👨‍💼 Identificação do Mesário" 
+                                   Classes="subheading"/>
+                        
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" 
+>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                       Text="ID:" 
+                                       Classes="body"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" 
+                                     Text="{Binding MesarioId}"
+                                      Watermark="Digite o ID do mesário"/>
+                            
+                            <TextBlock Grid.Row="1" Grid.Column="0" 
+                                       Text="Nome:" 
+                                       Classes="body"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" 
+                                     Text="{Binding NomeMesario}"
+                                      Watermark="Nome completo do mesário"/>
+                            
+                            <Button Grid.Row="2" Grid.Column="1" 
+                                    Content="🔍 Validar Mesário" 
+                                    Classes="primary-button"
+                                    HorizontalAlignment="Right"
+                                    MaxWidth="200"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Identificação do Eleitor -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="👤 Identificação do Eleitor" 
+                                   Classes="subheading"/>
+                        
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" 
+>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                       Text="Nome:" 
+                                       Classes="body"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" 
+                                     Text="{Binding NomeEleitor}"
+                                      Watermark="Nome completo do eleitor"/>
+                            
+                            <TextBlock Grid.Row="1" Grid.Column="0" 
+                                       Text="Terminal:" 
+                                       Classes="body"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" 
+                                     Text="{Binding TerminalId}"
+                                      Watermark="ID do terminal"/>
+                            
+                            <Button Grid.Row="2" Grid.Column="1" 
+                                    Content="✅ Liberar Urna" 
+                                    Classes="primary-button"
+                                    Command="{Binding LiberarUrnaCommand}"
+                                    HorizontalAlignment="Right"
+                                    MaxWidth="200"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Controles da Urna -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="🎛️ Controles da Urna" 
+                                   Classes="subheading"/>
+                        
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" 
+>
+                            
+                            <Button Grid.Row="0" Grid.Column="0" 
+                                    Content="🔓 Liberar" 
+                                    Classes="primary-button"
+                                    Command="{Binding LiberarUrnaCommand}"/>
+                            <Button Grid.Row="0" Grid.Column="1" 
+                                    Content="🔒 Bloquear" 
+                                    Classes="error-button"
+                                    Command="{Binding BloquearUrnaCommand}"/>
+                            
+                            <Button Grid.Row="1" Grid.Column="0" 
+                                    Content="📊 Status" 
+                                    Classes="secondary-button"/>
+                            <Button Grid.Row="1" Grid.Column="1" 
+                                    Content="🧹 Limpar Log" 
+                                    Classes="secondary-button"
+                                    Command="{Binding LimparLogCommand}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- Painel Direito - Status e Log -->
+            <StackPanel Grid.Column="1" 
+                        Spacing="24"
+                        Margin="12,0,0,0">
+                
+                <!-- Status em Tempo Real -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="📊 Status em Tempo Real" 
+                                   Classes="subheading"/>
+                        
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" 
+>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                       Text="Status:" 
+                                       Classes="body"
+                                       FontWeight="SemiBold"/>
+                            <StackPanel Grid.Row="0" Grid.Column="1" 
+                                        Orientation="Horizontal" 
+                                        Spacing="8">
+                                <Ellipse Classes="status-online"/>
+                                <TextBlock Text="Urna Liberada" 
+                                           Classes="body"/>
+                            </StackPanel>
+                            
+                            <TextBlock Grid.Row="1" Grid.Column="0" 
+                                       Text="Última Liberação:" 
+                                       Classes="body"
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" 
+                                       Text="15:30:25 15/11/2024" 
+                                       Classes="body"/>
+                            
+                            <TextBlock Grid.Row="2" Grid.Column="0" 
+                                       Text="Último Bloqueio:" 
+                                       Classes="body"
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" 
+                                       Text="15:32:46 15/11/2024" 
+                                       Classes="body"/>
+                            
+                            <TextBlock Grid.Row="3" Grid.Column="0" 
+                                       Text="Eleitores Atendidos:" 
+                                       Classes="body"
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" 
+                                       Text="0" 
+                                       Classes="body"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Log de Atividades -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Grid.Column="0" 
+                                       Text="📝 Log de Atividades" 
+                                       Classes="subheading"/>
+                            <Button Grid.Column="1" 
+                                    Content="🧹 Limpar" 
+                                    Classes="secondary-button"
+                                    Command="{Binding LimparLogCommand}"
+                                    Padding="8,4"/>
+                        </Grid>
+                        
+                        <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                                BorderBrush="{DynamicResource BorderBrushDynamic}"
+                                BorderThickness="1"
+                                CornerRadius="8" 
+                                Padding="12"
+                                Height="200">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="[14:30:25] Sistema inicializado" 
+                                               Classes="caption"/>
+                                    <TextBlock Text="[14:30:26] Mesário identificado: João Silva" 
+                                               Classes="caption"/>
+                                    <TextBlock Text="[14:31:15] Eleitor identificado: Maria Santos" 
+                                               Classes="caption"/>
+                                    <TextBlock Text="[14:31:16] Urna liberada para votação" 
+                                               Classes="caption"/>
+                                    <TextBlock Text="[14:32:45] Voto registrado com sucesso" 
+                                               Classes="caption"/>
+                                    <TextBlock Text="[14:32:46] Urna bloqueada automaticamente" 
+                                               Classes="caption"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Footer com Informações -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource SurfaceBrushDynamic}" 
+                Padding="24,12"
+                BorderBrush="{DynamicResource DividerBrushDynamic}"
+                BorderThickness="0,1,0,0">
+            <Grid ColumnDefinitions="*,Auto,*">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                    <TextBlock Text="🏛️ Mesa Receptora" 
+                               Classes="caption"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="•" 
+                               Classes="caption" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Sistema de Controle de Acesso" 
+                               Classes="caption"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            Spacing="16">
+                    <TextBlock Text="Status: Ativo" 
+                               Classes="caption"/>
+                    <TextBlock Text="•" 
+                               Classes="caption" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Última atualização: 14:32:46" 
+                               Classes="caption"/>
+                </StackPanel>
+                
+                <TextBlock Grid.Column="2" 
+                           Text="Versão 1.0.0" 
+                           Classes="caption"
+                           HorizontalAlignment="Right"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,61 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="100"
+             x:Class="UrnaEletronicaFake.UI.Components.StatusCard"
+             Background="Transparent">
+
+    <UserControl.Styles>
+        <Style Selector="Border.status-card">
+            <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+            <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+            <Setter Property="Margin" Value="{StaticResource SpacingXs}"/>
+            <Setter Property="Effect" Value="{StaticResource ShadowSmall}"/>
+        </Style>
+        
+        <Style Selector="Border.status-card.success">
+            <Setter Property="BorderBrush" Value="{StaticResource SuccessBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.status-card.warning">
+            <Setter Property="BorderBrush" Value="{StaticResource WarningBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.status-card.error">
+            <Setter Property="BorderBrush" Value="{StaticResource ErrorBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.status-card.info">
+            <Setter Property="BorderBrush" Value="{StaticResource InfoBrush}"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Border Classes="status-card">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center"
+                        Spacing="8">
+                <TextBlock Text="{Binding Title}" 
+                           Classes="label"/>
+                <Ellipse Classes="status-online" 
+                         IsVisible="{Binding IsOnline}"/>
+                <Ellipse Classes="status-offline" 
+                         IsVisible="{Binding !IsOnline}"/>
+            </StackPanel>
+            
+            <TextBlock Text="{Binding Value}" 
+                       FontSize="{StaticResource FontSizeXxxl}"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}"
+                       HorizontalAlignment="Center"/>
+            
+            <TextBlock Text="{Binding Subtitle}" 
+                       Classes="caption"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Border>
+</UserControl>

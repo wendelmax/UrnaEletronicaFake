@@ -1,0 +1,54 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="using:UrnaEletronicaFake.UI.Models"
+        x:Class="UrnaEletronicaFake.UI.Views.ConfirmationDialog"
+        x:DataType="models:ConfirmationDialogModel"
+        Title="Confirmação"
+        Width="450"
+        Height="250"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        ShowInTaskbar="False"
+        Background="{StaticResource BackgroundElevatedBrush}">
+    
+    <Border Padding="32">
+        <StackPanel Spacing="24">
+            
+            <StackPanel Spacing="8" HorizontalAlignment="Center">
+                <TextBlock Text="{Binding Icon}"
+                           FontSize="48"
+                           HorizontalAlignment="Center">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{Binding IconColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                
+                <TextBlock Text="{Binding Title}"
+                           Classes="subheading"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"/>
+            </StackPanel>
+            
+            <TextBlock Text="{Binding Message}"
+                       Classes="body"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       Foreground="{StaticResource TextSecondaryBrush}"/>
+            
+            <Grid ColumnDefinitions="*,16,*">
+                <Button Grid.Column="0"
+                        Content="{Binding CancelText}"
+                        Classes="secondary"
+                        Click="OnCancelClick"
+                        HorizontalAlignment="Stretch"/>
+                
+                <Button Grid.Column="2"
+                        Content="{Binding ConfirmText}"
+                        Classes="primary"
+                        Click="OnConfirmClick"
+                        HorizontalAlignment="Stretch"/>
+            </Grid>
+        </StackPanel>
+    </Border>
+</Window>
+

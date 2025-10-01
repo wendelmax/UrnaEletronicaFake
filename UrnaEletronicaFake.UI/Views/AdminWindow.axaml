@@ -1,0 +1,436 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:UrnaEletronicaFake.UI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
+        x:Class="UrnaEletronicaFake.UI.Views.AdminWindow"
+        x:DataType="vm:AdminViewModel"
+        Title="Painel Administrativo - Sistema de Urna Eletrônica"
+        Width="1400" Height="900"
+        MinWidth="1200" MinHeight="800"
+        Background="{DynamicResource BackgroundBrushDynamic}">
+
+    <Design.DataContext>
+        <vm:AdminViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        
+        <!-- Header Administrativo -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource PrimaryBrushDynamic}" 
+                Padding="24,16"
+                CornerRadius="0,0,16,16">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                    <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                            CornerRadius="8" 
+                            Padding="8"
+                            Width="40" Height="40">
+                        <TextBlock Text="⚙️" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Painel Administrativo" 
+                                   FontSize="20" 
+                                   FontWeight="Bold" 
+                                   Foreground="{DynamicResource TextOnPrimaryBrushDynamic}"/>
+                        <TextBlock Text="Configuração e Gestão do Sistema" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource TextOnPrimaryBrushDynamic}" 
+                                   Opacity="0.9"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" 
+                            Orientation="Horizontal" 
+                            Spacing="12"
+                            VerticalAlignment="Center">
+                    <Border Background="{DynamicResource SurfaceBrushDynamic}" 
+                            CornerRadius="16" 
+                            Padding="8,4">
+                        <StackPanel Orientation="Horizontal" Spacing="6">
+                            <Ellipse Fill="{DynamicResource SuccessBrushDynamic}" 
+                                     Width="6" Height="6"/>
+                            <TextBlock Text="Administração Ativa" 
+                                       FontSize="10" 
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextPrimaryBrushDynamic}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Conteúdo Principal -->
+        <ScrollViewer Grid.Row="1" 
+                      Padding="24" 
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="24">
+                
+                <!-- Controle de Eleição -->
+                <Border Classes="card">
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="🗳️ Controle de Eleição" 
+                                   Classes="subheading"/>
+                        
+                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" 
+>
+                            
+                            <Button Grid.Row="0" Grid.Column="0" 
+                                    Content="▶️ Iniciar Eleição" 
+                                    Classes="primary-button"/>
+                            <Button Grid.Row="0" Grid.Column="1" 
+                                    Content="⏸️ Pausar Eleição" 
+                                    Classes="secondary-button"/>
+                            <Button Grid.Row="0" Grid.Column="2" 
+                                    Content="⏹️ Finalizar Eleição" 
+                                    Classes="error-button"/>
+                            
+                            <Button Grid.Row="1" Grid.Column="0" 
+                                    Content="📊 Resultados" 
+                                    Classes="secondary-button"/>
+                            <Button Grid.Row="1" Grid.Column="1" 
+                                    Content="📋 Relatórios" 
+                                    Classes="secondary-button"/>
+                            <Button Grid.Row="1" Grid.Column="2" 
+                                    Content="💾 Backup" 
+                                    Classes="secondary-button"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Configurações do Sistema -->
+                <Grid ColumnDefinitions="*,*">
+                    
+                    <!-- Configurações Gerais -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="⚙️ Configurações Gerais" 
+                                       Classes="subheading"/>
+                            
+                            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" 
+>
+                                
+                                <TextBlock Grid.Row="0" Grid.Column="0" 
+                                           Text="Nome da Eleição:" 
+                                           Classes="body"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" 
+                                         Text="Eleição Municipal 2024"
+                                          Watermark="Digite o nome da eleição"/>
+                                
+                                <TextBlock Grid.Row="1" Grid.Column="0" 
+                                           Text="Data/Hora Início:" 
+                                           Classes="body"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" 
+                                         Text="15/11/2024 08:00"
+                                          Watermark="DD/MM/AAAA HH:MM"/>
+                                
+                                <TextBlock Grid.Row="2" Grid.Column="0" 
+                                           Text="Data/Hora Fim:" 
+                                           Classes="body"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" 
+                                         Text="15/11/2024 17:00"
+                                          Watermark="DD/MM/AAAA HH:MM"/>
+                                
+                                <Button Grid.Row="3" Grid.Column="1" 
+                                        Content="💾 Salvar Configurações" 
+                                        Classes="primary-button"
+                                        HorizontalAlignment="Right"
+                                        MaxWidth="200"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Gestão de Candidatos -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="👥 Gestão de Candidatos" 
+                                       Classes="subheading"/>
+                            
+                            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" 
+>
+                                
+                                <Button Grid.Row="0" Grid.Column="0" 
+                                        Content="➕ Adicionar Candidato" 
+                                        Classes="primary-button"/>
+                                <Button Grid.Row="0" Grid.Column="1" 
+                                        Content="✏️ Editar Candidato" 
+                                        Classes="secondary-button"/>
+                                
+                                <Button Grid.Row="1" Grid.Column="0" 
+                                        Content="📋 Listar Candidatos" 
+                                        Classes="secondary-button"/>
+                                <Button Grid.Row="1" Grid.Column="1" 
+                                        Content="🗑️ Remover Candidato" 
+                                        Classes="error-button"/>
+                                
+                                <Button Grid.Row="2" Grid.Column="0" 
+                                        Content="📊 Estatísticas" 
+                                        Classes="secondary-button"/>
+                                <Button Grid.Row="2" Grid.Column="1" 
+                                        Content="📤 Exportar Lista" 
+                                        Classes="secondary-button"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Gestão de Cargos e Partidos -->
+                <Grid ColumnDefinitions="*,*">
+                    
+                    <!-- Gestão de Cargos -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="🏛️ Gestão de Cargos" 
+                                       Classes="subheading"/>
+                            
+                            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" 
+>
+                                
+                                <Button Grid.Row="0" Grid.Column="0" 
+                                        Content="➕ Novo Cargo" 
+                                        Classes="primary-button"/>
+                                <Button Grid.Row="0" Grid.Column="1" 
+                                        Content="✏️ Editar Cargo" 
+                                        Classes="secondary-button"/>
+                                
+                                <Button Grid.Row="1" Grid.Column="0" 
+                                        Content="📋 Listar Cargos" 
+                                        Classes="secondary-button"/>
+                                <Button Grid.Row="1" Grid.Column="1" 
+                                        Content="🗑️ Remover Cargo" 
+                                        Classes="error-button"/>
+                                
+                                <Button Grid.Row="2" Grid.Column="0" 
+                                        Content="📊 Estatísticas" 
+                                        Classes="secondary-button"/>
+                                <Button Grid.Row="2" Grid.Column="1" 
+                                        Content="📤 Exportar" 
+                                        Classes="secondary-button"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Gestão de Partidos -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="🏛️ Gestão de Partidos" 
+                                       Classes="subheading"/>
+                            
+                            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" 
+>
+                                
+                                <Button Grid.Row="0" Grid.Column="0" 
+                                        Content="➕ Novo Partido" 
+                                        Classes="primary-button"/>
+                                <Button Grid.Row="0" Grid.Column="1" 
+                                        Content="✏️ Editar Partido" 
+                                        Classes="secondary-button"/>
+                                
+                                <Button Grid.Row="1" Grid.Column="0" 
+                                        Content="📋 Listar Partidos" 
+                                        Classes="secondary-button"/>
+                                <Button Grid.Row="1" Grid.Column="1" 
+                                        Content="🗑️ Remover Partido" 
+                                        Classes="error-button"/>
+                                
+                                <Button Grid.Row="2" Grid.Column="0" 
+                                        Content="📊 Estatísticas" 
+                                        Classes="secondary-button"/>
+                                <Button Grid.Row="2" Grid.Column="1" 
+                                        Content="📤 Exportar" 
+                                        Classes="secondary-button"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Sistema e Auditoria -->
+                <Grid ColumnDefinitions="*,*">
+                    
+                    <!-- Controles do Sistema -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="🔧 Controles do Sistema" 
+                                       Classes="subheading"/>
+                            
+                            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" 
+>
+                                
+                                <Button Grid.Row="0" Grid.Column="0" 
+                                        Content="🔄 Reiniciar Sistema" 
+                                        Classes="warning-button"/>
+                                <Button Grid.Row="0" Grid.Column="1" 
+                                        Content="🛑 Parar Sistema" 
+                                        Classes="error-button"/>
+                                
+                                <Button Grid.Row="1" Grid.Column="0" 
+                                        Content="💾 Backup Completo" 
+                                        Classes="primary-button"/>
+                                <Button Grid.Row="1" Grid.Column="1" 
+                                        Content="📥 Restaurar Backup" 
+                                        Classes="secondary-button"/>
+                                
+                                <Button Grid.Row="2" Grid.Column="0" 
+                                        Content="🧹 Limpar Logs" 
+                                        Classes="secondary-button"/>
+                                <Button Grid.Row="2" Grid.Column="1" 
+                                        Content="📊 Monitoramento" 
+                                        Classes="secondary-button"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Auditoria e Logs -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="📋 Auditoria e Logs" 
+                                       Classes="subheading"/>
+                            
+                            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" 
+>
+                                
+                                <Button Grid.Row="0" Grid.Column="0" 
+                                        Content="📝 Logs do Sistema" 
+                                        Classes="secondary-button"/>
+                                <Button Grid.Row="0" Grid.Column="1" 
+                                        Content="🔍 Buscar Logs" 
+                                        Classes="secondary-button"/>
+                                
+                                <Button Grid.Row="1" Grid.Column="0" 
+                                        Content="📊 Relatório de Auditoria" 
+                                        Classes="primary-button"/>
+                                <Button Grid.Row="1" Grid.Column="1" 
+                                        Content="📤 Exportar Logs" 
+                                        Classes="secondary-button"/>
+                                
+                                <Button Grid.Row="2" Grid.Column="0" 
+                                        Content="🔐 Configurar Auditoria" 
+                                        Classes="secondary-button"/>
+                                <Button Grid.Row="2" Grid.Column="1" 
+                                        Content="⚠️ Alertas" 
+                                        Classes="warning-button"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Informações do Sistema -->
+                <Border Classes="card">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="ℹ️ Informações do Sistema" 
+                                   Classes="subheading"/>
+                        
+                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" 
+>
+                            
+                            <StackPanel Grid.Row="0" Grid.Column="0" 
+                                        Spacing="4">
+                                <TextBlock Text="Versão do Sistema" 
+                                           Classes="caption"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="1.0.0" 
+                                           Classes="body"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="0" Grid.Column="1" 
+                                        Spacing="4">
+                                <TextBlock Text="Última Atualização" 
+                                           Classes="caption"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="15/11/2024" 
+                                           Classes="body"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="0" Grid.Column="2" 
+                                        Spacing="4">
+                                <TextBlock Text="Status do Servidor" 
+                                           Classes="caption"
+                                           FontWeight="SemiBold"/>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Ellipse Classes="status-online"/>
+                                    <TextBlock Text="Online" 
+                                               Classes="body"/>
+                                </StackPanel>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="1" Grid.Column="0" 
+                                        Spacing="4">
+                                <TextBlock Text="Espaço em Disco" 
+                                           Classes="caption"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="2.5 GB / 10 GB" 
+                                           Classes="body"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="1" Grid.Column="1" 
+                                        Spacing="4">
+                                <TextBlock Text="Memória RAM" 
+                                           Classes="caption"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="1.2 GB / 4 GB" 
+                                           Classes="body"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="1" Grid.Column="2" 
+                                        Spacing="4">
+                                <TextBlock Text="CPU" 
+                                           Classes="caption"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="15% de uso" 
+                                           Classes="body"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource SurfaceBrushDynamic}" 
+                Padding="24,12"
+                BorderBrush="{DynamicResource DividerBrushDynamic}"
+                BorderThickness="0,1,0,0">
+            <Grid ColumnDefinitions="*,Auto,*">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                    <TextBlock Text="⚙️ Painel Administrativo" 
+                               Classes="caption"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="•" 
+                               Classes="caption" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Sistema de Urna Eletrônica" 
+                               Classes="caption"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            Spacing="16">
+                    <TextBlock Text="Usuário: Administrador" 
+                               Classes="caption"/>
+                    <TextBlock Text="•" 
+                               Classes="caption" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Última sessão: 15:30:25" 
+                               Classes="caption"/>
+                </StackPanel>
+                
+                <TextBlock Grid.Column="2" 
+                           Text="Versão 1.0.0" 
+                           Classes="caption"
+                           HorizontalAlignment="Right"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
