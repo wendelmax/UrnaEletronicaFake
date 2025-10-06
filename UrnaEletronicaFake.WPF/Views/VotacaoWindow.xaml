@@ -1,0 +1,164 @@
+<Window x:Class="UrnaEletronicaFake.WPF.Views.VotacaoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Urna Eletrônica" Height="600" Width="800"
+        WindowStartupLocation="CenterScreen"
+        Background="LightGray">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="5" Padding="20" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="🗳️ Urna Eletrônica" 
+                           FontSize="28" FontWeight="Bold" 
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Terminal de Votação" 
+                           FontSize="16" 
+                           HorizontalAlignment="Center"
+                           Margin="0,10,0,0"/>
+                
+                <!-- Status da Votação -->
+                <Border x:Name="StatusBorder" Background="LightCoral" BorderBrush="Red" BorderThickness="2" 
+                        CornerRadius="5" Padding="10" Margin="0,15,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Ellipse x:Name="StatusIndicator" Fill="Red" Width="12" Height="12" Margin="0,0,8,0"/>
+                        <TextBlock x:Name="StatusText" Text="AGUARDANDO LIBERAÇÃO DA MESA" 
+                                   FontSize="14" FontWeight="Bold" Foreground="DarkRed"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Display de Números -->
+            <Border Grid.Column="0" Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="20" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="Número do Candidato" 
+                               FontSize="18" FontWeight="Bold" 
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,20"/>
+                    
+                    <Border Background="Black" BorderBrush="Gray" BorderThickness="2" CornerRadius="5" Padding="20" Margin="0,0,0,20">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Border Background="White" Width="60" Height="80" CornerRadius="5" Margin="0,0,10,0">
+                                <TextBlock x:Name="Digit1Text" Text="_" FontSize="36" FontWeight="Bold" 
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border Background="White" Width="60" Height="80" CornerRadius="5">
+                                <TextBlock x:Name="Digit2Text" Text="_" FontSize="36" FontWeight="Bold" 
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Teclado Numérico -->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Linha 1 -->
+                        <Button Grid.Row="0" Grid.Column="0" Content="1" FontSize="24" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="DigitButton_Click" Tag="1"/>
+                        <Button Grid.Row="0" Grid.Column="1" Content="2" FontSize="24" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="DigitButton_Click" Tag="2"/>
+                        <Button Grid.Row="0" Grid.Column="2" Content="3" FontSize="24" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="DigitButton_Click" Tag="3"/>
+
+                        <!-- Linha 2 -->
+                        <Button Grid.Row="1" Grid.Column="0" Content="4" FontSize="24" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="DigitButton_Click" Tag="4"/>
+                        <Button Grid.Row="1" Grid.Column="1" Content="5" FontSize="24" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="DigitButton_Click" Tag="5"/>
+                        <Button Grid.Row="1" Grid.Column="2" Content="6" FontSize="24" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="DigitButton_Click" Tag="6"/>
+
+                        <!-- Linha 3 -->
+                        <Button Grid.Row="2" Grid.Column="0" Content="7" FontSize="24" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="DigitButton_Click" Tag="7"/>
+                        <Button Grid.Row="2" Grid.Column="1" Content="8" FontSize="24" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="DigitButton_Click" Tag="8"/>
+                        <Button Grid.Row="2" Grid.Column="2" Content="9" FontSize="24" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="DigitButton_Click" Tag="9"/>
+
+                        <!-- Linha 4 -->
+                        <Button Grid.Row="3" Grid.Column="0" Content="0" FontSize="24" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="DigitButton_Click" Tag="0"/>
+                        <Button Grid.Row="3" Grid.Column="1" Content="⌫" FontSize="20" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="DeleteButton_Click"/>
+                        <Button Grid.Row="3" Grid.Column="2" Content="✕" FontSize="20" FontWeight="Bold" 
+                                Margin="5" Padding="10" Click="ClearButton_Click"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Informações do Candidato -->
+            <Border Grid.Column="1" Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="20" Margin="10,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="Informações do Candidato" 
+                               FontSize="18" FontWeight="Bold" 
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,20"/>
+                    
+                    <StackPanel x:Name="CandidatePanel" Visibility="Collapsed">
+                        <Border Background="LightBlue" BorderBrush="Blue" BorderThickness="2" CornerRadius="5" Padding="15">
+                            <StackPanel>
+                                <TextBlock x:Name="CandidateName" Text="" FontSize="20" FontWeight="Bold" 
+                                           HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBlock x:Name="CandidateRole" Text="" FontSize="16" 
+                                           HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                <TextBlock x:Name="CandidateNumber" Text="" FontSize="14" 
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Visibility="Visible" x:Name="NoCandidatePanel">
+                        <Border Background="LightGray" BorderBrush="Gray" BorderThickness="2" CornerRadius="5" Padding="15">
+                            <TextBlock Text="Digite o número do candidato" FontSize="16" 
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Botões de Ação -->
+        <Border Grid.Row="2" Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="20" Margin="0,20,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="BlankVoteButton" Content="VOTO BRANCO" 
+                        Background="White" Foreground="Black" BorderBrush="Gray" BorderThickness="2"
+                        Padding="20,10" Margin="0,0,20,0" FontSize="14" FontWeight="Bold" 
+                        Click="BlankVote_Click"/>
+                <Button x:Name="ConfirmButton" Content="CONFIRMA" 
+                        Background="Green" Foreground="White" 
+                        Padding="20,10" Margin="0,0,20,0" FontSize="14" FontWeight="Bold" 
+                        Click="ConfirmVote_Click" IsEnabled="False"/>
+                <Button Content="CORRIGE" 
+                        Background="Orange" Foreground="White" 
+                        Padding="20,10" FontSize="14" FontWeight="Bold" 
+                        Click="ClearButton_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,312 @@
+@page "/votacao"
+
+<PageTitle>Urna Eletrônica - Votação</PageTitle>
+
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-lg me-3">
+                                🗳️
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-primary mb-1">Urna Eletrônica</h2>
+                                <p class="text-secondary mb-0">Terminal de Votação</p>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="status-indicator">
+                                <div class="status-dot status-dot-success"></div>
+                                <span class="text-sm text-secondary">Sistema Ativo</span>
+                            </div>
+                            <div class="text-sm text-tertiary mt-1">
+                                @DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Painel de Votação -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="text-lg font-semibold mb-4">Digite o número do seu candidato</h4>
+                    
+                    <!-- Display do Número -->
+                    <div class="text-center mb-4">
+                        <div class="digit-display">
+                            <div class="digit-box" id="digit1">
+                                <span class="digit-text" id="digit1-text">_</span>
+                            </div>
+                            <div class="digit-box" id="digit2">
+                                <span class="digit-text" id="digit2-text">_</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teclado Numérico -->
+                    <div class="keypad-container">
+                        <div class="row justify-content-center">
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn" onclick="@(() => AddDigit("1"))">1</button>
+                            </div>
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn" onclick="@(() => AddDigit("2"))">2</button>
+                            </div>
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn" onclick="@(() => AddDigit("3"))">3</button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn" onclick="@(() => AddDigit("4"))">4</button>
+                            </div>
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn" onclick="@(() => AddDigit("5"))">5</button>
+                            </div>
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn" onclick="@(() => AddDigit("6"))">6</button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn" onclick="@(() => AddDigit("7"))">7</button>
+                            </div>
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn" onclick="@(() => AddDigit("8"))">8</button>
+                            </div>
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn" onclick="@(() => AddDigit("9"))">9</button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn btn-secondary" onclick="@(() => AddDigit("0"))">0</button>
+                            </div>
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn btn-warning" onclick="@(() => ClearDigits())">Limpar</button>
+                            </div>
+                            <div class="col-3 text-center mb-3">
+                                <button class="btn keypad-btn btn-danger" onclick="@(() => DeleteDigit())">Apagar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="row justify-content-center mt-4">
+                        <div class="col-6 text-center">
+                            <button class="btn btn-success btn-lg w-100" onclick="@(() => ConfirmVote())" disabled="@(string.IsNullOrEmpty(CurrentVote))">
+                                <span class="me-2">✓</span>
+                                Confirmar Voto
+                            </button>
+                        </div>
+                        <div class="col-6 text-center">
+                            <button class="btn btn-outline btn-lg w-100" onclick="@(() => ShowBlankVote())">
+                                <span class="me-2">📝</span>
+                                Voto Branco
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel de Informações -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-lg font-semibold mb-3">
+                        <span class="me-2">ℹ️</span>
+                        Informações
+                    </h5>
+                    
+                    <div class="mb-3">
+                        <div class="badge badge-primary mb-2">Eleição Ativa</div>
+                        <p class="text-sm text-secondary mb-0">
+                            Eleição Municipal 2024 - Prefeito
+                        </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="status-dot status-dot-success me-2"></div>
+                            <span class="text-sm font-medium">Status: Ativa</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="status-dot status-dot-info me-2"></div>
+                            <span class="text-sm font-medium">Zona: 123</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="status-dot status-dot-warning me-2"></div>
+                            <span class="text-sm font-medium">Seção: 456</span>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <div class="d-flex align-items-start">
+                            <span class="me-2">💡</span>
+                            <div>
+                                <strong>Instruções:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Digite o número do candidato</li>
+                                    <li>Confirme seu voto</li>
+                                    <li>Ou escolha voto branco</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Candidato Selecionado -->
+            @if (!string.IsNullOrEmpty(CurrentVote))
+            {
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h6 class="text-md font-semibold mb-3">Candidato Selecionado</h6>
+                        <div class="text-center">
+                            <div class="avatar avatar-lg mb-3" style="background-color: var(--primary-100); color: var(--primary-600);">
+                                👤
+                            </div>
+                            <h5 class="font-semibold mb-1">João Silva</h5>
+                            <p class="text-sm text-secondary mb-2">Prefeito</p>
+                            <div class="badge badge-primary">Número: @CurrentVote</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .digit-display {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .digit-box {
+        width: 80px;
+        height: 100px;
+        border: 3px solid var(--primary-500);
+        border-radius: 12px;
+        background-color: var(--background-elevated);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition-fast);
+    }
+
+    .digit-text {
+        font-size: 3rem;
+        font-weight: bold;
+        color: var(--text-primary);
+        text-align: center;
+        line-height: 1;
+    }
+
+    .keypad-container {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .keypad-btn {
+        width: 80px;
+        height: 60px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        border-radius: 8px;
+        border: 1px solid var(--border-light);
+        background-color: var(--background-elevated);
+        color: var(--text-primary);
+        transition: var(--transition-fast);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .keypad-btn:hover {
+        background-color: var(--primary-500);
+        color: var(--text-on-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .keypad-btn:active {
+        transform: translateY(0);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .keypad-btn.btn-secondary:hover {
+        background-color: var(--secondary-600);
+        color: var(--text-on-primary);
+    }
+
+    .keypad-btn.btn-warning:hover {
+        background-color: var(--warning-600);
+        color: var(--text-on-primary);
+    }
+
+    .keypad-btn.btn-danger:hover {
+        background-color: var(--error-600);
+        color: var(--text-on-primary);
+    }
+</style>
+
+@code {
+    private string CurrentVote = "";
+
+    private void AddDigit(string digit)
+    {
+        if (CurrentVote.Length < 2)
+        {
+            CurrentVote += digit;
+            UpdateDisplay();
+        }
+    }
+
+    private void DeleteDigit()
+    {
+        if (CurrentVote.Length > 0)
+        {
+            CurrentVote = CurrentVote.Substring(0, CurrentVote.Length - 1);
+            UpdateDisplay();
+        }
+    }
+
+    private void ClearDigits()
+    {
+        CurrentVote = "";
+        UpdateDisplay();
+    }
+
+    private void UpdateDisplay()
+    {
+        // Atualizar o display dos dígitos
+        // Esta lógica seria implementada com JavaScript para interação real
+    }
+
+    private void ConfirmVote()
+    {
+        // Lógica para confirmar voto
+        // Implementar validação e persistência
+        CurrentVote = "";
+        UpdateDisplay();
+    }
+
+    private void ShowBlankVote()
+    {
+        // Lógica para voto branco
+        CurrentVote = "";
+        UpdateDisplay();
+    }
+}

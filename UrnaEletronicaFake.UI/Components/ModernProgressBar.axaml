@@ -1,0 +1,53 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="20"
+             x:Class="UrnaEletronicaFake.UI.Components.ModernProgressBar"
+             Background="Transparent">
+
+    <UserControl.Styles>
+        <Style Selector="Border.progress-container">
+            <Setter Property="Background" Value="{StaticResource BackgroundTertiaryBrush}"/>
+            <Setter Property="CornerRadius" Value="{StaticResource RadiusLarge}"/>
+            <Setter Property="Height" Value="{Binding $parent[UserControl].BarHeight}"/>
+            <Setter Property="Width" Value="{Binding $parent[UserControl].BarWidth}"/>
+        </Style>
+        
+        <Style Selector="Border.progress-fill">
+            <Setter Property="Background" Value="{Binding $parent[UserControl].FillBrush}"/>
+            <Setter Property="CornerRadius" Value="{StaticResource RadiusLarge}"/>
+            <Setter Property="Height" Value="{Binding $parent[UserControl].BarHeight}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        
+        <Style Selector="Border.progress-fill.success">
+            <Setter Property="Background" Value="{StaticResource SuccessBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.progress-fill.warning">
+            <Setter Property="Background" Value="{StaticResource WarningBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.progress-fill.error">
+            <Setter Property="Background" Value="{StaticResource ErrorBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.progress-fill.info">
+            <Setter Property="Background" Value="{StaticResource InfoBrush}"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid>
+        <Border Classes="progress-container"/>
+        <Border Classes="progress-fill" 
+                Width="{Binding $parent[UserControl].ProgressWidth}"/>
+        <TextBlock Text="{Binding $parent[UserControl].ProgressText}" 
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Foreground="{StaticResource TextPrimaryBrush}"
+                   FontSize="{Binding $parent[UserControl].ProgressFontSize}"
+                   FontWeight="SemiBold"
+                   IsVisible="{Binding $parent[UserControl].ShowText}"/>
+    </Grid>
+</UserControl>

@@ -8,6 +8,7 @@
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceInclude Source="avares://UrnaEletronicaFake.UI/Resources/DesignTokens.axaml"/>
                     <ResourceInclude Source="avares://UrnaEletronicaFake.UI/Resources/Colors.axaml"/>
+                    <ResourceInclude Source="avares://UrnaEletronicaFake.UI/Resources/DesignSystem.axaml"/>
                     <ResourceInclude Source="avares://UrnaEletronicaFake.UI/Resources/Themes.axaml"/>
                 </ResourceDictionary.MergedDictionaries>
                 
@@ -20,5 +21,6 @@
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://UrnaEletronicaFake.UI/Resources/ComponentStyles.axaml"/>
+        <StyleInclude Source="avares://UrnaEletronicaFake.UI/Resources/ModernStyles.axaml"/>
     </Application.Styles>
 </Application>

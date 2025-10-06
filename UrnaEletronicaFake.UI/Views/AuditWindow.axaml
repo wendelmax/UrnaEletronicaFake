@@ -1,0 +1,188 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:UrnaEletronicaFake.UI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+        x:Class="UrnaEletronicaFake.UI.Views.AuditWindow"
+        x:DataType="vm:AuditoriaViewModel"
+        Title="Sistema de Auditoria - Urna Eletrônica"
+        Width="1000" Height="700"
+        MinWidth="800" MinHeight="600"
+        Background="{StaticResource BackgroundPrimaryBrush}">
+
+    <Design.DataContext>
+        <vm:AuditoriaViewModel/>
+    </Design.DataContext>
+
+    <Grid>
+        <!-- Header -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource PrimaryBrush}" 
+                Padding="24"
+                Effect="{StaticResource ShadowMedium}">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                
+                <!-- Logo e Título -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                    <Border Background="{StaticResource BackgroundElevatedBrush}" 
+                            CornerRadius="{StaticResource RadiusLarge}" 
+                            Padding="8"
+                            Width="56" Height="56">
+                        <TextBlock Text="🔍" 
+                                   FontSize="28" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Sistema de Auditoria" 
+                                   FontSize="{StaticResource FontSizeXxxl}" 
+                                   FontWeight="Bold" 
+                                   Foreground="{StaticResource TextOnPrimaryBrush}"/>
+                        <TextBlock Text="Logs e Rastreabilidade do Sistema" 
+                                   FontSize="{StaticResource FontSizeM}" 
+                                   Foreground="{StaticResource TextOnPrimaryBrush}" 
+                                   Opacity="0.9"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Status e Controles -->
+                <StackPanel Grid.Column="2" 
+                            Orientation="Horizontal" 
+                            Spacing="8"
+                            VerticalAlignment="Center">
+                    
+                    <!-- Status do Sistema -->
+                    <Border Background="{StaticResource SuccessBrush}" 
+                            CornerRadius="{StaticResource RadiusLarge}" 
+                            Padding="8">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <Ellipse Fill="{StaticResource TextOnPrimaryBrush}" 
+                                     Width="8" Height="8"/>
+                            <TextBlock Text="Auditoria Ativa" 
+                                       FontSize="{StaticResource FontSizeS}" 
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextOnPrimaryBrush}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Botão Fechar -->
+                    <Button Content="✕" 
+                            Classes="secondary small"
+                            Padding="8"
+                            Click="CloseButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Conteúdo Principal -->
+        <ScrollViewer Grid.Row="1" 
+                      Padding="24" 
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header da Auditoria -->
+                <Border Grid.Row="0" Background="{StaticResource BackgroundSecondaryBrush}" Padding="20,15" Margin="0,0,0,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Ícone -->
+                        <Border Grid.Column="0" 
+                                Background="{StaticResource PrimaryBrush}" 
+                                CornerRadius="{StaticResource RadiusLarge}" 
+                                Padding="12"
+                                Width="48" Height="48">
+                            <TextBlock Text="🔍" 
+                                       FontSize="20" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Título e Descrição -->
+                        <StackPanel Grid.Column="1" 
+                                    Margin="16,0,0,0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Logs de Auditoria" 
+                                       FontSize="{StaticResource FontSizeXl}" 
+                                       FontWeight="Bold" 
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock Text="Registros de todas as ações realizadas no sistema" 
+                                       FontSize="{StaticResource FontSizeM}" 
+                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </StackPanel>
+
+                        <!-- Controles -->
+                        <StackPanel Grid.Column="2" 
+                                    Orientation="Horizontal" 
+                                    Spacing="8"
+                                    VerticalAlignment="Center">
+                            <Button Content="Atualizar" 
+                                    Classes="primary small"/>
+                            <Button Content="Exportar" 
+                                    Classes="secondary small"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Lista de Logs -->
+                <Border Grid.Row="1" 
+                        Background="{StaticResource BackgroundElevatedBrush}" 
+                        CornerRadius="{StaticResource RadiusMedium}" 
+                        Padding="20"
+                        Effect="{StaticResource ShadowSmall}">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="Logs de Sistema" 
+                                   FontSize="{StaticResource FontSizeL}" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                        
+                        <!-- Placeholder para logs -->
+                        <Border Background="{StaticResource BackgroundTertiaryBrush}" 
+                                CornerRadius="{StaticResource RadiusSmall}" 
+                                Padding="16"
+                                MinHeight="200">
+                            <StackPanel HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Spacing="8">
+                                <TextBlock Text="📋" 
+                                           FontSize="48" 
+                                           HorizontalAlignment="Center" 
+                                           Opacity="0.5"/>
+                                <TextBlock Text="Nenhum log disponível" 
+                                           FontSize="{StaticResource FontSizeM}" 
+                                           Foreground="{StaticResource TextSecondaryBrush}" 
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="Os logs de auditoria aparecerão aqui quando houver atividade no sistema" 
+                                           FontSize="{StaticResource FontSizeS}" 
+                                           Foreground="{StaticResource TextDisabledBrush}" 
+                                           HorizontalAlignment="Center" 
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Footer -->
+                <Border Grid.Row="2" 
+                        Background="{StaticResource BackgroundSecondaryBrush}" 
+                        Padding="20,12" 
+                        Margin="0,16,0,0">
+                    <TextBlock Text="Sistema de auditoria ativo - Todos os eventos são registrados automaticamente" 
+                               FontSize="{StaticResource FontSizeS}" 
+                               Foreground="{StaticResource TextSecondaryBrush}" 
+                               HorizontalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>

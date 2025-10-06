@@ -12,22 +12,30 @@
 
         <!-- Header -->
         <Border Grid.Row="0" 
-                Classes="card"
+                Classes="stat-card"
                 Margin="0,0,0,24">
-            <StackPanel>
-                <TextBlock Text="Mesa Receptora de Votos" 
-                           FontSize="{StaticResource FontSizeXxxl}" 
-                           FontWeight="Bold" 
-                           Foreground="{StaticResource TextPrimaryBrush}"
-                           HorizontalAlignment="Center"/>
+            <StackPanel Spacing="16">
+                <StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center">
+                    <Border Classes="avatar large"
+                            Background="{StaticResource SuccessBrush}">
+                        <TextBlock Text="👥" 
+                                   FontSize="32" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Mesa Receptora de Votos" 
+                                   Classes="heading"/>
+                        <TextBlock Text="Controle de acesso dos eleitores"
+                                   Classes="caption"/>
+                    </StackPanel>
+                </StackPanel>
                 
-                <TextBlock Text="{Binding StatusMessage}"
-                           FontSize="{StaticResource FontSizeL}"
-                           Foreground="{StaticResource TextSecondaryBrush}"
-                           HorizontalAlignment="Center"
-                           TextWrapping="Wrap"
-                           TextAlignment="Center"
-                           Margin="0,4,0,0"/>
+                <Border Classes="chip" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding StatusMessage}"
+                               Classes="body"
+                               HorizontalAlignment="Center"/>
+                </Border>
             </StackPanel>
         </Border>
 
@@ -39,36 +47,40 @@
                     MaxWidth="600">
             
             <!-- Formulário de Identificação -->
-            <Border Classes="card-elevated">
+            <Border Classes="stat-card">
                 <StackPanel Spacing="24">
                     
                     <!-- Identificação do Mesário -->
-                    <StackPanel Spacing="4">
-                        <TextBlock Text="Identificação do Mesário"
-                                   Classes="label"/>
-                        <TextBox Text="{Binding MesarioId}"
-                                 FontSize="{StaticResource FontSizeL}"
-                                 Padding="8"
-                                 Watermark="ID do Mesário (obrigatório)"
-                                 HorizontalAlignment="Stretch"/>
-                    </StackPanel>
+                    <Border Classes="floating-input">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Identificação do Mesário"
+                                       Classes="label"/>
+                            <TextBox Text="{Binding MesarioId}"
+                                     FontSize="{StaticResource FontSizeL}"
+                                     Padding="12"
+                                     Watermark="ID do Mesário (obrigatório)"
+                                     HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                    </Border>
 
                     <!-- Identificação do Eleitor -->
-                    <StackPanel Spacing="4">
-                        <TextBlock Text="Identificação do Eleitor"
-                                   Classes="label"/>
-                <TextBox Text="{Binding IdentificacaoEleitor}"
-                                 FontSize="{StaticResource FontSizeL}"
-                                 Padding="8"
-                         Watermark="Digite o CPF ou Título de Eleitor"
-                                 HorizontalAlignment="Stretch"/>
-            </StackPanel>
+                    <Border Classes="floating-input">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Identificação do Eleitor"
+                                       Classes="label"/>
+                            <TextBox Text="{Binding IdentificacaoEleitor}"
+                                     FontSize="{StaticResource FontSizeL}"
+                                     Padding="12"
+                                     Watermark="Digite o CPF ou Título de Eleitor"
+                                     HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                    </Border>
 
                     <!-- Botões de Ação -->
-                    <StackPanel Spacing="8">
+                    <StackPanel Spacing="12">
                         <Button Content="Liberar Urna para Votação"
-                                Classes="success large"
-                    Command="{Binding LiberarUrnaCommand}"
+                                Classes="success"
+                                Command="{Binding LiberarUrnaCommand}"
                                 HorizontalAlignment="Stretch"/>
 
                         <Button Content="Bloquear Urna (Emergência)"
@@ -80,57 +92,93 @@
             </Border>
 
             <!-- Informações do Terminal -->
-            <Border Classes="card">
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Informações do Terminal" 
-                               Classes="subheading"/>
+            <Border Classes="stat-card">
+                <StackPanel Spacing="16">
+                    <StackPanel Orientation="Horizontal" Spacing="16">
+                        <Border Classes="avatar"
+                                Background="{StaticResource InfoBrush}">
+                            <TextBlock Text="💻" 
+                                       FontSize="24" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Informações do Terminal" 
+                                       Classes="subheading"/>
+                            <TextBlock Text="Dados do equipamento de votação"
+                                       Classes="caption"/>
+                        </StackPanel>
+                    </StackPanel>
                     
                     <Grid ColumnDefinitions="Auto,*" 
-                          RowDefinitions="Auto,Auto,Auto"
->
+                          RowDefinitions="Auto,Auto,Auto">
                         
                         <TextBlock Grid.Row="0" Grid.Column="0"
                                    Text="Terminal:"
                                    Classes="label"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1"
-                                   Text="{Binding TerminalId}"
-                                   Classes="body"/>
+                        <Border Grid.Row="0" Grid.Column="1" Classes="chip">
+                            <TextBlock Text="{Binding TerminalId}"
+                                       Classes="body"/>
+                        </Border>
                         
                         <TextBlock Grid.Row="1" Grid.Column="0"
                                    Text="Última Liberação:"
                                    Classes="label"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1"
-                                   Text="{Binding UltimaLiberacao, StringFormat='{}{0:HH:mm:ss dd/MM/yyyy}'}"
-                                   Classes="body"
-                                   IsVisible="{Binding UltimaLiberacao, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                        <Border Grid.Row="1" Grid.Column="1" Classes="chip success"
+                                IsVisible="{Binding UltimaLiberacao, Converter={x:Static ObjectConverters.IsNotNull}}">
+                            <TextBlock Text="{Binding UltimaLiberacao, StringFormat='{}{0:HH:mm:ss dd/MM/yyyy}'}"
+                                       Classes="body"/>
+                        </Border>
                         
                         <TextBlock Grid.Row="2" Grid.Column="0"
                                    Text="Último Bloqueio:"
                                    Classes="label"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1"
-                                   Text="{Binding UltimoBloqueio, StringFormat='{}{0:HH:mm:ss dd/MM/yyyy}'}"
-                                   Classes="body"
-                                   IsVisible="{Binding UltimoBloqueio, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                        <Border Grid.Row="2" Grid.Column="1" Classes="chip error"
+                                IsVisible="{Binding UltimoBloqueio, Converter={x:Static ObjectConverters.IsNotNull}}">
+                            <TextBlock Text="{Binding UltimoBloqueio, StringFormat='{}{0:HH:mm:ss dd/MM/yyyy}'}"
+                                       Classes="body"/>
+                        </Border>
                     </Grid>
                 </StackPanel>
             </Border>
 
             <!-- Informações Adicionais -->
-            <Border Classes="card">
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Informações Importantes"
-                               Classes="subheading"/>
+            <Border Classes="stat-card info">
+                <StackPanel Spacing="16">
+                    <StackPanel Orientation="Horizontal" Spacing="16">
+                        <Border Classes="avatar"
+                                Background="{StaticResource InfoBrush}">
+                            <TextBlock Text="ℹ️" 
+                                       FontSize="24" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Informações Importantes"
+                                       Classes="subheading"/>
+                            <TextBlock Text="Orientações para o mesário"
+                                       Classes="caption"/>
+                        </StackPanel>
+                    </StackPanel>
                     
-                    <StackPanel Spacing="4">
-                        <TextBlock Text="• Digite o CPF ou Título do eleitor"
-                                   Classes="caption"/>
-                        <TextBlock Text="• A urna será liberada para votação"
-                                   Classes="caption"/>
-                        <TextBlock Text="• Após o voto, a urna será bloqueada automaticamente"
-                                   Classes="caption"/>
-                        <TextBlock Text="• Em caso de emergência, use o botão de bloqueio"
-                                   Classes="caption"/>
-            </StackPanel>
+                    <StackPanel Spacing="8">
+                        <Border Classes="chip">
+                            <TextBlock Text="• Digite o CPF ou Título do eleitor"
+                                       Classes="body"/>
+                        </Border>
+                        <Border Classes="chip">
+                            <TextBlock Text="• A urna será liberada para votação"
+                                       Classes="body"/>
+                        </Border>
+                        <Border Classes="chip">
+                            <TextBlock Text="• Após o voto, a urna será bloqueada automaticamente"
+                                       Classes="body"/>
+                        </Border>
+                        <Border Classes="chip error">
+                            <TextBlock Text="• Em caso de emergência, use o botão de bloqueio"
+                                       Classes="body"/>
+                        </Border>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

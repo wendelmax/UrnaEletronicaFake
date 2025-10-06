@@ -2,18 +2,22 @@ using Microsoft.Extensions.Logging;
 using Avalonia.Controls;
 using System.Collections.Generic;
 using UrnaEletronicaFake.UI.Views;
+using UrnaEletronicaFake.UI.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace UrnaEletronicaFake.UI.Services;
 
 public class WindowManagerService : IWindowManagerService
 {
     private readonly ILogger<WindowManagerService> _logger;
+    private readonly IServiceProvider _serviceProvider;
     private readonly Dictionary<Type, Window> _openWindows = new();
     private Window? _mainWindow;
 
-    public WindowManagerService(ILogger<WindowManagerService> logger)
+    public WindowManagerService(ILogger<WindowManagerService> logger, IServiceProvider serviceProvider)
     {
         _logger = logger;
+        _serviceProvider = serviceProvider;
     }
 
     public void ShowMainWindow()
@@ -48,6 +52,8 @@ public class WindowManagerService : IWindowManagerService
             if (window == null)
             {
                 window = new VotacaoWindow();
+                var viewModel = _serviceProvider.GetRequiredService<VotacaoViewModel>();
+                window.DataContext = viewModel;
                 _openWindows[typeof(VotacaoWindow)] = window;
                 _logger.LogInformation("Voting window created and shown");
             }
@@ -72,6 +78,8 @@ public class WindowManagerService : IWindowManagerService
             if (window == null)
             {
                 window = new MesaWindow();
+                var viewModel = _serviceProvider.GetRequiredService<MesaViewModel>();
+                window.DataContext = viewModel;
                 _openWindows[typeof(MesaWindow)] = window;
                 _logger.LogInformation("Mesa window created and shown");
             }
@@ -96,6 +104,8 @@ public class WindowManagerService : IWindowManagerService
             if (window == null)
             {
                 window = new DashboardWindow();
+                var viewModel = _serviceProvider.GetRequiredService<DashboardViewModel>();
+                window.DataContext = viewModel;
                 _openWindows[typeof(DashboardWindow)] = window;
                 _logger.LogInformation("Dashboard window created and shown");
             }
@@ -120,6 +130,8 @@ public class WindowManagerService : IWindowManagerService
             if (window == null)
             {
                 window = new AdminWindow();
+                var viewModel = _serviceProvider.GetRequiredService<AdminViewModel>();
+                window.DataContext = viewModel;
                 _openWindows[typeof(AdminWindow)] = window;
                 _logger.LogInformation("Admin window created and shown");
             }
@@ -138,12 +150,54 @@ public class WindowManagerService : IWindowManagerService
 
     public void ShowAuditWindow()
     {
-        _logger.LogWarning("AuditWindow view not implemented yet.");
+        try
+        {
+            var window = GetWindow<AuditWindow>();
+            if (window == null)
+            {
+                window = new AuditWindow();
+                var viewModel = _serviceProvider.GetRequiredService<AuditoriaViewModel>();
+                window.DataContext = viewModel;
+                _openWindows[typeof(AuditWindow)] = window;
+                _logger.LogInformation("Audit window created and shown");
+            }
+            else
+            {
+                window.Show();
+                window.Activate();
+                _logger.LogDebug("Audit window shown and activated");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error showing audit window");
+        }
     }
 
     public void ShowResultsWindow()
     {
-        _logger.LogWarning("ResultsWindow view not implemented yet.");
+        try
+        {
+            var window = GetWindow<ResultadosWindow>();
+            if (window == null)
+            {
+                window = new ResultadosWindow();
+                var viewModel = _serviceProvider.GetRequiredService<ResultadosViewModel>();
+                window.DataContext = viewModel;
+                _openWindows[typeof(ResultadosWindow)] = window;
+                _logger.LogInformation("Results window created and shown");
+            }
+            else
+            {
+                window.Show();
+                window.Activate();
+                _logger.LogDebug("Results window shown and activated");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error showing results window");
+        }
     }
 
     public void CloseAllWindows()

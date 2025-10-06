@@ -181,4 +181,54 @@
     <x:Double x:Key="ComponentWidthXL">240</x:Double>
     <x:Double x:Key="ComponentWidthXXL">320</x:Double>
 
+    <!-- Gradientes -->
+    <LinearGradientBrush x:Key="PrimaryGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource Primary400}" Offset="0"/>
+        <GradientStop Color="{StaticResource Primary600}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="SuccessGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource Success500}" Offset="0"/>
+        <GradientStop Color="{StaticResource Success700}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="WarningGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource Warning500}" Offset="0"/>
+        <GradientStop Color="{StaticResource Warning700}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ErrorGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource Error500}" Offset="0"/>
+        <GradientStop Color="{StaticResource Error700}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Cores para Modo Escuro -->
+    <Color x:Key="DarkBackgroundPrimary">#121212</Color>
+    <Color x:Key="DarkBackgroundSecondary">#1E1E1E</Color>
+    <Color x:Key="DarkBackgroundTertiary">#2D2D2D</Color>
+    <Color x:Key="DarkBackgroundElevated">#383838</Color>
+
+    <Color x:Key="DarkTextPrimary">#FFFFFF</Color>
+    <Color x:Key="DarkTextSecondary">#B3B3B3</Color>
+    <Color x:Key="DarkTextDisabled">#666666</Color>
+
+    <Color x:Key="DarkBorderLight">#404040</Color>
+    <Color x:Key="DarkBorderMedium">#555555</Color>
+    <Color x:Key="DarkBorderDark">#666666</Color>
+
+    <!-- Brushes para Modo Escuro -->
+    <SolidColorBrush x:Key="DarkBackgroundPrimaryBrush" Color="{StaticResource DarkBackgroundPrimary}"/>
+    <SolidColorBrush x:Key="DarkBackgroundSecondaryBrush" Color="{StaticResource DarkBackgroundSecondary}"/>
+    <SolidColorBrush x:Key="DarkBackgroundTertiaryBrush" Color="{StaticResource DarkBackgroundTertiary}"/>
+    <SolidColorBrush x:Key="DarkBackgroundElevatedBrush" Color="{StaticResource DarkBackgroundElevated}"/>
+
+    <SolidColorBrush x:Key="DarkTextPrimaryBrush" Color="{StaticResource DarkTextPrimary}"/>
+    <SolidColorBrush x:Key="DarkTextSecondaryBrush" Color="{StaticResource DarkTextSecondary}"/>
+    <SolidColorBrush x:Key="DarkTextDisabledBrush" Color="{StaticResource DarkTextDisabled}"/>
+
+    <SolidColorBrush x:Key="DarkBorderLightBrush" Color="{StaticResource DarkBorderLight}"/>
+    <SolidColorBrush x:Key="DarkBorderMediumBrush" Color="{StaticResource DarkBorderMedium}"/>
+    <SolidColorBrush x:Key="DarkBorderDarkBrush" Color="{StaticResource DarkBorderDark}"/>
+
+
 </ResourceDictionary>

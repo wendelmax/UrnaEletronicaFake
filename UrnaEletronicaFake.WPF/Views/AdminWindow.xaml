@@ -1,0 +1,334 @@
+<Window x:Class="UrnaEletronicaFake.WPF.Views.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Painel Administrativo - Urna Eletrônica" Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}">
+    
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Painel Administrativo" 
+                           Style="{StaticResource TitleTextStyle}"
+                           Margin="0,0,0,8"/>
+                <TextBlock Text="Gerencie configurações e monitore o sistema" 
+                           Style="{StaticResource BodyTextStyle}"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Ellipse Style="{StaticResource StatusDotStyle}" Fill="{StaticResource SuccessBrush}" Width="12" Height="12"/>
+                <TextBlock Text="Sistema Online" 
+                           Style="{StaticResource CaptionTextStyle}"
+                           VerticalAlignment="Center"
+                           Margin="8,0,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <!-- Configurações da Eleição -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,24">
+                    <StackPanel Margin="24">
+                        <TextBlock Text="Configurações da Eleição" 
+                                   Style="{StaticResource SubtitleTextStyle}"
+                                   Margin="0,0,0,16"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                <TextBlock Text="Nome da Eleição" 
+                                           Style="{StaticResource LabelTextBlock}"
+                                           Margin="0,0,0,8"/>
+                                <TextBox Text="Eleições Municipais 2024" 
+                                         Style="{StaticResource FloatingInput}"
+                                         Margin="0,0,0,16"/>
+                                
+                                <TextBlock Text="Data de Início" 
+                                           Style="{StaticResource LabelTextBlock}"
+                                           Margin="0,0,0,8"/>
+                                <DatePicker Style="{StaticResource FloatingInput}"
+                                            Margin="0,0,0,16"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                                <TextBlock Text="Data de Fim" 
+                                           Style="{StaticResource LabelTextBlock}"
+                                           Margin="0,0,0,8"/>
+                                <DatePicker Style="{StaticResource FloatingInput}"
+                                            Margin="0,0,0,16"/>
+                                
+                                <TextBlock Text="Status da Eleição" 
+                                           Style="{StaticResource LabelTextBlock}"
+                                           Margin="0,0,0,8"/>
+                                <ComboBox Style="{StaticResource FloatingInput}"
+                                          SelectedIndex="0"
+                                          Margin="0,0,0,16">
+                                    <ComboBoxItem Content="Inativa"/>
+                                    <ComboBoxItem Content="Ativa"/>
+                                    <ComboBoxItem Content="Finalizada"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <StackPanel Orientation="Horizontal" >
+                            <Button Content="Salvar Configurações" 
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Margin="0,0,12,0"/>
+                            <Button Content="Iniciar Eleição" 
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Margin="0,0,12,0"/>
+                            <Button Content="Finalizar Eleição" 
+                                    Style="{StaticResource DangerButtonStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Candidatos -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,24">
+                    <StackPanel Margin="24">
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Text="Gerenciar Candidatos" 
+                                       Style="{StaticResource SubtitleTextStyle}"/>
+                            <Button Grid.Column="1" Content="Adicionar Candidato" 
+                                    Style="{StaticResource PrimaryButtonStyle}"/>
+                        </Grid>
+                        
+                        <DataGrid Style="{StaticResource ModernDataGrid}" Height="200">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Número" Width="80"/>
+                                <DataGridTextColumn Header="Nome" Width="*"/>
+                                <DataGridTextColumn Header="Partido" Width="80"/>
+                                <DataGridTextColumn Header="Cargo" Width="100"/>
+                                <DataGridTextColumn Header="Status" Width="80"/>
+                                <DataGridTemplateColumn Header="Ações" Width="120">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="Editar" 
+                                                        Style="{StaticResource SmallButton}"
+                                                        Margin="0,0,8,0"/>
+                                                <Button Content="Excluir" 
+                                                        Style="{StaticResource DangerButtonStyle}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                            
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Estatísticas do Sistema -->
+                <Grid Margin="0,0,0,24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Border Grid.Column="0" Style="{StaticResource StatCard}" Margin="0,0,8,0">
+                        <StackPanel Margin="24">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <Border Style="{StaticResource AvatarStyle}">
+                                    <TextBlock Text="👥" FontSize="20" HorizontalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Margin="16,0,0,0">
+                                    <TextBlock Text="1,247" 
+                                               Style="{StaticResource StatNumberTextBlock}"/>
+                                    <TextBlock Text="Total de Votos" 
+                                               Style="{StaticResource StatLabelTextBlock}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Grid.Column="1" Style="{StaticResource StatCard}" Margin="8,0,8,0">
+                        <StackPanel Margin="24">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <Border Style="{StaticResource AvatarStyle}">
+                                    <TextBlock Text="🗳️" FontSize="20" HorizontalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Margin="16,0,0,0">
+                                    <TextBlock Text="15" 
+                                               Style="{StaticResource StatNumberTextBlock}"/>
+                                    <TextBlock Text="Urnas Ativas" 
+                                               Style="{StaticResource StatLabelTextBlock}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Grid.Column="2" Style="{StaticResource StatCard}" Margin="8,0,8,0">
+                        <StackPanel Margin="24">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <Border Style="{StaticResource AvatarStyle}">
+                                    <TextBlock Text="✅" FontSize="20" HorizontalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Margin="16,0,0,0">
+                                    <TextBlock Text="98.5%" 
+                                               Style="{StaticResource StatNumberTextBlock}"/>
+                                    <TextBlock Text="Taxa de Sucesso" 
+                                               Style="{StaticResource StatLabelTextBlock}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Grid.Column="3" Style="{StaticResource StatCard}" Margin="8,0,0,0">
+                        <StackPanel Margin="24">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <Border Style="{StaticResource AvatarStyle}">
+                                    <TextBlock Text="⏱️" FontSize="20" HorizontalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Margin="16,0,0,0">
+                                    <TextBlock Text="2h 15m" 
+                                               Style="{StaticResource StatNumberTextBlock}"/>
+                                    <TextBlock Text="Tempo de Uptime" 
+                                               Style="{StaticResource StatLabelTextBlock}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Logs do Sistema -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel Margin="24">
+                        <TextBlock Text="Logs do Sistema" 
+                                   Style="{StaticResource SubtitleTextStyle}"
+                                   Margin="0,0,0,16"/>
+                        
+                        <Border Background="{StaticResource BackgroundTertiaryBrush}" 
+                                CornerRadius="8" 
+                                Padding="16" 
+                                Height="200">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="14:32:15" 
+                                                   Style="{StaticResource CaptionTextStyle}"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   MinWidth="80"
+                                                   Margin="0,0,12,0"/>
+                                        <Border Background="{StaticResource InfoBrush}" 
+                                                CornerRadius="4" 
+                                                Padding="8,2">
+                                            <TextBlock Text="INFO" 
+                                                       Foreground="{StaticResource TextOnInfoBrush}"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="12"/>
+                                        </Border>
+                                        <TextBlock Text="Sistema iniciado com sucesso" 
+                                                   Style="{StaticResource CaptionTextStyle}"
+                                                   Margin="12,0,0,0"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="14:32:16" 
+                                                   Style="{StaticResource CaptionTextStyle}"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   MinWidth="80"
+                                                   Margin="0,0,12,0"/>
+                                        <Border Background="{StaticResource SuccessBrush}" 
+                                                CornerRadius="4" 
+                                                Padding="8,2">
+                                            <TextBlock Text="SUCCESS" 
+                                                       Foreground="{StaticResource TextOnSuccessBrush}"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="12"/>
+                                        </Border>
+                                        <TextBlock Text="Conexão com banco de dados estabelecida" 
+                                                   Style="{StaticResource CaptionTextStyle}"
+                                                   Margin="12,0,0,0"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="14:32:17" 
+                                                   Style="{StaticResource CaptionTextStyle}"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   MinWidth="80"
+                                                   Margin="0,0,12,0"/>
+                                        <Border Background="{StaticResource WarningBrush}" 
+                                                CornerRadius="4" 
+                                                Padding="8,2">
+                                            <TextBlock Text="WARNING" 
+                                                       Foreground="{StaticResource TextOnWarningBrush}"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="12"/>
+                                        </Border>
+                                        <TextBlock Text="Backup automático agendado para 23:00" 
+                                                   Style="{StaticResource CaptionTextStyle}"
+                                                   Margin="12,0,0,0"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="14:35:22" 
+                                                   Style="{StaticResource CaptionTextStyle}"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   MinWidth="80"
+                                                   Margin="0,0,12,0"/>
+                                        <Border Background="{StaticResource InfoBrush}" 
+                                                CornerRadius="4" 
+                                                Padding="8,2">
+                                            <TextBlock Text="INFO" 
+                                                       Foreground="{StaticResource TextOnInfoBrush}"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="12"/>
+                                        </Border>
+                                        <TextBlock Text="Urna #001 conectada" 
+                                                   Style="{StaticResource CaptionTextStyle}"
+                                                   Margin="12,0,0,0"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="14:35:23" 
+                                                   Style="{StaticResource CaptionTextStyle}"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   MinWidth="80"
+                                                   Margin="0,0,12,0"/>
+                                        <Border Background="{StaticResource SuccessBrush}" 
+                                                CornerRadius="4" 
+                                                Padding="8,2">
+                                            <TextBlock Text="SUCCESS" 
+                                                       Foreground="{StaticResource TextOnSuccessBrush}"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="12"/>
+                                        </Border>
+                                        <TextBlock Text="Voto registrado: Candidato 13" 
+                                                   Style="{StaticResource CaptionTextStyle}"
+                                                   Margin="12,0,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

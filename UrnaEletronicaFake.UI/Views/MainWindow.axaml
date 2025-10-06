@@ -85,15 +85,26 @@
             <StackPanel Spacing="24">
                 
                 <!-- Status da Eleição -->
-                <Border Classes="card">
+                <Border Classes="stat-card">
                     <Grid ColumnDefinitions="Auto,*,Auto">
-                        <StackPanel Grid.Column="0" Spacing="4">
-                            <TextBlock Text="Status da Eleição" 
-                                       Classes="subheading"/>
+                        <StackPanel Grid.Column="0" Spacing="8">
                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                <Ellipse Classes="status-offline"/>
-                                <TextBlock Text="Aguardando início" 
-                                           Classes="body"/>
+                                <Border Classes="avatar small">
+                                    <TextBlock Text="🏛️" 
+                                               FontSize="12" 
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel>
+                                    <TextBlock Text="Status da Eleição" 
+                                               Classes="subheading"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Ellipse Classes="status-warning" IsVisible="{Binding !EleicaoAtiva}"/>
+                                        <Ellipse Classes="status-success" IsVisible="{Binding EleicaoAtiva}"/>
+                                        <TextBlock Text="{Binding StatusEleicaoTexto}" 
+                                                   Classes="body"/>
+                                    </StackPanel>
+                                </StackPanel>
                             </StackPanel>
                             <TextBlock Text="{Binding UltimaAtualizacao, StringFormat='Última atualização: {}{0:HH:mm:ss dd/MM/yyyy}'}" 
                                        Classes="caption"/>
@@ -123,39 +134,45 @@
                     
                     <!-- Urna Eletrônica -->
                     <Border Grid.Row="0" Grid.Column="0" 
-                            Classes="card">
-                        <StackPanel Spacing="8">
-                            <Grid ColumnDefinitions="Auto,*">
+                            Classes="stat-card">
+                        <StackPanel Spacing="16">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
                                 <Border Grid.Column="0" 
-                                        Background="{StaticResource InfoBrush}" 
-                                        CornerRadius="{StaticResource RadiusLarge}" 
-                                        Padding="8"
-                                        Width="56" Height="56">
+                                        Classes="avatar large"
+                                        Background="{StaticResource InfoBrush}">
                                     <TextBlock Text="🗳️" 
-                                               FontSize="28" 
+                                               FontSize="32" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
                                 </Border>
                                 <StackPanel Grid.Column="1" 
-                                            Margin="8,0,0,0">
+                                            Margin="16,0,0,0"
+                                            VerticalAlignment="Center">
                                     <TextBlock Text="Urna Eletrônica" 
                                                Classes="subheading"/>
                                     <TextBlock Text="Terminal de Votação" 
                                                Classes="caption"/>
                                 </StackPanel>
+                                <Border Grid.Column="2" Classes="chip">
+                                    <TextBlock Text="Votação" 
+                                               FontSize="{StaticResource FontSizeS}"
+                                               Foreground="{StaticResource PrimaryBrush}"
+                                               FontWeight="SemiBold"/>
+                                </Border>
                             </Grid>
                             
-                            <StackPanel Orientation="Horizontal" Spacing="4">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
                                 <Ellipse Classes="status-offline"/>
                                 <TextBlock Text="Aguardando início da eleição" 
                                            Classes="body"/>
                             </StackPanel>
                             
                             <TextBlock Text="Este terminal permite que os eleitores realizem seus votos de forma segura e confidencial." 
-                                       Classes="body"/>
+                                       Classes="body"
+                                       TextWrapping="Wrap"/>
                             
                             <Button Content="Abrir Urna" 
-                                    Classes="primary large"
+                                    Classes="gradient"
                                     Command="{Binding AbrirVotacaoWindowCommand}"
                                     IsEnabled="{Binding EleicaoAtiva}"/>
                         </StackPanel>
@@ -163,39 +180,45 @@
 
                     <!-- Mesa Receptora -->
                     <Border Grid.Row="0" Grid.Column="1" 
-                            Classes="card">
-                        <StackPanel Spacing="8">
-                            <Grid ColumnDefinitions="Auto,*">
+                            Classes="stat-card">
+                        <StackPanel Spacing="16">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
                                 <Border Grid.Column="0" 
-                                        Background="{StaticResource SuccessBrush}" 
-                                        CornerRadius="{StaticResource RadiusLarge}" 
-                                        Padding="8"
-                                        Width="56" Height="56">
+                                        Classes="avatar large"
+                                        Background="{StaticResource SuccessBrush}">
                                     <TextBlock Text="👥" 
-                                               FontSize="28" 
+                                               FontSize="32" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
                                 </Border>
                                 <StackPanel Grid.Column="1" 
-                                            Margin="8,0,0,0">
+                                            Margin="16,0,0,0"
+                                            VerticalAlignment="Center">
                                     <TextBlock Text="Mesa Receptora" 
                                                Classes="subheading"/>
                                     <TextBlock Text="Controle de Acesso" 
                                                Classes="caption"/>
                                 </StackPanel>
+                                <Border Grid.Column="2" Classes="chip">
+                                    <TextBlock Text="Mesa" 
+                                               FontSize="{StaticResource FontSizeS}"
+                                               Foreground="{StaticResource SuccessBrush}"
+                                               FontWeight="SemiBold"/>
+                                </Border>
                             </Grid>
                             
-                            <StackPanel Orientation="Horizontal" Spacing="4">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
                                 <Ellipse Classes="status-offline"/>
                                 <TextBlock Text="Aguardando início da eleição" 
                                            Classes="body"/>
                             </StackPanel>
                             
                             <TextBlock Text="Interface para mesários controlarem o acesso dos eleitores e liberar a urna para votação." 
-                                       Classes="body"/>
+                                       Classes="body"
+                                       TextWrapping="Wrap"/>
                             
                             <Button Content="Abrir Mesa" 
-                                    Classes="primary large"
+                                    Classes="gradient"
                                     Command="{Binding AbrirMesaWindowCommand}"
                                     IsEnabled="{Binding EleicaoAtiva}"/>
                         </StackPanel>
@@ -203,78 +226,90 @@
 
                     <!-- Dashboard de Monitoramento -->
                     <Border Grid.Row="1" Grid.Column="0" 
-                            Classes="card">
-                        <StackPanel Spacing="8">
-                            <Grid ColumnDefinitions="Auto,*">
+                            Classes="stat-card">
+                        <StackPanel Spacing="16">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
                                 <Border Grid.Column="0" 
-                                        Background="{StaticResource WarningBrush}" 
-                                        CornerRadius="{StaticResource RadiusLarge}" 
-                                        Padding="8"
-                                        Width="56" Height="56">
+                                        Classes="avatar large"
+                                        Background="{StaticResource WarningBrush}">
                                     <TextBlock Text="📊" 
-                                               FontSize="28" 
+                                               FontSize="32" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
                                 </Border>
                                 <StackPanel Grid.Column="1" 
-                                            Margin="8,0,0,0">
+                                            Margin="16,0,0,0"
+                                            VerticalAlignment="Center">
                                     <TextBlock Text="Dashboard de Monitoramento" 
                                                Classes="subheading"/>
                                     <TextBlock Text="Acompanhamento em Tempo Real" 
                                                Classes="caption"/>
                                 </StackPanel>
+                                <Border Grid.Column="2" Classes="chip">
+                                    <TextBlock Text="Monitor" 
+                                               FontSize="{StaticResource FontSizeS}"
+                                               Foreground="{StaticResource WarningBrush}"
+                                               FontWeight="SemiBold"/>
+                                </Border>
                             </Grid>
                             
-                            <StackPanel Orientation="Horizontal" Spacing="4">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
                                 <Ellipse Classes="status-online"/>
                                 <TextBlock Text="Sempre disponível" 
                                            Classes="body"/>
                             </StackPanel>
                             
                             <TextBlock Text="Monitore estatísticas, resultados parciais e status de todos os equipamentos em tempo real." 
-                                       Classes="body"/>
+                                       Classes="body"
+                                       TextWrapping="Wrap"/>
                             
                             <Button Content="Abrir Dashboard" 
-                                    Classes="secondary large"
+                                    Classes="secondary"
                                     Command="{Binding AbrirDashboardWindowCommand}"/>
                         </StackPanel>
                     </Border>
 
                     <!-- Painel Administrativo -->
                     <Border Grid.Row="1" Grid.Column="1" 
-                            Classes="card">
-                        <StackPanel Spacing="8">
-                            <Grid ColumnDefinitions="Auto,*">
+                            Classes="stat-card">
+                        <StackPanel Spacing="16">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
                                 <Border Grid.Column="0" 
-                                        Background="{StaticResource PrimaryBrush}" 
-                                        CornerRadius="{StaticResource RadiusLarge}" 
-                                        Padding="8"
-                                        Width="56" Height="56">
+                                        Classes="avatar large"
+                                        Background="{StaticResource PrimaryBrush}">
                                     <TextBlock Text="⚙️" 
-                                               FontSize="28" 
+                                               FontSize="32" 
                                                HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"/>
                                 </Border>
                                 <StackPanel Grid.Column="1" 
-                                            Margin="8,0,0,0">
+                                            Margin="16,0,0,0"
+                                            VerticalAlignment="Center">
                                     <TextBlock Text="Painel Administrativo" 
                                                Classes="subheading"/>
                                     <TextBlock Text="Configuração e Gestão" 
                                                Classes="caption"/>
                                 </StackPanel>
+                                <Border Grid.Column="2" Classes="chip">
+                                    <TextBlock Text="Admin" 
+                                               FontSize="{StaticResource FontSizeS}"
+                                               Foreground="{StaticResource PrimaryBrush}"
+                                               FontWeight="SemiBold"/>
+                                </Border>
                             </Grid>
                             
-                            <StackPanel Orientation="Horizontal" Spacing="4">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
                                 <Ellipse Classes="status-online"/>
                                 <TextBlock Text="Sempre disponível" 
                                            Classes="body"/>
                             </StackPanel>
                             
                             <TextBlock Text="Configure eleições, candidatos, cargos e gerencie todo o sistema administrativo." 
-                                       Classes="body"/>
+                                       Classes="body"
+                                       TextWrapping="Wrap"/>
                             
                             <Button Content="Abrir Administração" 
-                                    Classes="secondary large"
+                                    Classes="secondary"
                                     Command="{Binding AbrirAdminWindowCommand}"/>
                         </StackPanel>
                     </Border>
@@ -284,16 +319,13 @@
 
         <!-- Controles Rápidos -->
         <Border Grid.Row="2" 
-                Background="{StaticResource BackgroundElevatedBrush}"
-                BorderBrush="{StaticResource BorderLightBrush}"
-                BorderThickness="0,1,0,0"
-                Padding="24">
-            <StackPanel Spacing="8">
+                Classes="toolbar">
+            <StackPanel Spacing="16">
                 <TextBlock Text="Controles Rápidos" 
                            Classes="subheading"
                            HorizontalAlignment="Center"/>
                 
-                <Grid ColumnDefinitions="*,*,*,*" >
+                <Grid ColumnDefinitions="*,*,*,*">
                     <Button Grid.Column="0"
                             Content="Mesa"
                             Classes="secondary"

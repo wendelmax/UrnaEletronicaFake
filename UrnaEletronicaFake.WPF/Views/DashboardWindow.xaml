@@ -1,0 +1,116 @@
+<Window x:Class="UrnaEletronicaFake.WPF.Views.DashboardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dashboard - Monitoramento em Tempo Real" Height="700" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        Background="LightGray">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="5" Padding="20" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="📊 Dashboard" 
+                           FontSize="28" FontWeight="Bold" 
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Monitoramento em Tempo Real do Sistema" 
+                           FontSize="16" 
+                           HorizontalAlignment="Center"
+                           Margin="0,10,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <!-- Estatísticas Principais -->
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Border Grid.Column="0" Background="LightBlue" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="15" Margin="0,0,5,0">
+                        <StackPanel>
+                            <TextBlock Text="👥" FontSize="24" HorizontalAlignment="Center"/>
+                            <TextBlock Text="1,247" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Total de Votos" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Grid.Column="1" Background="LightGreen" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="15" Margin="5,0,5,0">
+                        <StackPanel>
+                            <TextBlock Text="🗳️" FontSize="24" HorizontalAlignment="Center"/>
+                            <TextBlock Text="15" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Urnas Ativas" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Grid.Column="2" Background="LightYellow" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="15" Margin="5,0,5,0">
+                        <StackPanel>
+                            <TextBlock Text="✅" FontSize="24" HorizontalAlignment="Center"/>
+                            <TextBlock Text="98.5%" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Taxa de Sucesso" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Grid.Column="3" Background="LightPink" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="15" Margin="5,0,0,0">
+                        <StackPanel>
+                            <TextBlock Text="⏱️" FontSize="24" HorizontalAlignment="Center"/>
+                            <TextBlock Text="2h 15m" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Tempo de Uptime" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Status das Urnas -->
+                <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Status das Urnas" 
+                                   FontSize="18" FontWeight="Bold" 
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,15"/>
+                        
+                        <DataGrid Height="200">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Width="60"/>
+                                <DataGridTextColumn Header="Localização" Width="*"/>
+                                <DataGridTextColumn Header="Status" Width="100"/>
+                                <DataGridTextColumn Header="Votos" Width="80"/>
+                                <DataGridTextColumn Header="Última Atividade" Width="120"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Resultados Parciais -->
+                <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Resultados Parciais" 
+                                   FontSize="18" FontWeight="Bold" 
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,15"/>
+                        
+                        <DataGrid Height="300">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Posição" Width="80"/>
+                                <DataGridTextColumn Header="Candidato" Width="*"/>
+                                <DataGridTextColumn Header="Número" Width="80"/>
+                                <DataGridTextColumn Header="Votos" Width="100"/>
+                                <DataGridTextColumn Header="Percentual" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

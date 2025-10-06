@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="60" d:DesignHeight="30"
+             x:Class="UrnaEletronicaFake.UI.Components.ModernBadge"
+             Background="Transparent">
+
+    <UserControl.Styles>
+        <Style Selector="Border.modern-badge">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+            <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+            <Setter Property="MinWidth" Value="24"/>
+            <Setter Property="MinHeight" Value="24"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        
+        <Style Selector="Border.modern-badge.success">
+            <Setter Property="Background" Value="{StaticResource SuccessBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.modern-badge.warning">
+            <Setter Property="Background" Value="{StaticResource WarningBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.modern-badge.error">
+            <Setter Property="Background" Value="{StaticResource ErrorBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.modern-badge.info">
+            <Setter Property="Background" Value="{StaticResource InfoBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.modern-badge.secondary">
+            <Setter Property="Background" Value="{StaticResource NeutralBrush}"/>
+        </Style>
+        
+        <Style Selector="Border.modern-badge.outline">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        
+        <Style Selector="Border.modern-badge.small">
+            <Setter Property="Padding" Value="{StaticResource SpacingS}"/>
+            <Setter Property="MinWidth" Value="16"/>
+            <Setter Property="MinHeight" Value="16"/>
+        </Style>
+        
+        <Style Selector="Border.modern-badge.large">
+            <Setter Property="Padding" Value="{StaticResource SpacingL}"/>
+            <Setter Property="MinWidth" Value="32"/>
+            <Setter Property="MinHeight" Value="32"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Border Classes="modern-badge">
+        <TextBlock Text="{Binding $parent[UserControl].Text}" 
+                   Foreground="{StaticResource TextOnPrimaryBrush}"
+                   FontSize="{Binding $parent[UserControl].BadgeFontSize}"
+                   FontWeight="{Binding $parent[UserControl].BadgeFontWeight}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+    </Border>
+</UserControl>

@@ -1,0 +1,483 @@
+@page "/dashboard"
+
+<PageTitle>Dashboard - Monitoramento da Eleição</PageTitle>
+
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-lg me-3" style="background-color: var(--warning-100); color: var(--warning-600);">
+                                📊
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-primary mb-1">Dashboard de Monitoramento</h2>
+                                <p class="text-secondary mb-0">Acompanhamento em Tempo Real</p>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="status-indicator">
+                                <div class="status-dot status-dot-success"></div>
+                                <span class="text-sm text-secondary">Monitoramento Ativo</span>
+                            </div>
+                            <div class="text-sm text-tertiary mt-1">
+                                @DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Métricas Principais -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="metric-card">
+                <div class="metric-icon bg-primary">
+                    🗳️
+                </div>
+                <div class="metric-content">
+                    <div class="metric-value">15,247</div>
+                    <div class="metric-label">Total de Votos</div>
+                    <div class="metric-change positive">
+                        <span class="me-1">↗️</span>
+                        +12.5%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="metric-card">
+                <div class="metric-icon bg-success">
+                    ✅
+                </div>
+                <div class="metric-content">
+                    <div class="metric-value">14,156</div>
+                    <div class="metric-label">Votos Válidos</div>
+                    <div class="metric-change positive">
+                        <span class="me-1">↗️</span>
+                        +8.3%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="metric-card">
+                <div class="metric-icon bg-warning">
+                    ⚠️
+                </div>
+                <div class="metric-content">
+                    <div class="metric-value">867</div>
+                    <div class="metric-label">Votos Nulos</div>
+                    <div class="metric-change negative">
+                        <span class="me-1">↘️</span>
+                        -2.1%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="metric-card">
+                <div class="metric-icon bg-info">
+                    📝
+                </div>
+                <div class="metric-content">
+                    <div class="metric-value">224</div>
+                    <div class="metric-label">Votos Brancos</div>
+                    <div class="metric-change positive">
+                        <span class="me-1">↗️</span>
+                        +1.2%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Resultados por Candidato -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="text-lg font-semibold mb-0">
+                            <span class="me-2">📈</span>
+                            Resultados por Candidato
+                        </h4>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-sm btn-outline-primary active">Tempo Real</button>
+                            <button class="btn btn-sm btn-outline-secondary">Por Hora</button>
+                            <button class="btn btn-sm btn-outline-secondary">Final</button>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Candidatos -->
+                    <div class="candidates-list">
+                        <div class="candidate-item">
+                            <div class="candidate-info">
+                                <div class="candidate-avatar bg-primary">👤</div>
+                                <div class="candidate-details">
+                                    <h5 class="candidate-name">João Silva</h5>
+                                    <p class="candidate-party">Partido ABC</p>
+                                </div>
+                            </div>
+                            <div class="candidate-stats">
+                                <div class="vote-count">5,456 votos</div>
+                                <div class="vote-percentage">38.5%</div>
+                            </div>
+                            <div class="vote-progress">
+                                <div class="progress">
+                                    <div class="progress-bar bg-primary" style="width: 38.5%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="candidate-item">
+                            <div class="candidate-info">
+                                <div class="candidate-avatar bg-success">👤</div>
+                                <div class="candidate-details">
+                                    <h5 class="candidate-name">Maria Santos</h5>
+                                    <p class="candidate-party">Partido XYZ</p>
+                                </div>
+                            </div>
+                            <div class="candidate-stats">
+                                <div class="vote-count">4,523 votos</div>
+                                <div class="vote-percentage">32.0%</div>
+                            </div>
+                            <div class="vote-progress">
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" style="width: 32.0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="candidate-item">
+                            <div class="candidate-info">
+                                <div class="candidate-avatar bg-warning">👤</div>
+                                <div class="candidate-details">
+                                    <h5 class="candidate-name">Pedro Costa</h5>
+                                    <p class="candidate-party">Partido DEF</p>
+                                </div>
+                            </div>
+                            <div class="candidate-stats">
+                                <div class="vote-count">2,177 votos</div>
+                                <div class="vote-percentage">15.4%</div>
+                            </div>
+                            <div class="vote-progress">
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" style="width: 15.4%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="candidate-item">
+                            <div class="candidate-info">
+                                <div class="candidate-avatar bg-info">👤</div>
+                                <div class="candidate-details">
+                                    <h5 class="candidate-name">Ana Lima</h5>
+                                    <p class="candidate-party">Partido GHI</p>
+                                </div>
+                            </div>
+                            <div class="candidate-stats">
+                                <div class="vote-count">1,890 votos</div>
+                                <div class="vote-percentage">13.4%</div>
+                            </div>
+                            <div class="vote-progress">
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" style="width: 13.4%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel de Status -->
+        <div class="col-lg-4">
+            <!-- Status das Urnas -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="text-lg font-semibold mb-3">
+                        <span class="me-2">🏛️</span>
+                        Status das Urnas
+                    </h5>
+
+                    <div class="status-list">
+                        <div class="status-item">
+                            <div class="status-indicator">
+                                <div class="status-dot status-dot-success"></div>
+                            </div>
+                            <div class="status-info">
+                                <div class="status-title">Urna 001 - Zona 123</div>
+                                <div class="status-detail">Seção 456 - Ativa</div>
+                            </div>
+                            <div class="status-count">127 votos</div>
+                        </div>
+
+                        <div class="status-item">
+                            <div class="status-indicator">
+                                <div class="status-dot status-dot-success"></div>
+                            </div>
+                            <div class="status-info">
+                                <div class="status-title">Urna 002 - Zona 124</div>
+                                <div class="status-detail">Seção 457 - Ativa</div>
+                            </div>
+                            <div class="status-count">98 votos</div>
+                        </div>
+
+                        <div class="status-item">
+                            <div class="status-indicator">
+                                <div class="status-dot status-dot-warning"></div>
+                            </div>
+                            <div class="status-info">
+                                <div class="status-title">Urna 003 - Zona 125</div>
+                                <div class="status-detail">Seção 458 - Pausada</div>
+                            </div>
+                            <div class="status-count">45 votos</div>
+                        </div>
+
+                        <div class="status-item">
+                            <div class="status-indicator">
+                                <div class="status-dot status-dot-offline"></div>
+                            </div>
+                            <div class="status-info">
+                                <div class="status-title">Urna 004 - Zona 126</div>
+                                <div class="status-detail">Seção 459 - Offline</div>
+                            </div>
+                            <div class="status-count">0 votos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alertas -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-lg font-semibold mb-3">
+                        <span class="me-2">🚨</span>
+                        Alertas do Sistema
+                    </h5>
+
+                    <div class="alerts-list">
+                        <div class="alert alert-warning">
+                            <div class="d-flex align-items-start">
+                                <span class="me-2">⚠️</span>
+                                <div>
+                                    <strong>Urna 003 Pausada</strong>
+                                    <p class="mb-0">Votação pausada por manutenção</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-danger">
+                            <div class="d-flex align-items-start">
+                                <span class="me-2">🔴</span>
+                                <div>
+                                    <strong>Urna 004 Offline</strong>
+                                    <p class="mb-0">Problema de conectividade detectado</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <div class="d-flex align-items-start">
+                                <span class="me-2">ℹ️</span>
+                                <div>
+                                    <strong>Participação Alta</strong>
+                                    <p class="mb-0">Taxa de participação acima de 70%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .metric-card {
+        background-color: var(--background-elevated);
+        border: 1px solid var(--border-light);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition-normal);
+    }
+
+    .metric-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .metric-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-right: 1rem;
+    }
+
+    .metric-content {
+        flex: 1;
+    }
+
+    .metric-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--text-primary);
+        line-height: 1;
+    }
+
+    .metric-label {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin: 0.25rem 0;
+    }
+
+    .metric-change {
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .metric-change.positive {
+        color: var(--success-600);
+    }
+
+    .metric-change.negative {
+        color: var(--error-600);
+    }
+
+    .candidates-list {
+        space-y: 1rem;
+    }
+
+    .candidate-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        background-color: var(--background-secondary);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-light);
+    }
+
+    .candidate-info {
+        display: flex;
+        align-items: center;
+        flex: 1;
+    }
+
+    .candidate-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        margin-right: 1rem;
+        color: white;
+    }
+
+    .candidate-name {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+    }
+
+    .candidate-party {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    .candidate-stats {
+        text-align: right;
+        margin-right: 1rem;
+    }
+
+    .vote-count {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .vote-percentage {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
+    .vote-progress {
+        width: 100px;
+    }
+
+    .status-list {
+        space-y: 0.5rem;
+    }
+
+    .status-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        background-color: var(--background-tertiary);
+        border-radius: 6px;
+        margin-bottom: 0.5rem;
+    }
+
+    .status-info {
+        flex: 1;
+        margin-left: 0.75rem;
+    }
+
+    .status-title {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .status-detail {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+    }
+
+    .status-count {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--primary-600);
+    }
+
+    .alerts-list {
+        space-y: 0.75rem;
+    }
+
+    .alerts-list .alert {
+        margin-bottom: 0.75rem;
+        border: none;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+</style>
+
+@code {
+    // Código C# para lógica do dashboard
+    private void RefreshData()
+    {
+        // Lógica para atualizar dados em tempo real
+    }
+
+    private void ExportResults()
+    {
+        // Lógica para exportar resultados
+    }
+}

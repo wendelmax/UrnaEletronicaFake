@@ -32,8 +32,16 @@ public partial class MainWindowViewModel : ViewModelBase
     public bool EleicaoAtiva
     {
         get => _eleicaoAtiva;
-        set => SetProperty(ref _eleicaoAtiva, value);
+        set 
+        { 
+            SetProperty(ref _eleicaoAtiva, value);
+            OnPropertyChanged(nameof(StatusEleicaoTexto));
+            OnPropertyChanged(nameof(StatusEleicaoCor));
+        }
     }
+
+    public string StatusEleicaoTexto => EleicaoAtiva ? "Eleição Ativa" : "Aguardando início";
+    public string StatusEleicaoCor => EleicaoAtiva ? "Success" : "Warning";
 
     private DateTime _ultimaAtualizacao = DateTime.Now;
     public DateTime UltimaAtualizacao

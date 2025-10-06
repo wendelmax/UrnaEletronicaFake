@@ -177,7 +177,6 @@
         <Setter Property="Padding" Value="{StaticResource SpacingL}"/>
         <Setter Property="Margin" Value="{StaticResource SpacingS}"/>
         <Setter Property="Effect" Value="{StaticResource ShadowMedium}"/>
-        <Setter Property="Transitions" Value="{StaticResource DefaultTransitions}"/>
     </Style>
 
     <Style Selector="Border.card:pointerover">
@@ -195,7 +194,6 @@
         <Setter Property="Padding" Value="{StaticResource SpacingL}"/>
         <Setter Property="Margin" Value="{StaticResource SpacingS}"/>
         <Setter Property="Effect" Value="{StaticResource ShadowLarge}"/>
-        <Setter Property="Transitions" Value="{StaticResource DefaultTransitions}"/>
     </Style>
 
     <!-- Cards de Status -->
@@ -253,7 +251,6 @@
         <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeM}"/>
         <Setter Property="MinHeight" Value="{StaticResource ComponentHeightL}"/>
-        <Setter Property="Transitions" Value="{StaticResource DefaultTransitions}"/>
     </Style>
 
     <Style Selector="TextBox:focus">
@@ -281,7 +278,6 @@
         <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeM}"/>
         <Setter Property="MinHeight" Value="{StaticResource ComponentHeightL}"/>
-        <Setter Property="Transitions" Value="{StaticResource DefaultTransitions}"/>
     </Style>
 
     <Style Selector="ComboBox:focus">
@@ -310,6 +306,13 @@
 
     <Style Selector="Ellipse.status-warning">
         <Setter Property="Fill" Value="{StaticResource WarningBrush}"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Margin" Value="0,0,4,0"/>
+    </Style>
+
+    <Style Selector="Ellipse.status-success">
+        <Setter Property="Fill" Value="{StaticResource SuccessBrush}"/>
         <Setter Property="Width" Value="12"/>
         <Setter Property="Height" Value="12"/>
         <Setter Property="Margin" Value="0,0,4,0"/>
@@ -355,7 +358,6 @@
         <Setter Property="Margin" Value="{StaticResource SpacingXs}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="CornerRadius" Value="{StaticResource RadiusSmall}"/>
-        <Setter Property="Transitions" Value="{StaticResource DefaultTransitions}"/>
     </Style>
 
     <Style Selector="ListBoxItem:selected">
@@ -411,6 +413,23 @@
         <Setter Property="Background" Value="{StaticResource BorderLightBrush}"/>
         <Setter Property="Width" Value="1"/>
         <Setter Property="Margin" Value="{StaticResource SpacingM}"/>
+    </Style>
+
+
+
+
+
+
+    <!-- Estilos para ToolTip -->
+    <Style Selector="ToolTip">
+        <Setter Property="Background" Value="{StaticResource BackgroundElevatedBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSmall}"/>
+        <Setter Property="Padding" Value="{StaticResource SpacingM}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeS}"/>
+        <Setter Property="Effect" Value="{StaticResource ShadowMedium}"/>
     </Style>
 
 </Styles>

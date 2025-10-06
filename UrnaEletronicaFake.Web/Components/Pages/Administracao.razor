@@ -1,0 +1,297 @@
+@page "/administracao"
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Administração - Urna Eletrônica</PageTitle>
+
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h1 class="text-2xl font-bold mb-2">Painel Administrativo</h1>
+                    <p class="text-sm text-secondary mb-0">Gerencie configurações e monitore o sistema</p>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="status-indicator">
+                        <div class="status-dot status-dot-success"></div>
+                        <span class="text-sm text-secondary">Sistema Online</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configurações da Eleição -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-lg font-semibold mb-0">Configurações da Eleição</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Nome da Eleição</label>
+                                <input type="text" class="form-control" placeholder="Ex: Eleições Municipais 2024" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Data de Início</label>
+                                <input type="datetime-local" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Data de Fim</label>
+                                <input type="datetime-local" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status da Eleição</label>
+                                <select class="form-select">
+                                    <option value="inactive">Inativa</option>
+                                    <option value="active">Ativa</option>
+                                    <option value="finished">Finalizada</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary">Salvar Configurações</button>
+                        <button class="btn btn-outline-secondary">Iniciar Eleição</button>
+                        <button class="btn btn-outline-danger">Finalizar Eleição</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Candidatos -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="text-lg font-semibold mb-0">Gerenciar Candidatos</h3>
+                    <button class="btn btn-primary btn-sm">Adicionar Candidato</button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Número</th>
+                                    <th>Nome</th>
+                                    <th>Partido</th>
+                                    <th>Cargo</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge badge-primary">13</span></td>
+                                    <td>João Silva</td>
+                                    <td>PT</td>
+                                    <td>Prefeito</td>
+                                    <td><span class="badge badge-success">Ativo</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary me-1">Editar</button>
+                                        <button class="btn btn-sm btn-outline-danger">Excluir</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-primary">45</span></td>
+                                    <td>Maria Santos</td>
+                                    <td>PSDB</td>
+                                    <td>Prefeito</td>
+                                    <td><span class="badge badge-success">Ativo</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary me-1">Editar</button>
+                                        <button class="btn btn-sm btn-outline-danger">Excluir</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-primary">1313</span></td>
+                                    <td>Carlos Oliveira</td>
+                                    <td>PT</td>
+                                    <td>Vereador</td>
+                                    <td><span class="badge badge-success">Ativo</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary me-1">Editar</button>
+                                        <button class="btn btn-sm btn-outline-danger">Excluir</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estatísticas do Sistema -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            👥
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-bold mb-0">1,247</h4>
+                            <p class="text-sm text-secondary mb-0">Total de Votos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            🗳️
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-bold mb-0">15</h4>
+                            <p class="text-sm text-secondary mb-0">Urnas Ativas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            ✅
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-bold mb-0">98.5%</h4>
+                            <p class="text-sm text-secondary mb-0">Taxa de Sucesso</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            ⏱️
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-bold mb-0">2h 15m</h4>
+                            <p class="text-sm text-secondary mb-0">Tempo de Uptime</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logs do Sistema -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-lg font-semibold mb-0">Logs do Sistema</h3>
+                </div>
+                <div class="card-body">
+                    <div class="logs-container">
+                        <div class="log-entry">
+                            <span class="log-time">14:32:15</span>
+                            <span class="log-level log-info">INFO</span>
+                            <span class="log-message">Sistema iniciado com sucesso</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">14:32:16</span>
+                            <span class="log-level log-success">SUCCESS</span>
+                            <span class="log-message">Conexão com banco de dados estabelecida</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">14:32:17</span>
+                            <span class="log-level log-warning">WARNING</span>
+                            <span class="log-message">Backup automático agendado para 23:00</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">14:35:22</span>
+                            <span class="log-level log-info">INFO</span>
+                            <span class="log-message">Urna #001 conectada</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">14:35:23</span>
+                            <span class="log-level log-success">SUCCESS</span>
+                            <span class="log-message">Voto registrado: Candidato 13</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .logs-container {
+        max-height: 300px;
+        overflow-y: auto;
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 16px;
+    }
+
+    .log-entry {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid #e9ecef;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+    }
+
+    .log-entry:last-child {
+        border-bottom: none;
+    }
+
+    .log-time {
+        color: #6c757d;
+        min-width: 80px;
+    }
+
+    .log-level {
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        min-width: 70px;
+        text-align: center;
+    }
+
+    .log-info {
+        background: #d1ecf1;
+        color: #0c5460;
+    }
+
+    .log-success {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .log-warning {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .log-error {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .log-message {
+        flex: 1;
+    }
+</style>

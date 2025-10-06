@@ -1,0 +1,445 @@
+<Window x:Class="UrnaEletronicaFake.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Painel Administrativo - Urna Eletrônica" Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="LightGray">
+    
+    <Grid Margin="{StaticResource SpaceLG}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="{StaticResource RadiusMedium}" Padding="{StaticResource SpaceMD}" Margin="0,0,0,{StaticResource SpaceMD}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Painel Administrativo" 
+                               Style="{StaticResource HeadingTextStyle}"/>
+                    <TextBlock Text="Gerenciamento do Sistema de Votação Eletrônica" 
+                               Style="{StaticResource BodySecondaryTextStyle}"
+                               Margin="0,8,0,0"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Ellipse Fill="Green" Width="12" Height="12"/>
+                    <TextBlock Text="Sistema Online" 
+                               FontSize="12" Foreground="Gray"
+                               VerticalAlignment="Center"
+                               Margin="8,0,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <TabControl Grid.Row="1" Background="White" BorderBrush="Black" BorderThickness="1">
+            
+            <!-- Aba: Controle Geral -->
+            <TabItem Header="Controle Geral" Background="LightBlue">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="24">
+                        
+                        <!-- Status da Eleição -->
+                        <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,{StaticResource SpaceMD}">
+                            <StackPanel>
+                                <TextBlock Text="Status da Eleição" 
+                                           Style="{StaticResource TitleTextStyle}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,{StaticResource SpaceMD}"/>
+                                
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Ellipse Fill="Orange" Width="15" Height="15" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Aguardando início da eleição" 
+                                               FontSize="16"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                                
+                                <TextBlock Text="Última atualização: 14:30:15 01/10/2025" 
+                                           FontSize="12" Foreground="Gray"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,10,0,15"/>
+                                
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="Iniciar Eleição" 
+                                            Style="{StaticResource PrimaryButtonStyle}" 
+                                            Margin="0,0,{StaticResource SpaceSM},0"
+                                            Command="{Binding IniciarEleicaoCommand}"/>
+                                    <Button Content="Finalizar Eleição" 
+                                            Style="{StaticResource DangerButtonStyle}" 
+                                            Margin="0,0,{StaticResource SpaceSM},0"
+                                            Command="{Binding FinalizarEleicaoCommand}"/>
+                                    <Button Content="Pausar Eleição" 
+                                            Style="{StaticResource SecondaryButtonStyle}"
+                                            Command="{Binding PausarEleicaoCommand}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Controles de Sistema -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Urna Eletrônica -->
+                            <Border Grid.Column="0" Style="{StaticResource InteractiveCardStyle}" Margin="0,0,{StaticResource SpaceSM},0">
+                                <StackPanel>
+                                    <TextBlock Text="🗳️ Urna Eletrônica" 
+                                               Style="{StaticResource SubheadingTextStyle}"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,0,0,{StaticResource SpaceSM}"/>
+                                    <TextBlock Text="Terminal de Votação" 
+                                               Style="{StaticResource BodySecondaryTextStyle}"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,0,0,{StaticResource SpaceMD}"/>
+                                    
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                        <Ellipse Fill="Green" Width="10" Height="10" Margin="0,0,8,0"/>
+                                        <TextBlock Text="Sistema ativo e pronto" 
+                                                   FontSize="12" Foreground="Gray"/>
+                                    </StackPanel>
+                                    
+                                    <TextBlock Text="Abra o terminal de votação para que os eleitores possam votar." 
+                                               FontSize="12" Foreground="Gray"
+                                               TextWrapping="Wrap"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,0,0,15"/>
+                                    
+                                    <Button Content="Abrir Urna" 
+                                            Command="{Binding OpenVotacaoCommand}"
+                                            Background="Blue" Foreground="White" 
+                                            Padding="20,10" FontSize="14"
+                                            HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Mesa Receptora -->
+                            <Border Grid.Column="1" Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="20" Margin="10,0,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="👥 Mesa Receptora" 
+                                               FontSize="18" FontWeight="Bold" 
+                                               HorizontalAlignment="Center"
+                                               Margin="0,0,0,10"/>
+                                    <TextBlock Text="Interface do Mesário" 
+                                               FontSize="14" 
+                                               HorizontalAlignment="Center"
+                                               Margin="0,0,0,15"/>
+                                    
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                        <Ellipse Fill="Green" Width="10" Height="10" Margin="0,0,8,0"/>
+                                        <TextBlock Text="Sistema ativo e pronto" 
+                                                   FontSize="12" Foreground="Gray"/>
+                                    </StackPanel>
+                                    
+                                    <TextBlock Text="Interface para mesários gerenciarem o processo de votação." 
+                                               FontSize="12" Foreground="Gray"
+                                               TextWrapping="Wrap"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,0,0,15"/>
+                                    
+                                    <Button Content="Abrir Mesa" 
+                                            Command="{Binding OpenMesaCommand}"
+                                            Background="Gray" Foreground="White" 
+                                            Padding="20,10" FontSize="14"
+                                            HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- Dashboard -->
+                        <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="📊 Dashboard" 
+                                           FontSize="18" FontWeight="Bold" 
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,10"/>
+                                <TextBlock Text="Monitoramento em Tempo Real" 
+                                           FontSize="14" 
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,15"/>
+                                
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                    <Ellipse Fill="Green" Width="10" Height="10" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Dados atualizados" 
+                                               FontSize="12" Foreground="Gray"/>
+                                </StackPanel>
+                                
+                                <TextBlock Text="Visualize estatísticas, resultados parciais e métricas de desempenho do sistema." 
+                                           FontSize="12" Foreground="Gray"
+                                           TextWrapping="Wrap"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,15"/>
+                                
+                                <Button Content="Abrir Dashboard" 
+                                        Command="{Binding OpenDashboardCommand}"
+                                        Background="Gray" Foreground="White" 
+                                        Padding="20,10" FontSize="14"
+                                        HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Aba: Configurações -->
+            <TabItem Header="Configurações" Background="LightGreen">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="24">
+
+                        <!-- Configurações da Eleição -->
+                        <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="20" Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="Configurações da Eleição" 
+                                           FontSize="20" FontWeight="Bold" 
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,20"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                        <TextBlock Text="Nome da Eleição:" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBox Text="Eleições Municipais 2024" Padding="10" Margin="0,0,0,15"/>
+                                        
+                                        <TextBlock Text="Data de Início:" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <DatePicker Padding="10" Margin="0,0,0,15"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                        <TextBlock Text="Data de Fim:" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <DatePicker Padding="10" Margin="0,0,0,15"/>
+                                        
+                                        <TextBlock Text="Status da Eleição:" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <ComboBox Padding="10" SelectedIndex="0">
+                                            <ComboBoxItem Content="Inativa"/>
+                                            <ComboBoxItem Content="Ativa"/>
+                                            <ComboBoxItem Content="Finalizada"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                </Grid>
+                                
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,{StaticResource SpaceMD},0,0">
+                                    <Button Content="Salvar Configurações" 
+                                            Style="{StaticResource PrimaryButtonStyle}"
+                                            Margin="0,0,{StaticResource SpaceSM},0"
+                                            Command="{Binding SalvarConfiguracoesCommand}"/>
+                                    <Button Content="Resetar Configurações" 
+                                            Style="{StaticResource SecondaryButtonStyle}"
+                                            Command="{Binding ResetarConfiguracoesCommand}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Gerenciar Candidatos -->
+                        <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="20">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" Text="Gerenciar Candidatos" 
+                                               FontSize="18" FontWeight="Bold"/>
+                                    <Button Grid.Column="1" Content="Adicionar Candidato" 
+                                            Style="{StaticResource PrimaryButtonStyle}"
+                                            Command="{Binding AdicionarCandidatoCommand}"/>
+                                </Grid>
+                                
+                                <DataGrid Height="200">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Número" Width="80"/>
+                                        <DataGridTextColumn Header="Nome" Width="*"/>
+                                        <DataGridTextColumn Header="Partido" Width="80"/>
+                                        <DataGridTextColumn Header="Cargo" Width="100"/>
+                                        <DataGridTextColumn Header="Status" Width="80"/>
+                                        <DataGridTemplateColumn Header="Ações" Width="120">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Button Content="Editar" 
+                                                                Style="{StaticResource SecondaryButtonStyle}" 
+                                                                Margin="0,0,{StaticResource SpaceSM},0"
+                                                                Command="{Binding EditarCandidatoCommand}"/>
+                                                        <Button Content="Excluir" 
+                                                                Style="{StaticResource DangerButtonStyle}"
+                                                                Command="{Binding ExcluirCandidatoCommand}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Aba: Resultados -->
+            <TabItem Header="Resultados" Background="LightYellow">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="24">
+
+                        <!-- Estatísticas do Sistema -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Grid.Column="0" Background="LightBlue" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="15" Margin="0,0,5,0">
+                                <StackPanel>
+                                    <TextBlock Text="👥" FontSize="24" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="1,247" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Total de Votos" FontSize="12" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="1" Background="LightGreen" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="15" Margin="5,0,5,0">
+                                <StackPanel>
+                                    <TextBlock Text="🗳️" FontSize="24" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="15" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Urnas Ativas" FontSize="12" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="2" Background="LightYellow" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="15" Margin="5,0,5,0">
+                                <StackPanel>
+                                    <TextBlock Text="✅" FontSize="24" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="98.5%" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Taxa de Sucesso" FontSize="12" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <Border Grid.Column="3" Background="LightPink" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="15" Margin="5,0,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="⏱️" FontSize="24" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="2h 15m" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Tempo de Uptime" FontSize="12" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- Resultados por Candidato -->
+                        <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="Resultados por Candidato" 
+                                           FontSize="18" FontWeight="Bold" 
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,15"/>
+                                
+                                <DataGrid Height="300">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Posição" Width="80"/>
+                                        <DataGridTextColumn Header="Candidato" Width="*"/>
+                                        <DataGridTextColumn Header="Número" Width="80"/>
+                                        <DataGridTextColumn Header="Votos" Width="100"/>
+                                        <DataGridTextColumn Header="Percentual" Width="100"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Aba: Auditoria -->
+            <TabItem Header="Auditoria" Background="LightCoral">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="24">
+
+                        <!-- Logs do Sistema -->
+                        <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="Logs de Auditoria" 
+                                           FontSize="18" FontWeight="Bold" 
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,15"/>
+                                
+                                <Border Background="Black" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="15" Height="400">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="14:32:15" Foreground="Gray" Width="80"/>
+                                                <Border Background="Blue" CornerRadius="3" Padding="5,2" Margin="0,0,10,0">
+                                                    <TextBlock Text="INFO" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                                </Border>
+                                                <TextBlock Text="Sistema iniciado com sucesso" Foreground="White"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="14:32:16" Foreground="Gray" Width="80"/>
+                                                <Border Background="Green" CornerRadius="3" Padding="5,2" Margin="0,0,10,0">
+                                                    <TextBlock Text="SUCCESS" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                                </Border>
+                                                <TextBlock Text="Conexão com banco de dados estabelecida" Foreground="White"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="14:32:17" Foreground="Gray" Width="80"/>
+                                                <Border Background="Orange" CornerRadius="3" Padding="5,2" Margin="0,0,10,0">
+                                                    <TextBlock Text="WARNING" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                                </Border>
+                                                <TextBlock Text="Backup automático agendado para 23:00" Foreground="White"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="14:35:22" Foreground="Gray" Width="80"/>
+                                                <Border Background="Blue" CornerRadius="3" Padding="5,2" Margin="0,0,10,0">
+                                                    <TextBlock Text="INFO" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                                </Border>
+                                                <TextBlock Text="Urna #001 conectada" Foreground="White"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="14:35:23" Foreground="Gray" Width="80"/>
+                                                <Border Background="Green" CornerRadius="3" Padding="5,2" Margin="0,0,10,0">
+                                                    <TextBlock Text="SUCCESS" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                                </Border>
+                                                <TextBlock Text="Voto registrado: Candidato 13" Foreground="White"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="14:35:24" Foreground="Gray" Width="80"/>
+                                                <Border Background="Blue" CornerRadius="3" Padding="5,2" Margin="0,0,10,0">
+                                                    <TextBlock Text="INFO" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                                </Border>
+                                                <TextBlock Text="Urna #002 conectada" Foreground="White"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="14:35:25" Foreground="Gray" Width="80"/>
+                                                <Border Background="Green" CornerRadius="3" Padding="5,2" Margin="0,0,10,0">
+                                                    <TextBlock Text="SUCCESS" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                                </Border>
+                                                <TextBlock Text="Voto registrado: Candidato 15" Foreground="White"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>
